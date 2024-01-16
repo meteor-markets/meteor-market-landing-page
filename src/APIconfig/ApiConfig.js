@@ -5,7 +5,6 @@ export const baseurl = "https://node-ecommerce.mobiloitte.com"; // staging
 
 let admin = `${baseurl}/api/v1/admin`;
 
-let brand = `${baseurl}/api/v1/brand`;
 const Apiconfigs = {
   homeBanner: `${admin}/listBanner`,
 };
