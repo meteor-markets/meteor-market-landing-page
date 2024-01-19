@@ -31,10 +31,10 @@ const baseOptions = {
         // border: "1px solid #BEF71E",
       },
       container: {
-        backgroundColor: "#00000000",
+        backgroundColor: "#00000066",
       },
       paperWidthSm: {
-        maxWidth: "450px",
+        maxWidth: "470px",
         background: "#1C1C1C ",
         border: "1px solid #1C1C1C",
       },
@@ -173,7 +173,7 @@ const baseOptions = {
     MuiButton: {
       containedSecondary: {
         background: "#fff !important",
-        border: "1px solid White",
+        // border: "1px solid White",
         fontFamily: "'Saira Semi Condensed', sans-serif",
         color: "#000",
         height: "43px",
@@ -194,18 +194,21 @@ const baseOptions = {
         borderRadius: "5px",
         fontFamily: "'Saira Semi Condensed', sans-serif",
         background: "#0B0B0F !important",
-        border: "1px solid black",
+        // border: "1px solid black",
         fontWeight: "600",
       },
       contained: {
         fontWeight: 500,
         padding: "5px 5px",
-        backgroundColor: "",
+        background: "linear-gradient(90deg, #FF9142, #FC4A1A,#F7B733)",
         color: "#fff",
         fontFamily: "'Saira Semi Condensed', sans-serif",
         "&.Mui-disabled": {
           backgroundColor: "#7e7e7e70 !important",
           color: "#fff !important",
+        },
+        "&:hover": {
+          background: "linear-gradient(90deg, #FC4A1A, #FF9142)",
         },
       },
       outlinedPrimary: {

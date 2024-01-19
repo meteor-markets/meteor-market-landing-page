@@ -189,7 +189,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
-  logoutbutton: {
+  Disconnectbutton: {
     justifyContent: "space-between",
     paddingLeft: 10,
     borderRadius: 0,
@@ -268,7 +268,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
                       fullWidth
                       color="primary"
                       startIcon={
-                        <IoLogOutOutline
+                        <IoDisconnectOutline
                           style={{
                             fontSize: "40px",
                             color: "White",
@@ -276,7 +276,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
                         />
                       }
                       key={i}
-                      className={classes.logoutbutton}
+                      className={classes.Disconnectbutton}
                       style={{}}
                       onClick={handleClickOpen}
                     >
@@ -296,14 +296,14 @@ const NavBar = ({ onMobileClose, openMobile }) => {
                         align="center"
                         style={{ fontSize: "24px", color: "#fff" }}
                       >
-                        Logout
+                        Disconnect
                       </Typography>
                       <DialogContent>
                         <DialogContentText
                           id="alert-dialog-description"
                           align="center"
                         >
-                          Are you sure you want to logout?
+                          Are you sure you want to Disconnect?
                         </DialogContentText>
                       </DialogContent>
                       <DialogActions>

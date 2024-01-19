@@ -650,7 +650,7 @@ export default function Header() {
               <Link to="/dashboard">Dashboard</Link>
             </StyledMenuItem>
             <StyledMenuItem className="menutext">
-              <Link onClick={handleClickOpen}>Logout</Link>
+              <Link onClick={handleClickOpen}>Disconnect</Link>
             </StyledMenuItem>
           </>
         )}
@@ -669,14 +669,14 @@ export default function Header() {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{'Logout'}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{'Disconnect'}</DialogTitle>
         <DialogContent>
           <DialogContentText
             id="alert-dialog-description"
             align="center"
             style={{ color: '#000' }}
           >
-            Are you sure you want to logout?
+            Are you sure you want to Disconnect?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

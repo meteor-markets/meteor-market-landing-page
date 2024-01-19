@@ -24,6 +24,7 @@ export default {
     fontWeight: 500,
     fontSize: 20,
     fontFamily: "'Saira Semi Condensed', sans-serif",
+    color: "#fff",
   },
   h5: {
     fontWeight: 500,
@@ -46,7 +47,7 @@ export default {
   },
   body1: {
     fontSize: 16,
-    color: "#fff",
+    color: "#898CA9",
     fontFamily: "'Saira Semi Condensed', sans-serif",
   },
   body2: {

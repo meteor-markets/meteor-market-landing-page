@@ -20,7 +20,7 @@ export default function AlertDialog({ open, handleClose }) {
       >
         <DialogTitle id="alert-dialog-title" style={{ textAlign: "center" }}>
           <Typography variant="h2" style={{ color: "#ffff" }}>
-            Logout
+            Disconnect
           </Typography>
         </DialogTitle>
         <DialogContent>
@@ -33,7 +33,7 @@ export default function AlertDialog({ open, handleClose }) {
                 color: "#fff",
               }}
             >
-              Are you sure you want to logout ?
+              Are you sure you want to Disconnect ?
             </Typography>
           </DialogContentText>
         </DialogContent>

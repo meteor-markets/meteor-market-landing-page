@@ -15,9 +15,10 @@ import { Dialog } from "@material-ui/core";
 import NavItem from "src/layouts/DashboardLayout/NavBar/NavItem";
 import { useHistory } from "react-router-dom";
 import ConfirmationDialog from "src/component/ConfirmationDialog";
-import { FaSignOutAlt, FaUserEdit, FaUser } from "react-icons/fa";
+import { FaSignOutAlt, FaUserEdit, FaUser,FaArrowRight } from "react-icons/fa"
 import axios from "axios";
 import apiConfig from "src/APIconfig/ApiConfig";
+import WalletConnect from "src/component/WalletConnect";
 
 const sections = [
   // {
@@ -25,19 +26,24 @@ const sections = [
   //   href: "/login",
   //   icon: FaSignInAlt,
   // },
-  {
-    title: "Profile",
-    href: "/view-profile",
-    icon: FaUser,
-  },
-  {
-    title: "Edit Profile",
-    href: "/edit-profile",
-    icon: FaUserEdit,
-  },
+  // {
+  //   title: "Profile",
+  //   href: "/view-profile",
+  //   icon: FaUser,
+  // },
+  // {
+  //   title: "Edit Profile",
+  //   href: "/edit-profile",
+  //   icon: FaUserEdit,
+  // },
 
   {
-    title: "Logout",
+    title: "View on EXplorer",
+    href: "",
+    icon: FaArrowRight,
+  },
+  {
+    title: "Disconnect",
     href: "/dashboard",
     icon: FaSignOutAlt,
   },
@@ -101,9 +107,9 @@ const useStyles = makeStyles((theme) => ({
   },
   desktopDrawer: {
     position: "absolute",
-    right: -25,
+    right: 0,
     top: 30,
-    width: 240,
+    width: 150,
     color: "#fff",
     // background: theme.palette.primary.main,
   },
@@ -134,6 +140,15 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 5,
   },
   //   .MuiButton-root:hover
+  connectWalletBtn:{
+    marginRight:"25px",
+    paddingLeft:"25px",
+    paddingRight:"25px",
+    "& :hover": {
+      backgroundColor: "transparent",
+      // border:"2px solid #fff"
+    },
+  }
 }));
 
 const NavBar = () => {
@@ -141,8 +156,11 @@ const NavBar = () => {
   const [rightBar, setRightBar] = useState(false);
   const history = useHistory();
   const [open, setOpen] = useState(false);
+  const [openConnectWallet, setOpenConnectWallet] = useState(false);
   const [data, setData] = useState([]);
   const [userDetails, setUserDetails] = useState("");
+
+  console.log("sdjfkasdf",openConnectWallet)
 
   const ViewProfileFunction = async () => {
     try {
@@ -175,8 +193,8 @@ const NavBar = () => {
         <ConfirmationDialog
           open={open}
           handleClose={() => setOpen(false)}
-          title={"Logout"}
-          desc={"Do you want to logout ?"}
+          title={"Disconnect"}
+          desc={"Do you want to Disconnect ?"}
           confirmationHandler={confirmationHandler}
           style={{ color: "#fff" }}
         />
@@ -212,7 +230,7 @@ const NavBar = () => {
                 }}
                 key={i}
                 onClick={() => {
-                  section.title === "Logout"
+                  section.title === "Disconnect"
                     ? setOpen(true)
                     : history.push(section.href);
                 }}
@@ -223,12 +241,13 @@ const NavBar = () => {
           })}
         </Box>
       </PerfectScrollbar>
+      
     </Box>
   );
 
   return (
     <>
-      <Avatar
+      {/* <Avatar
         src={
           data?.imageUrl ? data?.imageUrl : "/images/profilePlaceholder.jpeg"
         }
@@ -236,7 +255,20 @@ const NavBar = () => {
         onClick={() => {
           setRightBar(!rightBar);
         }}
-      />
+      /> */}
+    <Button px={3} variant="contained" className={classes.connectWalletBtn} onClick={() => {
+          // setRightBar(!rightBar);
+          setOpenConnectWallet(true);
+        }}>
+    Connect
+    </Button>
+    {openConnectWallet && (
+        <>
+        <WalletConnect  
+         open={openConnectWallet}
+         handleClose={() => setOpenConnectWallet(false)}/>
+      </>
+      )}
       <Dialog
         classes={{ paper: classes.desktopDrawer }}
         open={rightBar}
