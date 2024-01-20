@@ -165,7 +165,7 @@ const useStyles = makeStyles((theme) => ({
   mobileDrawer: {
     width: 256,
     boxShadow: "0px 0px 5px black",
-    backgroundColor: " #253d2f",
+    backgroundColor: " #0B0B0F",
   },
   desktopDrawer: {
     width: 256,

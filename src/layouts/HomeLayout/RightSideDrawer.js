@@ -9,19 +9,23 @@ import {
   makeStyles,
   Avatar,
   Typography,
-  Button,
+  Button,Tooltip
 } from "@material-ui/core";
 import { Dialog } from "@material-ui/core";
 import NavItem from "src/layouts/DashboardLayout/NavBar/NavItem";
 import { useHistory } from "react-router-dom";
 import ConfirmationDialog from "src/component/ConfirmationDialog";
-import { FaSignOutAlt, FaUserEdit, FaUser,FaArrowRight } from "react-icons/fa"
+import { FaSignOutAlt, FaUserEdit, FaUser, FaArrowRight } from "react-icons/fa";
 import axios from "axios";
 import apiConfig from "src/APIconfig/ApiConfig";
 import WalletConnect from "src/component/WalletConnect";
 import ConnectWallet from "../../component/ConnectWalletPopUp/index";
 import { useWeb3React } from "@web3-react/core";
 import { UserContext } from "src/context/User";
+import { sortAddress } from "src/utils/index.js";
+import CopyToClipboard from "react-copy-to-clipboard";
+import FileCopyIcon from "@material-ui/icons/FileCopy";
+import { toast } from "react-toastify";
 
 const sections = [
   // {
@@ -112,7 +116,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     right: 0,
     top: 30,
-    width: 150,
+    width: 180,
     color: "#fff",
     // background: theme.palette.primary.main,
   },
@@ -143,14 +147,14 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 5,
   },
   //   .MuiButton-root:hover
-  connectWalletBtn:{
-    marginRight:"25px",
-    padding:"8px 40px",
+  connectWalletBtn: {
+    marginRight: "25px",
+    padding: "8px 40px",
     "& :hover": {
       backgroundColor: "transparent",
       // border:"2px solid #fff"
     },
-  }
+  },
 }));
 
 const NavBar = () => {
@@ -158,9 +162,10 @@ const NavBar = () => {
   const user = useContext(UserContext);
 
   const handleDesconnect = () => {
+    setRightBar(false);
     user?.disconnectWallet();
   };
-console.log("account",account);
+  console.log("account", account);
   const classes = useStyles();
   const [rightBar, setRightBar] = useState(false);
   const history = useHistory();
@@ -169,7 +174,7 @@ console.log("account",account);
   const [data, setData] = useState([]);
   const [userDetails, setUserDetails] = useState("");
 
-  console.log("sdjfkasdf",openConnectWallet)
+  console.log("sdjfkasdf", openConnectWallet);
 
   const ViewProfileFunction = async () => {
     try {
@@ -238,9 +243,15 @@ console.log("account",account);
                   textTransform: "capitalize",
                 }}
                 key={i}
+                // onClick={() => {
+                //   section.title === "Disconnect"
+                //     ? setOpen(true)
+                //     : history.push(section.href);
+                // }}
+
                 onClick={() => {
                   section.title === "Disconnect"
-                    ? setOpen(true)
+                    ? handleDesconnect()
                     : history.push(section.href);
                 }}
               >
@@ -250,7 +261,6 @@ console.log("account",account);
           })}
         </Box>
       </PerfectScrollbar>
-      
     </Box>
   );
 
@@ -265,26 +275,56 @@ console.log("account",account);
           setRightBar(!rightBar);
         }}
       /> */}
-      {account? (
+      {account ? (
         <Button
-        px={3} variant="contained" className={classes.connectWalletBtn}
-          onClick={handleDesconnect}
-          
+          px={3}
+          variant="contained"
+          className={classes.connectWalletBtn}
+          // onClick={handleDesconnect}
+          onClick={() => {
+            setRightBar(!rightBar);
+          }}
         >
-          {account}
-        </Button>):(
-          <Button px={3} variant="contained" className={classes.connectWalletBtn} onClick={() => {
+          {/* {account} */}
+          {sortAddress(account)}
+          <Tooltip title="Copy">
+            <CopyToClipboard text={account}>
+              <FileCopyIcon
+                style={{
+                  marginLeft: "5px",
+                  color: "#fff",
+                  cursor: "pointer",
+                }}
+                fontSize="small"
+                onClick={() => toast.info("Copied",{
+        position: toast.POSITION.BOTTOM_RIGHT
+      })}
+              />
+            </CopyToClipboard>
+          </Tooltip>
+        </Button>
+      ) : (
+        <Button
+          px={3}
+          variant="contained"
+          className={classes.connectWalletBtn}
+          onClick={() => {
             // setRightBar(!rightBar);
             setOpenConnectWallet(true);
-          }}>
-      Connect
-      </Button>
-        )}
-    
-    {  openConnectWallet&&<ConnectWallet 
-      open={openConnectWallet}
-      handleClose={() => setOpenConnectWallet(false)}/>
-   }
+          }}
+        >
+          Connect
+        </Button>
+      )}
+
+      {openConnectWallet && (
+        <WalletConnect open={openConnectWallet}
+          handleClose={() => setOpenConnectWallet(false)}/>
+        /* <ConnectWallet
+          open={openConnectWallet}
+          handleClose={() => setOpenConnectWallet(false)}
+        /> */
+      )}
       <Dialog
         classes={{ paper: classes.desktopDrawer }}
         open={rightBar}
