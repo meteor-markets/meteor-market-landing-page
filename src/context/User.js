@@ -117,7 +117,6 @@ export default function AuthProvider(props) {
             },
           }
         );
-        console.log("res",res);
         
         if (res.status === 200 || res.status === 205) {
           let token = `Bearer ${res?.data?.result?.token}`
