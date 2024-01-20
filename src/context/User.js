@@ -45,7 +45,7 @@ export default function AuthProvider(props) {
   useEffect(() => {
     const cancelTokenSource = axios.CancelToken.source();
 
-    if (account && profileData) {
+    if (account) {
       connectWalletAPICall(cancelTokenSource);
       setWalletAddress(account);
     } else {
@@ -101,10 +101,9 @@ export default function AuthProvider(props) {
   };
 
   const connectWalletAPICall = async (cancelTokenSource) => {
-    if (profileData?.userId) {
       try {
         const res = await axios.post(
-          apiConfig.connectWallet,
+          apiConfig.connectwallet,
           {
             walletAddress: account,
           },
@@ -118,7 +117,11 @@ export default function AuthProvider(props) {
             },
           }
         );
-        if (res.data.status === 200 || res.data.status === 205) {
+        console.log("res",res);
+        
+        if (res.status === 200 || res.status === 205) {
+          let token = `Bearer ${res?.data?.result?.token}`
+          sessionStorage.setItem("loginToken",token)
           setIsLogin(true);
         } else {
           toast.error(res.data.message);
@@ -128,9 +131,7 @@ export default function AuthProvider(props) {
         console.log("ERROR", error);
         toast.error(error.message);
       }
-    } else {
-      toast.error("ERROR");
-    }
+    
   };
 
   //NETWORK CHECK AND SWICH NETWORK
@@ -187,14 +188,14 @@ export default function AuthProvider(props) {
   }, [account, library]);
 
   const connectToWallet = (data) => {
-    console.log("sbfsbvfh",data);
     try {
       const connector = data.connector;
 
       if (connector && connector.walletConnectProvider?.wc?.uri) {
         connector.walletConnectProvider = undefined;
       }
-
+     
+     
       activate(connector, undefined, true).catch((error) => {
         if (error) {
           toast.error(JSON.stringify(error.message));
