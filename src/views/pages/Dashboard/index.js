@@ -111,9 +111,9 @@ export default function Index() {
 
   ];
 
-  useEffect(() => {
-    dashboardData();
-  }, []);
+  // useEffect(() => {
+  //   dashboardData();
+  // }, []);
   return (
     <Page title="Overview">
       <Box className={classes.headBox}>
