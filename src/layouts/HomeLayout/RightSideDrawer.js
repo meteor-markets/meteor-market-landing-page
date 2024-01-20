@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { matchPath } from "react-router-dom";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import PropTypes from "prop-types";
@@ -19,6 +19,9 @@ import { FaSignOutAlt, FaUserEdit, FaUser,FaArrowRight } from "react-icons/fa"
 import axios from "axios";
 import apiConfig from "src/APIconfig/ApiConfig";
 import WalletConnect from "src/component/WalletConnect";
+import ConnectWallet from "../../component/ConnectWalletPopUp/index";
+import { useWeb3React } from "@web3-react/core";
+import { UserContext } from "src/context/User";
 
 const sections = [
   // {
@@ -151,6 +154,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavBar = () => {
+  const { account } = useWeb3React();
+  const user = useContext(UserContext);
+
+  const handleDesconnect = () => {
+    user?.disconnectWallet();
+  };
+console.log("account",account);
   const classes = useStyles();
   const [rightBar, setRightBar] = useState(false);
   const history = useHistory();
@@ -177,9 +187,9 @@ const NavBar = () => {
       console.log("error --->>", error);
     }
   };
-  useEffect(() => {
-    ViewProfileFunction();
-  }, []);
+  // useEffect(() => {
+  //   ViewProfileFunction();
+  // }, []);
 
   const confirmationHandler = () => {
     history.push("/login");
@@ -255,19 +265,26 @@ const NavBar = () => {
           setRightBar(!rightBar);
         }}
       /> */}
-    <Button px={3} variant="contained" className={classes.connectWalletBtn} onClick={() => {
-          // setRightBar(!rightBar);
-          setOpenConnectWallet(true);
-        }}>
-    Connect
-    </Button>
-    {openConnectWallet && (
-        <>
-        <WalletConnect  
-         open={openConnectWallet}
-         handleClose={() => setOpenConnectWallet(false)}/>
-      </>
-      )}
+      {account? (
+        <Button
+        px={3} variant="contained" className={classes.connectWalletBtn}
+          onClick={handleDesconnect}
+          
+        >
+          {account}
+        </Button>):(
+          <Button px={3} variant="contained" className={classes.connectWalletBtn} onClick={() => {
+            // setRightBar(!rightBar);
+            setOpenConnectWallet(true);
+          }}>
+      Connect
+      </Button>
+        )}
+    
+    {  openConnectWallet&&<ConnectWallet 
+      open={openConnectWallet}
+      handleClose={() => setOpenConnectWallet(false)}/>
+   }
       <Dialog
         classes={{ paper: classes.desktopDrawer }}
         open={rightBar}

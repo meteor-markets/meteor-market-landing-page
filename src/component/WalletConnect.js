@@ -5,6 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import { Typography,makeStyles } from '@material-ui/core';
 import { CgCloseO } from "react-icons/cg";
+import ConnectWallet from './ConnectWalletPopUp';
 
 
 
@@ -54,6 +55,10 @@ export default function WalletConnect({ open, handleClose}) {
         <DialogContent>
           <Typography variant="h4" align="center">Connect a wallet</Typography>
           <Typography variant="body1" align="center" style={{marginTop:"10px",marginBottom:"20px"}}>By connecting your wallet, you agree to our Terms of Service and our Privacy Policy</Typography>
+          <ConnectWallet
+          open={open}
+          handleClose={handleClose}
+        />
           <Button fullWidth variant="contained" className={classes.walletBtns}><img src='../images/metamaskW.png'/>Install Metamask</Button>
           <Button fullWidth variant="contained" className={classes.walletBtns}><img src='../images/coinbaseW.png'/>Coinbase Wallet</Button>
           <Button fullWidth variant="contained" className={classes.walletBtns}><img src='../images/walletconnectW.png'/>Wallet Connect</Button>
