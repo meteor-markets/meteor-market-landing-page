@@ -180,46 +180,7 @@ export default function Index() {
       console.log("error", error);
     }
   };
-  const dashboard = [
-    {
-      heading: "Total Assets",
-      subheading: "$ 87.743",
-      icon: FaUser,
-      // href: "/all-users",
-    },
-    {
-      heading: "Total Deposits",
-      subheading: "$ 78,342",
-      // href: "/users",
-      // search: "ActiveUser",
-      // state: {
-      //   id: "ACTIVE",
-      // },
-    },
-    // {
-    //   heading: "Total Active Delivery Partner",
-    //   subheading: getDashboardData?.totalActiveDeliveryPartner,
-    // },
-    {
-      heading: "APY",
-      subheading: "+ 12.3%",
-      // href: "/retailer",
-      // search: "ActiveRetailer",
-      // state: {
-      //   id: "ACTIVE",
-      // },
-    },
-    {
-      heading: "ETH",
-      subheading: getDashboardData?.totalActiveDoctor,
-      // href: "/doctor",
-      // search: "ActiveDoctor",
-      // state: {
-      //   id: "ACTIVE",
-      // },
-    },
-  ];
-
+  
   useEffect(() => {
     dashboardData();
   }, []);

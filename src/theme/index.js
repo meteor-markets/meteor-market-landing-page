@@ -32,6 +32,7 @@ const baseOptions = {
       root: {
         borderRadius:"10px",
         backgroundColor: '#2B2B2B',
+        minHeight:"40px",
         '&$selected': {
           background: 'linear-gradient(-90deg, #FC4A1A, #FF9142)',
         }
