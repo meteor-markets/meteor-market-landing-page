@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     position: "relative",
     WebkitOverflowScrolling: "touch",
-    padding: "10px 35px 20px ",
+    padding: "35px 35px 20px ",
     minHeight: "91vh",
     [theme.breakpoints.down("md")]: {
       padding: "10px 20px 20px ",

@@ -29,7 +29,7 @@ export const routes = [
     path: "/landing",
     guard: true,
     layout: DashboardLayout,
-    component: lazy(() => import("src/views/pages/Swap/index")),
+    component: lazy(() => import("src/views/pages/Landing/index")),
   },
   {
     exact: true,

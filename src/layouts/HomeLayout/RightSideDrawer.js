@@ -142,8 +142,7 @@ const useStyles = makeStyles((theme) => ({
   //   .MuiButton-root:hover
   connectWalletBtn:{
     marginRight:"25px",
-    paddingLeft:"25px",
-    paddingRight:"25px",
+    padding:"8px 40px",
     "& :hover": {
       backgroundColor: "transparent",
       // border:"2px solid #fff"

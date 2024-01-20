@@ -15,9 +15,37 @@ const baseOptions = {
         padding: "0 0px 0 10px",
       },
     },
+    MuiAppBar:{
+      colorPrimary:{
+        backgroundColor:"transparent"
+      }
+    },
+    MuiTabs:{
+      flexContainer:{
+        backgroundColor: '#2B2B2B',
+        display:"inline-block",
+        borderRadius:"10px",
+        margin: "20px 20px",
+      }
+    },
+    MuiTab:{
+      root: {
+        borderRadius:"10px",
+        backgroundColor: '#2B2B2B',
+        '&$selected': {
+          background: 'linear-gradient(-90deg, #FC4A1A, #FF9142)',
+        }
+      }
+    },
+    MuiTableContainer:{
+      root:{
+        borderRadius:"9px"
+      }
+    },
     MuiTableHead: {
       root: {
-        border: "1px solid #0B0B0F !important",
+        // border: "1px solid #0B0B0F !important",
+        // borderRadius:"9px"
       },
     },
     MuiDialogActions: {
@@ -282,8 +310,10 @@ const baseOptions = {
     },
     MuiTable: {
       root: {
-        border: "1px solid rgb(243 133 0 / 44%)",
+        // border: "1px solid rgb(243 133 0 / 44%)",
         minWidth: "900px",
+        border:"none",
+        backgroundColor: "#1C1C1C"
       },
     },
     MuiPickersYear: {
@@ -306,17 +336,17 @@ const baseOptions = {
         borderBottom: "none",
         fontSize: "14px !important",
         fontWeight: "400",
-        padding: "8px 13px",
-        color: "#000 !important",
+        padding: "13px 20px",
+        color: "#878787",
       },
       body: {
-        color: "#000",
+        color: "#fff",
       },
       head: {
-        color: "black !important",
+        color: "#878787 !important",
         lineHeight: "1.5rem",
         fontWeight: "500 !important",
-        background: "White",
+        background: "transparent",
       },
     },
     MuiSelect: {
