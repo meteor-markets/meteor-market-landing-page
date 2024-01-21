@@ -25,6 +25,7 @@ import apiConfig from "src/APIconfig/ApiConfig";
 import { useHistory } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import PropTypes from "prop-types";
+import Footer from "src/layouts/HomeLayout/Footer";
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -432,6 +433,7 @@ export default function Index() {
           </Box>
         </TableContainer>
       </Box>
+      <Footer/>
     </Page>
   );
 }

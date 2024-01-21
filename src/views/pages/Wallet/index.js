@@ -13,7 +13,7 @@ import apiConfig from "src/APIconfig/ApiConfig";
 import PropTypes from "prop-types";
 import Transaction from "./Transaction";
 import Deposit from "./Deposit";
-
+import Footer from "src/layouts/HomeLayout/Footer";
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -140,6 +140,7 @@ export default function Index() {
         </Box>
        <Transaction/>
       </Box>
+      <Footer/>
     </Page>
   );
 }
