@@ -5,6 +5,7 @@ import axios from "axios";
 import apiConfig from "src/APIconfig/ApiConfig";
 import { useHistory } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
+import Footer from "src/layouts/HomeLayout/Footer";
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -120,6 +121,7 @@ export default function Index() {
         <Typography variant="h1">Comming Soon...</Typography>
         <Divider className={classes.divider} />
       </Box>
+      <Footer/>
     </Page>
   );
 }
