@@ -1,5 +1,5 @@
 export const NetworkContextName = "Smart Chain";
-export const ACTIVE_NETWORK = 56;
+export const ACTIVE_NETWORK = 97;
 export const deadAddress = "0x0000000000000000000000000000000000000000";
 export const textDeadAddress =
   "0x0000000000000000000000000000000000000000000000000000000000000000";

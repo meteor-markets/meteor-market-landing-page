@@ -132,7 +132,11 @@ export default function Index() {
           <TabPanel value={value} index={0}>
             <Deposit/>
           </TabPanel>
-          <TabPanel value={value} index={1}></TabPanel>
+          <TabPanel value={value} index={1}>
+          <Box mb={5}>
+          
+          <Typography variant="h2"> Coming Soon</Typography></Box>
+          </TabPanel>
         </Box>
        <Transaction/>
       </Box>

@@ -9,7 +9,7 @@ import {
   makeStyles,
   Avatar,
   Typography,
-  Button,Tooltip
+  Button, Tooltip
 } from "@material-ui/core";
 import { Dialog } from "@material-ui/core";
 import NavItem from "src/layouts/DashboardLayout/NavBar/NavItem";
@@ -145,7 +145,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavBar = () => {
-  const { account ,library,chainId} = useWeb3React();
+  const { account, library, chainId } = useWeb3React();
   const user = useContext(UserContext);
 
   const handleDesconnect = () => {
@@ -162,21 +162,16 @@ const NavBar = () => {
   const [CoinName, setCoinName] = useState();
 
   console.log("sdjfkasdf", CoinName);
-  const FetchCoin= async()=>{
+  const FetchCoin = async () => {
     const response = await FetchCoinList()
-    if (response?.length>0) {
-      let filterData = response?.filter((ele)=>ele?.chainId==chainId)
-      console.log("response1",account,chainId,filterData[1],response);
+    if (response?.length > 0) {
+      let filterData = response?.filter((ele) => ele?.chainId == chainId)
+      console.log("response1", account, chainId, filterData[1], response);
 
       setCoinName(filterData[1])
     }
   }
-    useEffect(() => {
-      if (account) {
-        FetchCoin();
-        
-      }
-    }, [account]);
+ 
 
   const confirmationHandler = () => {
     history.push("/login");
@@ -187,7 +182,9 @@ const NavBar = () => {
     const balance = await web3.eth.getBalance(account);
     const balanceImETH = await web3.utils.fromWei(balance);
     setGetBalance(balanceImETH)
-    console.log("balanceImETH",balanceImETH);
+    FetchCoin();
+
+    console.log("balanceImETH", balanceImETH);
   };
 
   useEffect(() => {
@@ -220,7 +217,7 @@ const NavBar = () => {
             className="textColorFormate"
             align="left"
           >
-            
+
           </Typography>
         </Box>
         <div style={{ borderBottom: "1px solid White", height: 10 }}></div>
@@ -259,22 +256,19 @@ const NavBar = () => {
   );
 
   return (
-    <>
-      {/* <Avatar
-        src={
-          data?.imageUrl ? data?.imageUrl : "/images/profilePlaceholder.jpeg"
-        }
-        className={classes.avatar}
-        onClick={() => {
-          setRightBar(!rightBar);
-        }}
-      /> */}
+    <Box display="flex" alignItems="center">
+      <Box display="flex" alignItems="center" pr={2}>
+      {CoinName?.coinImage &&
+        <img src={CoinName?.coinImage} alt="image" style={{width:"30px"}} />
+      }
       <Typography style={{
         marginLeft: "5px",
         color: "#fff",
         cursor: "pointer",
-      }}>{getBalance&& getBalance}</Typography>
-      
+      }}>{getBalance && getBalance}  <span>{CoinName?.coinName}</span>
+      </Typography>
+      </Box>
+
       {account ? (
         <Button
           px={3}
@@ -296,9 +290,9 @@ const NavBar = () => {
                   cursor: "pointer",
                 }}
                 fontSize="small"
-                onClick={() => toast.info("Copied",{
-        position: toast.POSITION.BOTTOM_RIGHT
-      })}
+                onClick={() => toast.info("Copied", {
+                  position: toast.POSITION.BOTTOM_RIGHT
+                })}
               />
             </CopyToClipboard>
           </Tooltip>
@@ -319,7 +313,7 @@ const NavBar = () => {
 
       {openConnectWallet && (
         <WalletConnect open={openConnectWallet}
-          handleClose={() => setOpenConnectWallet(false)}/>
+          handleClose={() => setOpenConnectWallet(false)} />
         /* <ConnectWallet
           open={openConnectWallet}
           handleClose={() => setOpenConnectWallet(false)}
@@ -334,7 +328,7 @@ const NavBar = () => {
       >
         {content}
       </Dialog>
-    </>
+    </Box>
   );
 };
 
