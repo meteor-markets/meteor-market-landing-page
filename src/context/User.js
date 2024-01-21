@@ -41,7 +41,6 @@ export default function AuthProvider(props) {
   const [mySubscriptionList, setMySubscription] = useState([]);
 
   const [isAdmin, setIsAdmin] = useState(false);
-  console.log("isAdmin", profileData);
   useEffect(() => {
     const cancelTokenSource = axios.CancelToken.source();
 
@@ -208,20 +207,6 @@ export default function AuthProvider(props) {
     }
   };
 
-  // useEffect(() => {
-  //   if (account) {
-  //     setIsLogin(true);
-  //   } else {
-  //     setIsLogin(false);
-  //   }
-  // }, [account]);
-
-  // useEffect(() => {
-  //   const userAddress = window.sessionStorage.getItem("userAddress");
-  //   if (userAddress) {
-  //     data.connectWallet();
-  //   }
-  // }, []); //eslint-disable-line
 
   useEffect(() => {
     if (window.sessionStorage.getItem("walletName")) {

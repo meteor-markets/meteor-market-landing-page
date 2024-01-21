@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "23px 30px",
     borderRadius: "9px",
     background: "#1C1C1C",
+    minHeight:"56vh",
     "& h3": {
       color: "black",
       marginBottom: "15px",
@@ -49,7 +50,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Index() {
   const classes = useStyles();
-  const history = useHistory();
 
   const [getDashboardData, setDashboardData] = useState([]);
   console.log("sdokejufasfkhjluer-->", getDashboardData);
@@ -71,46 +71,6 @@ export default function Index() {
       console.log("error", error);
     }
   };
-  const dashboard = [
-    {
-      heading: "Total Assets",
-      subheading: "$ 87.743",
-      icon: FaUser,
-      // href: "/all-users",
-    },
-    {
-      heading: "Total Deposits",
-      subheading: "$ 78,342",
-      // href: "/users",
-      // search: "ActiveUser",
-      // state: {
-      //   id: "ACTIVE",
-      // },
-    },
-    // {
-    //   heading: "Total Active Delivery Partner",
-    //   subheading: getDashboardData?.totalActiveDeliveryPartner,
-    // },
-    {
-      heading: "APY",
-      subheading: "+ 12.3%",
-      // href: "/retailer",
-      // search: "ActiveRetailer",
-      // state: {
-      //   id: "ACTIVE",
-      // },
-    },
-    {
-      heading: "ETH",
-      subheading: getDashboardData?.totalActiveDoctor,
-      // href: "/doctor",
-      // search: "ActiveDoctor",
-      // state: {
-      //   id: "ACTIVE",
-      // },
-    },
-
-  ];
 
   useEffect(() => {
     dashboardData();
