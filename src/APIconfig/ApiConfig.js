@@ -11,6 +11,8 @@ let brand = `${baseurl}/api/v1/brand`;
 const Apiconfigs = {
   homeBanner: `${admin}/listBanner`,
   connectwallet: `${user}/connectWallet`,
+  coinlist: `${admin}/listCoin`,
+
 
 };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import {
@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import { Menu as MenuIcon } from "react-feather";
 import RightSideDrawer from "../../HomeLayout/RightSideDrawer";
+import { FetchCoinList } from "src/APIconfig/ApiEndPoint";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   const classes = useStyles();
 
+  
   return (
     <AppBar
       elevation={0}

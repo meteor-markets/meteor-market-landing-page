@@ -26,23 +26,10 @@ import { sortAddress } from "src/utils/index.js";
 import CopyToClipboard from "react-copy-to-clipboard";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { toast } from "react-toastify";
+import { FetchCoinList } from "src/APIconfig/ApiEndPoint";
+import Web3 from "web3";
 
 const sections = [
-  // {
-  //   title: "Login",
-  //   href: "/login",
-  //   icon: FaSignInAlt,
-  // },
-  // {
-  //   title: "Profile",
-  //   href: "/view-profile",
-  //   icon: FaUser,
-  // },
-  // {
-  //   title: "Edit Profile",
-  //   href: "/edit-profile",
-  //   icon: FaUserEdit,
-  // },
 
   {
     title: "View on EXplorer",
@@ -158,7 +145,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavBar = () => {
-  const { account } = useWeb3React();
+  const { account ,library,chainId} = useWeb3React();
   const user = useContext(UserContext);
 
   const handleDesconnect = () => {
@@ -171,36 +158,43 @@ const NavBar = () => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [openConnectWallet, setOpenConnectWallet] = useState(false);
-  const [data, setData] = useState([]);
-  const [userDetails, setUserDetails] = useState("");
+  const [getBalance, setGetBalance] = useState();
+  const [CoinName, setCoinName] = useState();
 
-  console.log("sdjfkasdf", openConnectWallet);
+  console.log("sdjfkasdf", CoinName);
+  const FetchCoin= async()=>{
+    const response = await FetchCoinList()
+    if (response?.length>0) {
+      let filterData = response?.filter((ele)=>ele?.chainId==chainId)
+      console.log("response1",account,chainId,filterData[1],response);
 
-  const ViewProfileFunction = async () => {
-    try {
-      const res = await axios({
-        url: apiConfig.viewProfile,
-        method: "GET",
-        headers: {
-          token: window.sessionStorage.getItem("token"),
-        },
-      });
-      if (res?.data?.responseCode === 200) {
-        setUserDetails(res.data.result);
-      }
-    } catch (error) {
-      console.log("error --->>", error);
+      setCoinName(filterData[1])
     }
-  };
-  // useEffect(() => {
-  //   ViewProfileFunction();
-  // }, []);
+  }
+    useEffect(() => {
+      if (account) {
+        FetchCoin();
+        
+      }
+    }, [account]);
 
   const confirmationHandler = () => {
     history.push("/login");
     window.localStorage.removeItem("token");
   };
+  const getUserbalce = async () => {
+    var web3 = new Web3(library.provider);
+    const balance = await web3.eth.getBalance(account);
+    const balanceImETH = await web3.utils.fromWei(balance);
+    setGetBalance(balanceImETH)
+    console.log("balanceImETH",balanceImETH);
+  };
 
+  useEffect(() => {
+    if (account) {
+      getUserbalce();
+    }
+  }, [account, library]);
   const content = (
     <Box height="100%" display="flex" flexDirection="column">
       {open && (
@@ -219,14 +213,14 @@ const NavBar = () => {
       >
         <Box>
           <Typography variant="h6" align="left" className="textColorFormate">
-            {userDetails?.name}
+            {CoinName?.CoinName}
           </Typography>
           <Typography
             variant="caption"
             className="textColorFormate"
             align="left"
           >
-            {userDetails?.email}
+            
           </Typography>
         </Box>
         <div style={{ borderBottom: "1px solid White", height: 10 }}></div>
@@ -275,6 +269,12 @@ const NavBar = () => {
           setRightBar(!rightBar);
         }}
       /> */}
+      <Typography style={{
+        marginLeft: "5px",
+        color: "#fff",
+        cursor: "pointer",
+      }}>{getBalance&& getBalance}</Typography>
+      
       {account ? (
         <Button
           px={3}
