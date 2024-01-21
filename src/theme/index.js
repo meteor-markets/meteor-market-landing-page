@@ -25,7 +25,7 @@ const baseOptions = {
         backgroundColor: '#2B2B2B',
         display:"inline-block",
         borderRadius:"10px",
-        margin: "20px 20px",
+        // margin: "20px 20px",
       }
     },
     MuiTab:{
