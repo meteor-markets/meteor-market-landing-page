@@ -43,7 +43,7 @@ export const routes = [
     path: "/wallet",
     guard: true,
     layout: DashboardLayout,
-    component: lazy(() => import("src/views/pages/Swap/index")),
+    component: lazy(() => import("src/views/pages/Wallet/index")),
   },
   {
     exact: true,

@@ -83,6 +83,9 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: "3px",
     },
   },
+  tabsAppBar:{
+    padding:"20px 20px"
+  }
 }));
 
 const StyledTableRow = withStyles((theme) => ({
@@ -291,7 +294,7 @@ export default function Index() {
         </Box>
         <TableContainer style={{ background: "#1C1C1C" }}>
           <Box className={classes.root}>
-            <AppBar position="static">
+            <AppBar position="static" className={classes.tabsAppBar}>
               <Tabs
                 value={value}
                 onChange={handleChange}
