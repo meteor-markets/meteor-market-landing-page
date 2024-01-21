@@ -26,7 +26,7 @@ export const routes = [
   },
   {
     exact: true,
-    path: "/landing",
+    path: "/lending",
     guard: true,
     layout: DashboardLayout,
     component: lazy(() => import("src/views/pages/Landing/index")),

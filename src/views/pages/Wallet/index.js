@@ -130,7 +130,7 @@ export default function Index() {
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
-            {/* <Deposit/> */}
+            <Deposit/>
           </TabPanel>
           <TabPanel value={value} index={1}></TabPanel>
         </Box>

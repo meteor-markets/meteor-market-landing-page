@@ -60,9 +60,9 @@ const sections = [
       // },
      
       {
-        title: "Landing",
+        title: "Lending",
         icon: EventIcon,
-        href: "/landing",
+        href: "/lending",
       },
       {
         title: "Swap",

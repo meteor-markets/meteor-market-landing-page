@@ -117,44 +117,8 @@ export default function Index() {
   return (
     <Page title="Swap">
       <Box className={classes.headBox}>
-        <Typography variant="h1">Overview</Typography>
+        <Typography variant="h1">Comming Soon...</Typography>
         <Divider className={classes.divider} />
-        <Box mt={5}>
-          <Grid container spacing={3}>
-            {dashboard &&
-              dashboard.map((data, i) => {
-                return (
-                  <Grid item lg={3} md={3} sm={6} xs={12} key={i}>
-                    <Box
-                      className={classes.mainbox}
-                      onClick={() => {
-                        history.push({
-                          // pathname: data.href,
-                          pathname: data.href,
-                          search: data?.search,
-                          state: {
-                            id: data?.state?.id,
-                          },
-                        });
-                      }}
-                    >
-                       <Box>
-                       {/* <Icon /> */}
-                       </Box>
-                      <Box className={classes.subbox}>
-                        <Typography variant="h4" className="textColorFormate">
-                          {data.heading}
-                        </Typography>
-                        <Typography variant="h2" className="textColorFormate">
-                          {data.subheading}
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </Grid>
-                );
-              })}
-          </Grid>
-        </Box>
       </Box>
     </Page>
   );

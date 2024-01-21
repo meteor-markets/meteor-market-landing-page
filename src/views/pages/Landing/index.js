@@ -188,7 +188,7 @@ export default function Index() {
     dashboardData();
   }, []);
   return (
-    <Page title="Landing">
+    <Page title="Lending">
       <Box className={classes.headBox}>
         <Box mb={4}>
           <Grid container spacing={3}>

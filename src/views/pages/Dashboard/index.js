@@ -117,9 +117,9 @@ export default function Index() {
   return (
     <Page title="Overview">
       <Box className={classes.headBox}>
-        <Typography variant="h1">Overview</Typography>
+        <Typography variant="h1">Comming Soon...</Typography>
         <Divider className={classes.divider} />
-        <Box mt={5}>
+        {/* <Box mt={5}>
           <Grid container spacing={3}>
             {dashboard &&
               dashboard.map((data, i) => {
@@ -129,7 +129,6 @@ export default function Index() {
                       className={classes.mainbox}
                       onClick={() => {
                         history.push({
-                          // pathname: data.href,
                           pathname: data.href,
                           search: data?.search,
                           state: {
@@ -139,7 +138,6 @@ export default function Index() {
                       }}
                     >
                        <Box>
-                       {/* <Icon /> */}
                        </Box>
                       <Box className={classes.subbox}>
                         <Typography variant="h4" className="textColorFormate">
@@ -154,7 +152,7 @@ export default function Index() {
                 );
               })}
           </Grid>
-        </Box>
+        </Box> */}
       </Box>
     </Page>
   );
