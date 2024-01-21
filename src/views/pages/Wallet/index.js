@@ -1,31 +1,18 @@
 import React, { useState, useEffect } from "react";
 import {
-  Grid,
   Box,
   Typography,
   makeStyles,
-  Divider,
-  Icon,
-  TableCell,
-  TableContainer,
-  TableHead,
-  Table,
-  TableBody,
-  TableRow,
-  Button,
-  withStyles,
   AppBar,
   Tabs,
   Tab,
-  useTheme,
 } from "@material-ui/core";
 import Page from "src/component/Page";
 import axios from "axios";
 import apiConfig from "src/APIconfig/ApiConfig";
-import { useHistory } from "react-router-dom";
-import { FaUser } from "react-icons/fa";
 import PropTypes from "prop-types";
 import Transaction from "./Transaction";
+import Deposit from "./Deposit";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,30 +20,6 @@ const useStyles = makeStyles((theme) => ({
     // padding: "23px 30px",
     borderRadius: "9px",
     // background: "#1C1C1C",
-  },
-  mainbox: {
-    background: "#1C1C1C",
-    padding: "20px",
-    borderRadius: "9px",
-    height: "85px",
-    // boxShadow: "2px 1px 5px black",
-    cursor: "pointer",
-
-    transition: "0.3s",
-    "& h4": {
-      textAlign: "center",
-      justifyContent: "center",
-      color: "black",
-    },
-
-    "& h2": {
-      textAlign: "center",
-      marginTop: "10px",
-      color: "black",
-    },
-    "&:hover": {
-      transform: "translateY(-10px)",
-    },
   },
 
   detailsBtns: {
@@ -82,15 +45,6 @@ const useStyles = makeStyles((theme) => ({
     padding:"20px 0px"
   }
 }));
-
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    // "&:nth-of-type(even)": {
-    //   backgroundColor: " #253d2f87",
-    // },
-    border: "none",
-  },
-}))(TableRow);
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -128,16 +82,10 @@ function a11yProps(index) {
 
 export default function Index() {
   const classes = useStyles();
-  const theme = useTheme();
-  const history = useHistory();
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  const handleChangeIndex = (index) => {
-    setValue(index);
   };
 
   const [getDashboardData, setDashboardData] = useState([]);
@@ -181,7 +129,9 @@ export default function Index() {
               <Tab label="Widthrawal" {...a11yProps(1)} />
             </Tabs>
           </AppBar>
-          <TabPanel value={value} index={0}></TabPanel>
+          <TabPanel value={value} index={0}>
+            {/* <Deposit/> */}
+          </TabPanel>
           <TabPanel value={value} index={1}></TabPanel>
         </Box>
        <Transaction/>
