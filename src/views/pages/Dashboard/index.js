@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Box, Typography, makeStyles, Divider,Icon } from "@material-ui/core";
+import {
+  Grid,
+  Box,
+  Typography,
+  makeStyles,
+  Divider,
+  Icon,
+} from "@material-ui/core";
 import Page from "src/component/Page";
 import axios from "axios";
 import apiConfig from "src/APIconfig/ApiConfig";
@@ -43,6 +50,24 @@ const useStyles = makeStyles((theme) => ({
   divider: {
     marginTop: "10px",
     backgroundColor: "White",
+  },
+  // totalLockedBox: {
+  //   backgroundColor: "rgb(28, 28, 28)",
+  //   borderRadius: "9px",
+  //   "& h4": {
+  //     color: "#FF9142",
+  //     marginBottom: "3px",
+  //   },
+  // },
+  lokedIconBox: {
+    width: "50px",
+    height: "50px",
+    backgroundColor: "rgb(176 176 176 / 20%)",
+    borderRadius: "10px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: "10px",
   },
 }));
 
@@ -108,7 +133,6 @@ export default function Index() {
       //   id: "ACTIVE",
       // },
     },
-
   ];
 
   // useEffect(() => {
@@ -117,8 +141,8 @@ export default function Index() {
   return (
     <Page title="Overview">
       <Box className={classes.headBox}>
-        <Typography variant="h1">Comming Soon...</Typography>
-        <Divider className={classes.divider} />
+        {/* <Typography variant="h1">Comming Soon...</Typography>
+        <Divider className={classes.divider} /> */}
         {/* <Box mt={5}>
           <Grid container spacing={3}>
             {dashboard &&
@@ -153,6 +177,119 @@ export default function Index() {
               })}
           </Grid>
         </Box> */}
+        <Grid container spacing={3} style={{ marginTop: "30px" }}>
+          <Grid item lg={3}>
+            <Box display={"flex"} alignItems={"center"}>
+              <Box className={classes.lokedIconBox}>
+                <img
+                  alt=""
+                  style={{
+                    width: "25px",
+                    height: "25px",
+                    borderRadius: "5px",
+                    objectFit: "cover",
+                  }}
+                  width="100%"
+                  src={"../images/moneys-1.png"}
+                />
+              </Box>
+              <Box>
+                <Typography variant="h4" className="textColorFormate">
+                  Total assets
+                </Typography>
+                <Typography variant="h2" className="textColorFormate">
+                  $ 87.743
+                </Typography>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid item lg={3}>
+            <Box display={"flex"} alignItems={"center"}>
+              <Box className={classes.lokedIconBox}>
+                <img
+                  alt=""
+                  style={{
+                    width: "25px",
+                    height: "25px",
+                    borderRadius: "5px",
+                    objectFit: "cover",
+                  }}
+                  width="100%"
+                  src={"../images/moneys-1.png"}
+                />
+              </Box>
+              <Box>
+                <Typography variant="h4" className="textColorFormate">
+                  Total deposits
+                </Typography>
+                <Typography variant="h2" className="textColorFormate">
+                  $ 78,342
+                </Typography>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid item lg={3}>
+            <Box display={"flex"} alignItems={"center"}>
+              <Box className={classes.lokedIconBox}>
+                <img
+                  alt=""
+                  style={{
+                    width: "25px",
+                    height: "25px",
+                    borderRadius: "5px",
+                    objectFit: "cover",
+                  }}
+                  width="100%"
+                  src={"../images/moneys-1.png"}
+                />
+              </Box>
+              <Box>
+                <Typography variant="h4" className="textColorFormate">
+                  APY
+                </Typography>
+                <Typography variant="h2" className="textColorFormate">
+                  + 12.3%
+                </Typography>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid item lg={3}>
+            <Box display={"flex"} alignItems={"center"}>
+              <Box className={classes.lokedIconBox}>
+                <img
+                  alt=""
+                  style={{
+                    width: "25px",
+                    height: "25px",
+                    borderRadius: "5px",
+                    objectFit: "cover",
+                  }}
+                  width="100%"
+                  src={"../images/eth-icon.png"}
+                />
+              </Box>
+              <Box>
+                {/* <Typography variant="h4" className="textColorFormate">
+                    Assets
+                  </Typography> */}
+                <Typography variant="h2" className="textColorFormate">
+                  $ 78,342
+                </Typography>
+              </Box>
+            </Box>
+          </Grid>
+        </Grid>
+
+        <Box className={classes.analyticsBox}>
+          <img
+            alt=""
+            style={{
+              objectFit: "cover",
+            }}
+            width="100%"
+            src={"../images/group-anlytics.png"}
+          />
+        </Box>
       </Box>
     </Page>
   );
