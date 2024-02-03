@@ -41,15 +41,14 @@ const sections = [
         href: "/lending",
       },
       {
+        title: "Portfolio",
+        icon: SiBrandfolder,
+        href: "/portfolio",
+      },
+      {
         title: "Swap",
         icon: ContactsIcon,
         href: "/swap",
-      },
-
-      {
-        title: "Market",
-        icon: SiBrandfolder,
-        href: "/market",
       },
       // {
       //   title: "Staking",
@@ -62,9 +61,9 @@ const sections = [
       //   href: "/wallet",
       // },
       {
-        title: "Bridge",
+        title: "Claim",
         icon: FilterFramesIcon,
-        href: "/bridge",
+        href: "/claim",
       },
       // {
       //   title: "Vault",

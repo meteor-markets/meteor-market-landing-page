@@ -19,10 +19,10 @@ export const routes = [
   },
   {
     exact: true,
-    path: "/market",
+    path: "/portfolio",
     guard: true,
     layout: DashboardLayout,
-    component: lazy(() => import("src/views/pages/Markets/index")),
+    component: lazy(() => import("src/views/pages/Portfolio/index")),
   },
   {
     exact: true,
@@ -47,10 +47,10 @@ export const routes = [
   },
   {
     exact: true,
-    path: "/bridge",
+    path: "/claim",
     guard: true,
     layout: DashboardLayout,
-    component: lazy(() => import("src/views/pages/Swap/index")),
+    component: lazy(() => import("src/views/pages/Claim/Index")),
   },
   {
     exact: true,
