@@ -75,7 +75,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
                 width="180"
                 alt="Navbar logo"
                 style={{
-                  width: "150px",
+                  width: "80px",
                   cursor: "pointer",
                 }}
               />

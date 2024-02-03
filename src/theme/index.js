@@ -55,6 +55,10 @@ const baseOptions = {
       },
     },
     MuiDialog: {
+      paperFullWidth:{
+        width:"100%",
+        margin:"10px"
+      },
       paperScrollPaper: {
         padding: "15px",
         // border: "1px solid #BEF71E",
@@ -67,6 +71,12 @@ const baseOptions = {
         background: "#1C1C1C ",
         border: "1px solid #1C1C1C",
       },
+      paperWidthMd:{
+        maxWidth: "600px",
+        background: "#1C1C1C ",
+        border: "1px solid #1C1C1C",
+        borderRadius:"9px",
+      }
     },
     MuiPickersCalendarHeader: {
       dayLabel: {
@@ -104,7 +114,7 @@ const baseOptions = {
     MuiMenuItem: {
       root: {
         fontSize: "14px",
-        color: "black",
+        color: "white",
       },
     },
     MuiMenu: {
@@ -350,12 +360,17 @@ const baseOptions = {
         background: "transparent",
       },
     },
+
     MuiSelect: {
       selectMenu: {
         height: "none",
       },
       outlined: {
-        "&.MuiSelect-outlined": { fontSize: "13px" },
+        minHeight:"50px",
+        "&.MuiSelect-outlined": { 
+          fontSize: "13px",      
+        },
+      
       },
       icon: {
         color: "White",
@@ -398,7 +413,7 @@ const baseOptions = {
     },
     MuiPopover: {
       paper: {
-        marginTop: "38px",
+        marginTop: "33px",
       },
     },
     MuiPickerDTToolbar: {
@@ -466,17 +481,20 @@ const themesOptions = [
         },
       },
       MuiOutlinedInput: {
+        adornedEnd:{
+          padding:"10px 14px"
+        },
         root: {
           // border: "1px solid black !important",
-          background: "#416654",
-
-          "&:hover": {
-            borderColor: "black !important",
-          },
+          background: "rgb(255, 255, 255, 5%)",
+          minHeight:"50px",
+          // "&:hover": {
+          //   borderColor: "black !important",
+          // },
           "& .Mui-focused": {
             "& .MuiOutlinedInput": {
               notchedOutline: {
-                borderColor: "White !important",
+                borderColor: "rgb(255, 255, 255, 5%) !important",
               },
             },
           },
@@ -489,7 +507,7 @@ const themesOptions = [
         // .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline
         // .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline
         input: {
-          padding: "13.5px 14px",
+          padding: "6.5px 14px",
           // borderRadius: "10px",
           border: "none",
           // border: "1px solid black",
@@ -505,9 +523,9 @@ const themesOptions = [
           },
         },
         notchedOutline: {
-          borderColor: "White !important",
+          borderColor: "rgb(255, 255, 255, 5%) !important",
           "& :hover": {
-            borderColor: "#000 !important",
+            borderColor: "rgb(255, 255, 255, 5%) !important",
           },
         },
       },
@@ -521,7 +539,7 @@ const themesOptions = [
           // border: "1px solid black",
         },
         input: {
-          fontSize: "13px",
+          fontSize: "18px",
           fontWeight: "400",
           color: "#fff",
           "&::placeholder": {

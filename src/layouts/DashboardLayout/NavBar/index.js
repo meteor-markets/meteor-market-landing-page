@@ -201,8 +201,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         <Logo
           width="180"
           style={{
-            width: "200px",
-
+            width: "80px",
             cursor: "pointer",
           }}
         />
