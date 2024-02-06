@@ -12,7 +12,7 @@ const Logo = (props) => {
         src="/images/kian-logo.png"
         alt="Logo"
         {...props}
-        width="auto"
+        width="70px"
       />
     </Box>
   );
