@@ -14,28 +14,17 @@ import {
   Typography,
 } from "@material-ui/core";
 import Logo from "src/component/Logo";
-import { FaUserAlt } from "react-icons/fa";
-import { BiNews } from "react-icons/bi";
 import NavItem from "./NavItem";
-import PeopleIcon from "@material-ui/icons/People";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import SubscriptionsIcon from "@material-ui/icons/Subscriptions";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import EventIcon from "@material-ui/icons/Event";
-import ViewStreamIcon from "@material-ui/icons/ViewStream";
 import FilterFramesIcon from "@material-ui/icons/FilterFrames";
-import RateReviewIcon from "@material-ui/icons/RateReview";
-import ReceiptIcon from "@material-ui/icons/Receipt";
 import ContactsIcon from "@material-ui/icons/Contacts";
-import { FaFirstOrder, FaCity } from "react-icons/fa";
-import CategoryIcon from "@material-ui/icons/Category";
 import { SiBrandfolder } from "react-icons/si";
-import { BiBookContent } from "react-icons/bi";
-import { FaQuestionCircle, FaStripeS } from "react-icons/fa";
 
 const sections = [
   {
@@ -45,19 +34,6 @@ const sections = [
         icon: DashboardIcon,
         href: "/",
       },
-
-      // {
-      //   title: "User Management",
-      //   icon: PeopleIcon,
-      //   href: "",
-      //   items: [
-      //     {
-      //       title: "All Users",
-      //       icon: FaUserAlt,
-      //       href: "/all-users",
-      //     },
-      //   ],
-      // },
      
       {
         title: "Lending",
@@ -65,36 +41,35 @@ const sections = [
         href: "/lending",
       },
       {
+        title: "Portfolio",
+        icon: SiBrandfolder,
+        href: "/portfolio",
+      },
+      {
         title: "Swap",
         icon: ContactsIcon,
         href: "/swap",
       },
-
+      // {
+      //   title: "Staking",
+      //   icon: FilterFramesIcon,
+      //   href: "/staking",
+      // },
+      // {
+      //   title: "Wallet",
+      //   icon: FilterFramesIcon,
+      //   href: "/wallet",
+      // },
       {
-        title: "Market",
-        icon: SiBrandfolder,
-        href: "/market",
-      },
-      {
-        title: "Staking",
+        title: "Claim",
         icon: FilterFramesIcon,
-        href: "/staking",
+        href: "/claim",
       },
-      {
-        title: "Wallet",
-        icon: FilterFramesIcon,
-        href: "/wallet",
-      },
-      {
-        title: "Bridge",
-        icon: FilterFramesIcon,
-        href: "/bridge",
-      },
-      {
-        title: "Vault",
-        icon: FilterFramesIcon,
-        href: "/vault",
-      },
+      // {
+      //   title: "Vault",
+      //   icon: FilterFramesIcon,
+      //   href: "/vault",
+      // },
     ],
   },
 ];
@@ -225,8 +200,7 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         <Logo
           width="180"
           style={{
-            width: "200px",
-
+            width: "80px",
             cursor: "pointer",
           }}
         />

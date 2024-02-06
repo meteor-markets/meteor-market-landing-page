@@ -26,6 +26,11 @@ import { useHistory } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import PropTypes from "prop-types";
 import Footer from "src/layouts/HomeLayout/Footer";
+import { HiOutlineExclamationCircle } from "react-icons/hi2";
+import SupplyDialogBox from "src/component/SupplyDialogBox";
+import WithdrawDialogBox from "src/component/WithdrawDialogBox";
+import BorrowDialogBox from "src/component/BorrowDialogBox";
+import RepayDialogBox from "src/component/RepayDialogBox";
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -66,27 +71,38 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "White",
   },
   detailsBtns: {
-    padding: "0px 5px ",
-    marginRight: "10px",
+    padding: "4px 10px ",
+    minWidth: "100px",
+    marginLeft: "15px",
     border: "2px solid rgb(255 255 255 / 10%)",
     background: "rgb(255 255 255 / 20%)",
   },
   supplyBtns: {
-    padding: "0px 5px ",
+    border: "2px solid transparent",
+    padding: "4px 10px ",
+    minWidth: "100px",
   },
   root: {
     backgroundColor: "transparent",
     width: "100%",
   },
   numberBox: {
+    backgroundColor: "rgb(28, 28, 28)",
+    borderRadius: "9px",
+    padding: "50px 24px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     "& h4": {
       color: "#FF9142",
-      marginBottom: "3px",
+      marginRight: "20px",
+      maxWidth: "85px",
+      textAlign: "center",
     },
   },
-  tabsAppBar:{
-    padding:"20px 20px"
-  }
+  tabsAppBar: {
+    padding: "20px 20px",
+  },
 }));
 
 const StyledTableRow = withStyles((theme) => ({
@@ -155,6 +171,11 @@ export default function Index() {
   const theme = useTheme();
   const history = useHistory();
   const [value, setValue] = useState(0);
+  const [openSupplyModel, setSupplyModel] = useState(false);
+  const [openWithdrawModel, setWithdrawModel] = useState(false);
+  const [openBorrowModel, setBorrowModel] = useState(false);
+  const [openRepayModel, setRepayModel] = useState(false);
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -163,6 +184,25 @@ export default function Index() {
   const handleChangeIndex = (index) => {
     setValue(index);
   };
+
+  const handleOpenModel = (type)=>{
+    if(type==="Supply"){
+      setSupplyModel(true);
+    }else if(type==="Withdraw"){
+      setWithdrawModel(true);
+    }else if(type==="Borrow"){
+      setBorrowModel(true);
+    }else{
+      setRepayModel(true);
+    }
+  }
+
+  const handleCloseModel = ()=>{
+    setSupplyModel(false);
+    setWithdrawModel(false);
+    setBorrowModel(false);
+    setRepayModel(false);
+  }
 
   const [getDashboardData, setDashboardData] = useState([]);
   console.log("sdokejufasfkhjluer-->", getDashboardData);
@@ -184,112 +224,30 @@ export default function Index() {
       console.log("error", error);
     }
   };
-  
+
   useEffect(() => {
     dashboardData();
   }, []);
   return (
     <Page title="Lending">
       <Box className={classes.headBox}>
-        <Box mb={4}>
-          <Grid container spacing={3}>
-            <Grid item lg={6}>
-              <TableContainer style={{ background: "#1C1C1C" }}>
-                <Box className={classes.numberBox} p={3} pb={0}>
-                  <Typography variant="h4">Supplied Assets</Typography>
-                  <Typography variant="h2" className="textColorFormate">
-                    $1871,560.70
-                  </Typography>
-                </Box>
-                <Table style={{ minWidth: "500px" }}>
-                  <TableHead>
-                    <TableRow className={`${classes.tablerow1} tableHead`}>
-                      <TableCell>Asset</TableCell>
-                      <TableCell>Supply APY</TableCell>
-                      <TableCell>Reward APR</TableCell>
-                      <TableCell>Wallet</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {tableData &&
-                      tableData.map((data, index) => {
-                        return (
-                          <StyledTableRow>
-                            <TableCell>
-                              <Box display={"flex"} alignItems={"center"}>
-                                <img
-                                  alt=""
-                                  style={{
-                                    width: "25px",
-                                    height: "25px",
-                                    borderRadius: "5px",
-                                    objectFit: "cover",
-                                    marginRight: "15px",
-                                  }}
-                                  width="100%"
-                                  src={data.assetIconSrc}
-                                />
-                                <span>{data.asset}</span>
-                              </Box>
-                            </TableCell>
-                            <TableCell>{data.supplyApy}</TableCell>
-                            <TableCell>{data.rewardAPR}</TableCell>
-                            <TableCell>{data.wallet}</TableCell>
-                          </StyledTableRow>
-                        );
-                      })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+        <Box mb={5}>
+          <Grid container spacing={6}>
+            <Grid item xs={12} sm={6} md={6} lg={6}>
+              <Box className={classes.numberBox}>
+                <Typography variant="h4">Supplied Assets</Typography>
+                <Typography variant="h2" className="textColorFormate">
+                  $1871,560.70
+                </Typography>
+              </Box>
             </Grid>
-            <Grid item lg={6}>
-              <TableContainer style={{ background: "#1C1C1C" }}>
-                <Box className={classes.numberBox} p={3} pb={0}>
-                  <Typography variant="h4">Borrowed Assets</Typography>
-                  <Typography variant="h2" className="textColorFormate">
-                   $3876,617.38
-                  </Typography>
-                </Box>
-                <Table style={{ minWidth: "500px" }}>
-                  <TableHead>
-                    <TableRow className={`${classes.tablerow1} tableHead`}>
-                      <TableCell>Asset</TableCell>
-                      <TableCell>Borrow APY</TableCell>
-                      <TableCell>Reward APR</TableCell>
-                      <TableCell>Liquidity</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {tableData &&
-                      tableData.map((data, index) => {
-                        return (
-                          <StyledTableRow>
-                            <TableCell>
-                              <Box display={"flex"} alignItems={"center"}>
-                                <img
-                                  alt=""
-                                  style={{
-                                    width: "25px",
-                                    height: "25px",
-                                    borderRadius: "5px",
-                                    objectFit: "cover",
-                                    marginRight: "15px",
-                                  }}
-                                  width="100%"
-                                  src={data.assetIconSrc}
-                                />
-                                <span>{data.asset}</span>
-                              </Box>
-                            </TableCell>
-                            <TableCell>{data.supplyApy}</TableCell>
-                            <TableCell>{data.rewardAPR}</TableCell>
-                            <TableCell>{data.wallet}</TableCell>
-                          </StyledTableRow>
-                        );
-                      })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+            <Grid item xs={12} sm={6} md={6} lg={6}>
+              <Box className={classes.numberBox}>
+                <Typography variant="h4">Borrowed Assets</Typography>
+                <Typography variant="h2" className="textColorFormate">
+                  $3876,617.38
+                </Typography>
+              </Box>
             </Grid>
           </Grid>
         </Box>
@@ -340,7 +298,16 @@ export default function Index() {
                             </Box>
                           </TableCell>
                           <TableCell>{data.supplyApy}</TableCell>
-                          <TableCell>{data.rewardAPR}</TableCell>
+                          <TableCell>
+                            <Box display={"flex"} alignItems={"center"}>
+                              <span>{data.rewardAPR}</span>{" "}
+                              <HiOutlineExclamationCircle
+                                color="#00FFA3"
+                                fontSize={"18px"}
+                                style={{ marginLeft: "9px" }}
+                              />
+                            </Box>
+                          </TableCell>
                           <TableCell>{data.wallet}</TableCell>
                           <TableCell align="center">
                             <Box
@@ -350,15 +317,17 @@ export default function Index() {
                             >
                               <Button
                                 variant="contained"
-                                className={classes.detailsBtns}
+                                className={classes.supplyBtns}
+                                onClick={(e)=>handleOpenModel("Supply")}
                               >
-                                Details
+                                Supply
                               </Button>
                               <Button
                                 variant="contained"
-                                className={classes.supplyBtns}
+                                className={classes.detailsBtns}
+                                onClick={(e)=>handleOpenModel("Withdraw")}
                               >
-                                Supply
+                                Withdraw
                               </Button>
                             </Box>
                           </TableCell>
@@ -402,7 +371,16 @@ export default function Index() {
                             </Box>
                           </TableCell>
                           <TableCell>{data.supplyApy}</TableCell>
-                          <TableCell>{data.rewardAPR}</TableCell>
+                          <TableCell>
+                            <Box display={"flex"} alignItems={"center"}>
+                              <span>{data.rewardAPR}</span>{" "}
+                              <HiOutlineExclamationCircle
+                                color="#00FFA3"
+                                fontSize={"18px"}
+                                style={{ marginLeft: "9px" }}
+                              />
+                            </Box>
+                          </TableCell>
                           <TableCell>{data.wallet}</TableCell>
                           <TableCell align="center">
                             <Box
@@ -412,15 +390,17 @@ export default function Index() {
                             >
                               <Button
                                 variant="contained"
-                                className={classes.detailsBtns}
+                                className={classes.supplyBtns}
+                                onClick={(e)=>handleOpenModel("Borrow")}
                               >
-                                Details
+                                Borrow
                               </Button>
                               <Button
                                 variant="contained"
-                                className={classes.supplyBtns}
+                                className={classes.detailsBtns}
+                                onClick={(e)=>handleOpenModel()}
                               >
-                                Borrow
+                                Repay
                               </Button>
                             </Box>
                           </TableCell>
@@ -433,7 +413,11 @@ export default function Index() {
           </Box>
         </TableContainer>
       </Box>
-      <Footer/>
+      <SupplyDialogBox open={openSupplyModel} handleClose={handleCloseModel}/>
+      <WithdrawDialogBox open={openWithdrawModel} handleClose={handleCloseModel}/>
+      <BorrowDialogBox open={openBorrowModel} handleClose={handleCloseModel}/>
+      <RepayDialogBox open={openRepayModel} handleClose={handleCloseModel}/>
+      <Footer />
     </Page>
   );
 }

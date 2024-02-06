@@ -1,28 +1,26 @@
 import React, { useState } from "react";
-import { Grid, Box, Typography, makeStyles, Button, Container, InputAdornment,
+import {
+  Typography,
+  makeStyles,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Box,
+  InputAdornment,
   OutlinedInput,
   FormControl,
   Select,
-  MenuItem } from "@material-ui/core";
-import Page from "src/component/Page";
-import Footer from "src/layouts/HomeLayout/Footer";
+  MenuItem,
+} from "@material-ui/core";
+import { FaArrowLeftLong } from "react-icons/fa6";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
 const useStyles = makeStyles((theme) => ({
-  headBox: {
-    borderRadius: "9px",
-    background: "#1C1C1C",
-    padding: "35px 35px",
-    [theme.breakpoints.down("xs")]:{
-        padding: "35px 15px",
-    }
-  },
-  numberBox: {
-    backgroundColor: "#212123",
-    borderRadius: "9px",
-    padding: "24px 24px",
-    // textAlign: "center",
-    border:"1px solid rgba(255, 255, 255, 5%)"
+  closeBtn: {
+    fontSize: "1.7rem",
+    color: "#fff",
+    cursor: "pointer",
   },
   smallText: {
     color: "rgba(255,255,255,80%)",
@@ -35,10 +33,24 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "9px",
     padding: "20px",
   },
+  dialogAction:{
+    justifyContent: "start",
+    paddingLeft: "24px",
+    paddingRight: "24px",
+  },
+  DialogContent:{
+    paddingLeft: "24px",
+    paddingRight: "24px",
+    [theme.breakpoints.down("xs")]:{
+      paddingLeft: "0px",
+      paddingRight: "0px",
+    }
+  }
 }));
 
-function Index() {
+function SupplyDialogBox({ open, handleClose }) {
   const classes = useStyles();
+
   const [age, setAge] = useState(10);
 
   const handleChange = (event) => {
@@ -46,22 +58,37 @@ function Index() {
   };
 
   return (
-    <Page title="Claim">
-      <Box className={classes.headBox}>
-        <Box mb={5}>
-          <Typography variant="h2" className="textColorFormate">
-          Swap
-          </Typography>
-          <Typography variant="body1" style={{ marginBottom: "10px" }}>
-          Easily swap crypto assets across platforms. 
-          </Typography> 
-        </Box>
-        <Container maxWidth="sm">
-        <Box className={classes.numberBox}>
-              <Typography variant="h3" className="textColorFormate">
-              Swap
-              </Typography>
-              <form>
+    <Box>
+      <Dialog
+        fullWidth
+        open={open}
+        onClose={handleClose}
+        style={{ backgroundColor: "#00000070" }}
+        maxWidth={"md"}
+      >
+        <DialogActions className={classes.dialogAction}>
+          <FaArrowLeftLong
+            className={classes.closeBtn}
+            onClick={() => {
+              handleClose();
+            }}
+          />
+          <Typography variant="h4">Supply DAI</Typography>
+          <img
+            alt=""
+            style={{
+              width: "25px",
+              height: "25px",
+              borderRadius: "5px",
+              objectFit: "cover",
+              marginRight: "15px",
+            }}
+            width="100%"
+            src="../images/DAI-logo1.png"
+          />
+        </DialogActions>
+        <DialogContent className={classes.DialogContent}>
+          <form>
             <Box
               mt={4}
               display={"flex"}
@@ -161,11 +188,10 @@ function Index() {
               <Button variant="contained" style={{minWidth:"170px"}}>Supply</Button>
             </Box>
           </form>
-            </Box>
-        </Container>
-      </Box>
-      <Footer />
-    </Page>
+        </DialogContent>
+      </Dialog>
+    </Box>
   );
 }
-export default Index;
+
+export default SupplyDialogBox;
