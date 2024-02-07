@@ -7,7 +7,7 @@ import HomeLayout from "src/layouts/HomeLayout";
 export const routes = [
   {
     exact: true,
-    path: "/",
+    path: "/overview",
     guard: true,
     layout: DashboardLayout,
     component: lazy(() => import("src/views/pages/Dashboard")),
@@ -86,7 +86,7 @@ export const routes = [
   {
     exact: true,
     guard: true,
-    path: "/home",
+    path: "/",
     // guard:true,
     layout: HomeLayout,
     component: lazy(() =>
