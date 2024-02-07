@@ -32,7 +32,7 @@ const sections = [
       {
         title: "Overview",
         icon: DashboardIcon,
-        href: "/",
+        href: "/overview",
       },
      
       {
