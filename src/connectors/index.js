@@ -5,16 +5,16 @@ import { BinanceConnector } from "@bscswap/binance-connector";
 // import { PhantomWalletConnector } from "@solana/wallet-adapter-wallets"; // Import Phantom connector
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42, 56, 97],
+  supportedChainIds: [168587773,1, 3, 4, 5, 42, 56, 97],
 });
 
 export const binanceinjected = new BinanceConnector({
-  supportedChainIds: [1, 42, 56, 97],
+  supportedChainIds: [1,168587773, 42, 56, 97],
 });
 
 export const walletconnect = new WalletConnectConnector({
   rpc: {
-    97: default_RPC_URL,
+    168587773: default_RPC_URL,
   },
   bridge: "https://bridge.walletconnect.org",
   qrcode: true,

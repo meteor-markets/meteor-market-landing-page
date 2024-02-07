@@ -56,7 +56,7 @@ export default function AuthProvider(props) {
       cancelTokenSource.cancel();
     };
   }, [account, profileData]);
-console.log("account",account);
+console.log("account",account,chainId);
   useEffect(() => {
     if (profileData) {
       setIsAdmin(profileData.role == "ADMIN");
@@ -198,6 +198,7 @@ console.log("account",account);
       activate(connector, undefined, true).catch((error) => {
         if (error) {
           toast.error(JSON.stringify(error.message));
+          console.log("errr",JSON.stringify(error.message),error.message);
           window.sessionStorage.removeItem("walletName");
           activate(connector);
         }
