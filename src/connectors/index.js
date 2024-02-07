@@ -2,6 +2,7 @@ import { default_RPC_URL } from "src/constants";
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import { BinanceConnector } from "@bscswap/binance-connector";
+// import { PhantomWalletConnector } from "@solana/wallet-adapter-wallets"; // Import Phantom connector
 
 export const injected = new InjectedConnector({
   supportedChainIds: [1, 3, 4, 5, 42, 56, 97],
@@ -43,26 +44,27 @@ export const SUPPORTED_WALLETS = [
       color: "#E8831D",
     },
   },
+  
   {
-    name: "TRUSTWALLET",
+    name: "PHANTOM",
+    data: {
+      // connector: phantom,
+      name: "Phantom Wallet",
+      iconName: "/images/coinbaseW.png", // Update with the correct Phantom Wallet icon path
+      description: "Solana-based crypto wallet",
+      href: null,
+      color: "#347eff",
+    },
+  },
+  {
+    name: "COINBASE",
     data: {
       connector: injected,
-      name: "Trust Wallet",
+      name: "Coinbase Wallet",
       iconName: "/images/coinbaseW.png",
-      description: "The most trusted & secure crypto wallet",
+      description: "The easy way to buy, use, and accept cryptocurrency",
       href: null,
-      color: "#3375BB",
-    },
-  },
-  {
-    name: "BINANCE",
-    data: {
-      connector: binanceinjected,
-      name: "Binance Chain",
-      iconName: "/images/safepal.png",
-      description: "A Crypto Wallet for Binance Smart Chain",
-      href: null,
-      color: "#F9A825",
-    },
-  },
+      color: "#0055FF",
+    },},
+ 
 ];

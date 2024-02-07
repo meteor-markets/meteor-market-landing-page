@@ -4,8 +4,6 @@ import {
   Box,
   Typography,
   makeStyles,
-  Divider,
-  Icon,
   TableCell,
   TableContainer,
   TableHead,
@@ -23,7 +21,6 @@ import Page from "src/component/Page";
 import axios from "axios";
 import apiConfig from "src/APIconfig/ApiConfig";
 import { useHistory } from "react-router-dom";
-import { FaUser } from "react-icons/fa";
 import PropTypes from "prop-types";
 import Footer from "src/layouts/HomeLayout/Footer";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
@@ -31,12 +28,11 @@ import SupplyDialogBox from "src/component/SupplyDialogBox";
 import WithdrawDialogBox from "src/component/WithdrawDialogBox";
 import BorrowDialogBox from "src/component/BorrowDialogBox";
 import RepayDialogBox from "src/component/RepayDialogBox";
+import { FetchCoinList } from "src/APIconfig/ApiEndPoint";
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
-    // padding: "23px 30px",
     borderRadius: "9px",
-    // background: "#1C1C1C",
     "& h3": {
       color: "black",
       marginBottom: "15px",
@@ -47,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
     padding: "20px",
     borderRadius: "9px",
     height: "85px",
-    // boxShadow: "2px 1px 5px black",
     cursor: "pointer",
 
     transition: "0.3s",
@@ -116,7 +111,8 @@ const StyledTableRow = withStyles((theme) => ({
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
+  
+ 
   return (
     <div
       role="tabpanel"
@@ -168,24 +164,34 @@ const tableData = [
 
 export default function Index() {
   const classes = useStyles();
-  const theme = useTheme();
-  const history = useHistory();
   const [value, setValue] = useState(0);
   const [openSupplyModel, setSupplyModel] = useState(false);
   const [openWithdrawModel, setWithdrawModel] = useState(false);
   const [openBorrowModel, setBorrowModel] = useState(false);
   const [openRepayModel, setRepayModel] = useState(false);
+  const [supplyData, setSupplyData] = useState({});
 
+  const [CoinName, setCoinName] = useState();
+
+  const FetchCoin = async () => {
+    const response = await FetchCoinList()
+    if (response?.length > 0) {
+
+      setCoinName(response)
+    }
+  }
+  useEffect(()=>{
+    FetchCoin()
+  },[])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const handleChangeIndex = (index) => {
-    setValue(index);
-  };
 
-  const handleOpenModel = (type)=>{
+
+  const handleOpenModel = (type,data)=>{
+    setSupplyData(data)
     if(type==="Supply"){
       setSupplyModel(true);
     }else if(type==="Withdraw"){
@@ -204,9 +210,6 @@ export default function Index() {
     setRepayModel(false);
   }
 
-  const [getDashboardData, setDashboardData] = useState([]);
-  console.log("sdokejufasfkhjluer-->", getDashboardData);
-
   const dashboardData = async () => {
     try {
       const res = await axios({
@@ -217,8 +220,7 @@ export default function Index() {
         },
       });
       if (res) {
-        setDashboardData(res?.data?.result);
-        // console.log("fdsfgagfaggyfae", res?.data?.result);
+        // setDashboardData(res?.data?.result);
       }
     } catch (error) {
       console.log("error", error);
@@ -276,8 +278,8 @@ export default function Index() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {tableData &&
-                    tableData.map((data, index) => {
+                  {CoinName &&
+                    CoinName.map((data, index) => {
                       return (
                         <StyledTableRow>
                           <TableCell>
@@ -292,15 +294,15 @@ export default function Index() {
                                   marginRight: "15px",
                                 }}
                                 width="100%"
-                                src={data.assetIconSrc}
+                                src={data.coinImage}
                               />
-                              <span>{data.asset}</span>
+                              <span>{data.coinName}</span>
                             </Box>
                           </TableCell>
-                          <TableCell>{data.supplyApy}</TableCell>
+                          <TableCell>{data.supplyAPY}%</TableCell>
                           <TableCell>
                             <Box display={"flex"} alignItems={"center"}>
-                              <span>{data.rewardAPR}</span>{" "}
+                              <span>{data.sRewardAPR}%</span>{" "}
                               <HiOutlineExclamationCircle
                                 color="#00FFA3"
                                 fontSize={"18px"}
@@ -308,7 +310,7 @@ export default function Index() {
                               />
                             </Box>
                           </TableCell>
-                          <TableCell>{data.wallet}</TableCell>
+                          <TableCell>{data?.wallet}{data?.coinName}</TableCell>
                           <TableCell align="center">
                             <Box
                               display="flex"
@@ -318,7 +320,7 @@ export default function Index() {
                               <Button
                                 variant="contained"
                                 className={classes.supplyBtns}
-                                onClick={(e)=>handleOpenModel("Supply")}
+                                onClick={(e)=>handleOpenModel("Supply",data)}
                               >
                                 Supply
                               </Button>
@@ -413,7 +415,7 @@ export default function Index() {
           </Box>
         </TableContainer>
       </Box>
-      <SupplyDialogBox open={openSupplyModel} handleClose={handleCloseModel}/>
+      <SupplyDialogBox open={openSupplyModel} handleClose={handleCloseModel} supplyData={supplyData}/>
       <WithdrawDialogBox open={openWithdrawModel} handleClose={handleCloseModel}/>
       <BorrowDialogBox open={openBorrowModel} handleClose={handleCloseModel}/>
       <RepayDialogBox open={openRepayModel} handleClose={handleCloseModel}/>

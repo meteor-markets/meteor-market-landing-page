@@ -15,6 +15,7 @@ import {
 } from "@material-ui/core";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { supplyCoins } from "src/APIconfig/ApiEndPoint";
 
 const useStyles = makeStyles((theme) => ({
   closeBtn: {
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function SupplyDialogBox({ open, handleClose }) {
+function SupplyDialogBox({ open, handleClose ,supplyData}) {
   const classes = useStyles();
 
   const [age, setAge] = useState(10);
@@ -56,7 +57,22 @@ function SupplyDialogBox({ open, handleClose }) {
   const handleChange = (event) => {
     setAge(event.target.value);
   };
+  const handleSypplyCoin = async () => {
+    let data={
+      coinName:supplyData?.coinName,
+      walletAddress:"0xB72c3642EA32deFDA74C68FAe6e6095B49441444",
+      amount:0.1,
+      transactionDetails:"",
 
+
+    }
+    const response = await supplyCoins(data)
+    if (response?.length > 0) {
+
+      // setCoinName(response)
+    }
+  }
+ 
   return (
     <Box>
       <Dialog
@@ -73,7 +89,7 @@ function SupplyDialogBox({ open, handleClose }) {
               handleClose();
             }}
           />
-          <Typography variant="h4">Supply DAI</Typography>
+          <Typography variant="h4">Supply {supplyData?.coinName}</Typography>
           <img
             alt=""
             style={{
@@ -84,7 +100,7 @@ function SupplyDialogBox({ open, handleClose }) {
               marginRight: "15px",
             }}
             width="100%"
-            src="../images/DAI-logo1.png"
+            src={supplyData?.coinImage}
           />
         </DialogActions>
         <DialogContent className={classes.DialogContent}>
@@ -185,7 +201,7 @@ function SupplyDialogBox({ open, handleClose }) {
               </Box>
             </Box>
             <Box textAlign={"center"} mt={5}>
-              <Button variant="contained" style={{minWidth:"170px"}}>Supply</Button>
+              <Button variant="contained" style={{minWidth:"170px"}} onClick={()=>handleSypplyCoin()}>Supply</Button>
             </Box>
           </form>
         </DialogContent>
