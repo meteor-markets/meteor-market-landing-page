@@ -19,6 +19,9 @@ import {
 import Page from "src/component/Page";
 import Footer from "src/layouts/HomeLayout/Footer";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { HiOutlineExclamationCircle } from "react-icons/hi2";
+import { IoSwapVertical } from "react-icons/io5";
+
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -67,13 +70,10 @@ const BootstrapInput = withStyles((theme) => ({
   },
 }))(InputBase);
 
-
-let coinsData = 
-[
-      {value: '../images/DAI-logo1.png', label: 'DAI'},
-      {value:'../images/LUSD-logo1.png',label: 'LUSD' }
+let coinsData = [
+  { value: "../images/DAI-logo1.png", label: "DAI" },
+  { value: "../images/LUSD-logo1.png", label: "LUSD" },
 ];
-
 
 function Index() {
   const classes = useStyles();
@@ -115,127 +115,125 @@ function Index() {
 
               <Grid container>
                 <Grid item xs={8}>
-                <FormControl>
-                <BootstrapInput value={"1.2 ($2813.15)"} id="demo-customized-textbox" />
-              </FormControl>
+                  <FormControl>
+                    <BootstrapInput
+                      value={"1.2 ($2813.15)"}
+                      id="demo-customized-textbox"
+                    />
+                  </FormControl>
                 </Grid>
                 <Grid item xs={4}>
-                <FormControl>
-                <NativeSelect
-                  id="demo-customized-select-native"
-                  value={age}
-                  onChange={handleChange}
-                  input={<BootstrapInput />}
-                >
-                  <option value={10}>
-                    DAI
-                  </option>
-                  <option value={20}>DAI</option>
-                  <option value={30}>DAI</option> 
-                 
-                </NativeSelect>
-              </FormControl>
+                  <FormControl>
+                    <NativeSelect
+                      id="demo-customized-select-native"
+                      value={age}
+                      onChange={handleChange}
+                      input={<BootstrapInput />}
+                    >
+                      <option value={10}>DAI</option>
+                      <option value={20}>DAI</option>
+                      <option value={30}>DAI</option>
+                    </NativeSelect>
+                  </FormControl>
                 </Grid>
               </Grid>
-              <FormControl variant="outlined">
-                {/* <OutlinedInput
-                endAdornment={
-                  <InputAdornment position="end">
-                    <span style={{ marginRight: "15px", textAlign: "end" }}>
-                      DAI <br /> -$0.00
-                    </span>
-                    <Button variant="contained">MAX</Button>
-                  </InputAdornment>
-                }
-                labelWidth={0}
-                placeholder="$0.00"
-              /> */}
-
-                <Box
-                  mt={4}
-                  display={"flex"}
-                  justifyContent={"right"}
-                  alignItems={"end"}
-                  mb={"4px"}
-                >
-                  <Button variant="contained" style={{ marginRight: "20px" }}>
-                    HALF
-                  </Button>
-                  <Button variant="contained">MAX</Button>
-                </Box>
-              </FormControl>
-
-              <Box mt={5} mb={"4px"}>
-                <span className={classes.smallText}>Lend Duration</span>
+              <Box
+                mt={1}
+                display={"flex"}
+                justifyContent={"right"}
+                alignItems={"end"}
+                mb={"4px"}
+              >
+                <Button variant="contained" style={{ marginRight: "20px" }}>
+                  HALF
+                </Button>
+                <Button variant="contained">MAX</Button>
               </Box>
-              <FormControl variant="outlined">
-                <Select value={age} onChange={handleChange}>
-                  <MenuItem value={10}>3 months {"{3.91% interest}"}</MenuItem>
-                  <MenuItem value={20}>3 months {"{3.91% interest}"}</MenuItem>
-                  <MenuItem value={30}>3 months {"{3.91% interest}"}</MenuItem>
-                </Select>
-              </FormControl>
+
+              <Box textAlign={"center"} my={3}>
+                <IoSwapVertical fontSize={"3rem"}
+                    style={{ marginRight: "9px",color:"#fff" }}/>
+              </Box>
+
+              <Box
+                mt={4}
+                display={"flex"}
+                justifyContent={"space-between"}
+                alignItems={"end"}
+                mb={"4px"}
+              >
+                <span className={classes.smallText}>You Receive</span>
+              </Box>
+
+              <Grid container>
+                <Grid item xs={8}>
+                  <FormControl>
+                    <BootstrapInput
+                      value={"0.066 ($2812.45)"}
+                      id="demo-customized-textbox"
+                    />
+                  </FormControl>
+                </Grid>
+                <Grid item xs={4}>
+                  <FormControl>
+                    <NativeSelect
+                      id="demo-customized-select-native"
+                      value={age}
+                      onChange={handleChange}
+                      input={<BootstrapInput />}
+                    >
+                      <option value={10}>DAI</option>
+                      <option value={20}>DAI</option>
+                      <option value={30}>DAI</option>
+                    </NativeSelect>
+                  </FormControl>
+                </Grid>
+              </Grid>
+
               <Box mt={5} className={classes.summryMainBox}>
                 <Box
                   display={"flex"}
                   justifyContent={"space-between"}
                   alignItems={"end"}
                 >
-                  <Typography variant="h5">Supply Stats</Typography>
+                  <Typography variant="h5">Summary</Typography>
                   <MdOutlineKeyboardArrowDown color="#fff" fontSize={"24px"} />
                 </Box>
-                <Box
-                  mt={3}
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                  alignItems={"end"}
-                >
-                  <span className={classes.smallText}>Supply APY:</span>
-                  <span className={classes.mediumText}>0.18%</span>
+                <Box mt={3} display={"flex"} alignItems={"center"}>
+                  <HiOutlineExclamationCircle
+                    fontSize={"18px"}
+                    style={{ marginRight: "9px" }}
+                    className={classes.smallText}
+                  />
+                  <span className={classes.smallText}>
+                    Price = 15.017 per BTC
+                  </span>
                 </Box>
-                <Box
-                  mt={2}
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                  alignItems={"end"}
-                >
-                  <span className={classes.smallText}>Supply Balance:</span>
-                  <span className={classes.mediumText}>$45</span>
+                <Box mt={3} display={"flex"} alignItems={"center"}>
+                  <HiOutlineExclamationCircle
+                    fontSize={"18px"}
+                    style={{ marginRight: "9px" }}
+                    className={classes.smallText}
+                  />
+                  <span className={classes.smallText}>
+                  Gas Fee = $13.50
+                  </span>
                 </Box>
-                <Box
-                  mt={2}
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                  alignItems={"end"}
-                >
-                  <span className={classes.smallText}>Reward APR:</span>
-                  <span className={classes.mediumText}>0.13%</span>
+                <Box mt={3} display={"flex"} alignItems={"center"}>
+                  <HiOutlineExclamationCircle
+                    fontSize={"18px"}
+                    style={{ marginRight: "9px" }}
+                    className={classes.smallText}
+                  />
+                  <span className={classes.smallText}>
+                  Slippage Tolerance = 0.5%
+                  </span>
                 </Box>
-                <Box mt={3}>
-                  <Typography variant="h5">Borrow Limit</Typography>
-                </Box>
-                <Box
-                  mt={3}
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                  alignItems={"end"}
-                >
-                  <span className={classes.smallText}>Your Borrow Limit:</span>
-                  <span className={classes.mediumText}>$0 {"->"} $0.00</span>
-                </Box>
-                <Box
-                  mt={3}
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                  alignItems={"end"}
-                >
-                  <span className={classes.smallText}>Borrow Limit Used:</span>
-                  <span className={classes.mediumText}>{"0% -> 0%"}</span>
-                </Box>
+                
               </Box>
               <Box textAlign={"center"} mt={5}>
                 <Button variant="contained" style={{ minWidth: "170px" }}>
-                  Supply
+                Initiate Swap
                 </Button>
               </Box>
             </form>
