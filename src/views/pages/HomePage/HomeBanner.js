@@ -6,7 +6,7 @@ import {
   Button,
   Container,
 } from "@material-ui/core";
-import { useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
 
 
 
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 function HomeBanner() {
   const classes = useStyles();
-  const history = useHistory()
+  const history = useHistory();
 
   return (
     <Box className={classes.headBox}>

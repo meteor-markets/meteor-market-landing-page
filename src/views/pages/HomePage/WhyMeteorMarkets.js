@@ -7,6 +7,7 @@ import {
   Button,
   Container,
 } from "@material-ui/core";
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -21,10 +22,16 @@ const useStyles = makeStyles((theme) => ({
         marginBottom:"1.5rem"
     }
   },
+  launchBtn:{
+    minWidth:"120px",
+    position:"relative",
+    top:"40px"
+  }
 }));
 
 function WhyMeteorMarkets() {
   const classes = useStyles();
+  const history = useHistory();
 
   return (
     <Container>
@@ -58,6 +65,9 @@ function WhyMeteorMarkets() {
             </Box>
           </Grid>
         </Grid>
+        <Box textAlign={"center"} mt={4}>
+        <Button variant="contained" className={classes.launchBtn} onClick={() => history.push("/overview")}>Launch App</Button>
+        </Box>
       </Box>
     </Container>
   );
