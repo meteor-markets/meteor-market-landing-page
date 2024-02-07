@@ -20,6 +20,16 @@ const baseOptions = {
         backgroundColor:"transparent"
       }
     },
+    MuiPaginationItem:{
+      root:{
+        color:"#fff",
+      },
+      textPrimary:{
+        "&.Mui-selected": {
+          background:"linear-gradient(90deg, #FF9142, #FC4A1A,#F7B733)"
+        },
+      },
+    },
     MuiTabs:{
       flexContainer:{
         backgroundColor: '#2B2B2B',

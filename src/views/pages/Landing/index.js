@@ -23,7 +23,6 @@ import Page from "src/component/Page";
 import axios from "axios";
 import apiConfig from "src/APIconfig/ApiConfig";
 import { useHistory } from "react-router-dom";
-import { FaUser } from "react-icons/fa";
 import PropTypes from "prop-types";
 import Footer from "src/layouts/HomeLayout/Footer";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
@@ -31,6 +30,8 @@ import SupplyDialogBox from "src/component/SupplyDialogBox";
 import WithdrawDialogBox from "src/component/WithdrawDialogBox";
 import BorrowDialogBox from "src/component/BorrowDialogBox";
 import RepayDialogBox from "src/component/RepayDialogBox";
+import { Pagination } from "@material-ui/lab";
+
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -175,6 +176,9 @@ export default function Index() {
   const [openWithdrawModel, setWithdrawModel] = useState(false);
   const [openBorrowModel, setBorrowModel] = useState(false);
   const [openRepayModel, setRepayModel] = useState(false);
+  const [pages, setPages] = useState(1);
+  const [_total, setTotal] = useState();
+  const [numpages, setNumpages] = useState(1);
 
 
   const handleChange = (event, newValue) => {
@@ -212,6 +216,10 @@ export default function Index() {
       const res = await axios({
         method: "GET",
         url: apiConfig.dashBoard,
+        // data: {
+        //   page: `${pages}`,
+        //   limit: "10",
+        // },
         headers: {
           token: window.sessionStorage.getItem("token"),
         },
@@ -219,6 +227,8 @@ export default function Index() {
       if (res) {
         setDashboardData(res?.data?.result);
         // console.log("fdsfgagfaggyfae", res?.data?.result);
+        // setTotal(res?.data?.result?.total);
+        // setNumpages(res?.data?.result?.pages);
       }
     } catch (error) {
       console.log("error", error);
@@ -336,6 +346,23 @@ export default function Index() {
                     })}
                 </TableBody>
               </Table>
+              {_total && _total > 10 && (
+          <Box
+            mb={2}
+            mt={2}
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Pagination
+              onChange={(e, v) => setPages(v)}
+              count={parseInt(numpages)}
+              color="primary"
+            />
+          </Box>
+        )}
             </TabPanel>
             <TabPanel value={value} index={1}>
               <Table style={{ minWidth: "900px" }}>
@@ -409,6 +436,23 @@ export default function Index() {
                     })}
                 </TableBody>
               </Table>
+              {_total && _total > 10 && (
+          <Box
+            mb={2}
+            mt={2}
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Pagination
+              onChange={(e, v) => setPages(v)}
+              count={parseInt(numpages)}
+              color="primary"
+            />
+          </Box>
+        )}
             </TabPanel>
           </Box>
         </TableContainer>
