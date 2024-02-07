@@ -13,7 +13,7 @@ import WhyMeteorMarkets from './WhyMeteorMarkets';
 function Index() {
   return (
     <Page title="home">
-        <Box>
+        <Box pb={5}>
         <HomeBanner/>
         <WhyMeteorMarkets/>
         </Box>

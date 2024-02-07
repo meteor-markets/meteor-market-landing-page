@@ -481,7 +481,7 @@ export default function Header() {
           <div className={drawerContainer}>
             <img className={logoDrawer} src="images/logo.png" alt="" />
             {getDrawerChoices()}
-            {signin}
+            {/* {signin} */}
           </div>
         </Drawer>
 
