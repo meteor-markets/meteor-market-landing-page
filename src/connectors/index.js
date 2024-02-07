@@ -34,16 +34,27 @@ export const SUPPORTED_WALLETS = [
     },
   },
   {
-    name: "Wallet Connect",
+    name: "TRUSTWALLET",
     data: {
-      connector: walletconnect,
-      name: "Wallet Connect",
-      iconName: "/images/walletconnectW.png",
-      description: "Easy-to-use browser extension.",
+      connector: injected,
+      name: "Trust Wallet",
+      iconName: "/images/coinbaseW.png",
+      description: "The most trusted & secure crypto wallet",
       href: null,
-      color: "#E8831D",
+      color: "#3375BB",
     },
   },
+  // {
+  //   name: "Wallet Connect",
+  //   data: {
+  //     connector: walletconnect,
+  //     name: "Wallet Connect",
+  //     iconName: "/images/walletconnectW.png",
+  //     description: "Easy-to-use browser extension.",
+  //     href: null,
+  //     color: "#E8831D",
+  //   },
+  // },
   
   {
     name: "PHANTOM",

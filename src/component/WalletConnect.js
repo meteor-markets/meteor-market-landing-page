@@ -99,7 +99,7 @@ console.log("SUPPORTED_WALLETS",SUPPORTED_WALLETS);
 
         {SUPPORTED_WALLETS.map((item, i) => {
           return (
-            <Button fullWidth variant="contained" className={classes.walletBtns} 
+            <Button fullWidth variant="contained" disabled={item.data.name=="Phantom Wallet" || item.data.name=="Coinbase Wallet"} className={classes.walletBtns} 
             onClick={() => {
                   window.sessionStorage.removeItem("walletName");
                   window.sessionStorage.setItem("walletName", item.name);
@@ -111,8 +111,9 @@ console.log("SUPPORTED_WALLETS",SUPPORTED_WALLETS);
           <Button fullWidth variant="contained" className={classes.walletBtns}><img src='../images/coinbaseW.png'/>Coinbase Wallet</Button>
           <Button fullWidth variant="contained" className={classes.walletBtns}><img src='../images/walletconnectW.png'/>Wallet Connect</Button>
           <Button fullWidth variant="contained" className={classes.walletBtns}><img src='../images/blocto.png'/>Phantom</Button>
-          <Button fullWidth variant="contained" className={classes.walletBtns}><img src='../images/safepal.png'/>Safepal</Button> */}
+          <Button fullWidth variant="contained" className={classes.walletBtns}><img src='../images/safepal.png'/>Safepal</Button>
           <Button fullWidth variant="contained" className={classes.walletBtns}>Learn About Wallet</Button>
+        */}
           {/*
         
         <div>

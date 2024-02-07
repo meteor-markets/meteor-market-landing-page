@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { SUPPORTED_WALLETS } from "../connectors";
 import { useWeb3React } from "@web3-react/core";
-import { useWallet } from '@solana/wallet-adapter-react';
 
 import { ACTIVE_NETWORK, NetworkDetails } from "../constants/";
 import { toast } from "react-toastify";
