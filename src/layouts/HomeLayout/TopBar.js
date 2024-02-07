@@ -453,7 +453,7 @@ export default function Header() {
             </Grid>
             <Grid item xs={2} style={{ height: '100%' }}>
             <Box display="flex" alignItems="center" justifyContent="end" style={{height:"100%"}}>
-              <Button variant="contained" style={{minWidth:"145px"}}>Launch App</Button>
+              <Button variant="contained" style={{minWidth:"145px"}} onClick={() => history.push("/overview")}>Launch App</Button>
             </Box>
               {/* {signin} */}
             </Grid>
@@ -505,7 +505,7 @@ export default function Header() {
               <MenuIcon
                 width="60px"
                 height="60px"
-                style={{ color: '#197ab3', fontSize: '30px' }}
+                style={{ color: '#fff', fontSize: '30px' }}
               />
             </IconButton>
           </Grid>

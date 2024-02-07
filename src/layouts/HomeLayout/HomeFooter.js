@@ -44,8 +44,8 @@ function HomeFooter() {
   return (
     <Box mt={6} pb={5}>
       <Container>
-        <Grid container spacing={5}>
-          <Grid item xs={12} sm={6}>
+        <Grid container spacing={5} justifyContent="space-between">
+          <Grid item xs={12} sm={6} md={5}>
             <Box className={classes.footerBox}>
               <Typography variant="h3">Learn</Typography>
               <Typography variant="h4">Explore Meteor Markets</Typography>
@@ -69,7 +69,7 @@ function HomeFooter() {
               </Typography>
             </Box>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} md={5}>
             <Box className={classes.footerBox}>
               <Typography variant="h3">Support</Typography>
               <Typography variant="h4">Contact the Meteor Markets</Typography>

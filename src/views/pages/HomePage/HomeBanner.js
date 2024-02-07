@@ -6,6 +6,8 @@ import {
   Button,
   Container,
 } from "@material-ui/core";
+import { useHistory } from 'react-router-dom'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -17,12 +19,13 @@ const useStyles = makeStyles((theme) => ({
 
 function HomeBanner() {
   const classes = useStyles();
+  const history = useHistory()
 
   return (
     <Box className={classes.headBox}>
      <Container>
         <Typography variant="h1" style={{maxWidth:"410px"}}>Enabling Risk-free Leverage on Meteor Markets</Typography>
-        <Button variant="contained" style={{minWidth:"120px",marginTop:"10px"}}>Launch App</Button>
+        <Button variant="contained" style={{minWidth:"120px",marginTop:"10px"}} onClick={() => history.push("/overview")}>Launch App</Button>
      </Container>
     </Box>
   )
