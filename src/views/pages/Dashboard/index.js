@@ -90,7 +90,7 @@ export default function Index() {
               </Box>
               <Box>
                 <Typography variant="h4" className="textColorFormate">
-                  Total assets
+                  Total Assets
                 </Typography>
                 <Typography variant="h2" className="textColorFormate">
                   $ 87.743
@@ -115,7 +115,7 @@ export default function Index() {
               </Box>
               <Box>
                 <Typography variant="h4" className="textColorFormate">
-                  Total deposits
+                  Total Supply
                 </Typography>
                 <Typography variant="h2" className="textColorFormate">
                   $ 78,342
@@ -140,35 +140,10 @@ export default function Index() {
               </Box>
               <Box>
                 <Typography variant="h4" className="textColorFormate">
-                  APY
+                Total Borrow
                 </Typography>
                 <Typography variant="h2" className="textColorFormate">
-                  + 12.3%
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item lg={3}>
-            <Box display={"flex"} alignItems={"center"}>
-              <Box className={classes.lokedIconBox}>
-                <img
-                  alt=""
-                  style={{
-                    width: "25px",
-                    height: "25px",
-                    borderRadius: "5px",
-                    objectFit: "cover",
-                  }}
-                  width="100%"
-                  src={"../images/eth-icon.png"}
-                />
-              </Box>
-              <Box>
-                {/* <Typography variant="h4" className="textColorFormate">
-                    Assets
-                  </Typography> */}
-                <Typography variant="h2" className="textColorFormate">
-                  $ 78,342
+                $ 78,342
                 </Typography>
               </Box>
             </Box>
