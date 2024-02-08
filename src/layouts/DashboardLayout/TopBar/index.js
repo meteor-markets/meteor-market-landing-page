@@ -71,7 +71,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
           <Hidden lgUp>
             <Box padding={0} className={classes.logoicon}>
               <img
-                src="/images/kian-logo.png"
+                src="https://i.ibb.co/NtRnxg4/Kian-logo.png"
                 width="180"
                 alt="Navbar logo"
                 style={{

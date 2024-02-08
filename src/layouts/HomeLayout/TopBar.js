@@ -64,10 +64,7 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem)
 const headersData = [
-  {
-    label: 'HOME',
-    href: '/home',
-  },
+ 
   {
     label: 'Twitter',
     href: '/twitter',
@@ -83,10 +80,7 @@ const headersData = [
 ]
 
 const headersData2 = [
-  {
-    label: 'HOME',
-    href: '/',
-  },
+  
   {
     label: 'WHITE PAPER',
     href: '/',
@@ -97,9 +91,9 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     color: theme.palette.text.black,
     borderBottom: '5px solid transparent',
-    padding: ' 0px 10px',
-    fontSize: ' 16px',
-    fontWeight: ' 800 !important',
+    padding: ' 0px 0px 0px 100px',
+    fontSize: ' 18px',
+    fontWeight: ' 500 !important',
     minWidth: '100px',
     lineHeight: '24px',
     borderRadius: 0,
@@ -118,10 +112,10 @@ const useStyles = makeStyles((theme) => ({
       alignItems: 'flex-start',
     },
     '&:active': {
-      borderBottom: '5px solid #5a86ff',
+      borderBottom: '5px solid #fb6621',
     },
     '&:hover': {
-      borderBottom: '5px solid #5a86ff',
+      borderBottom: '5px solid #fb6621',
     },
   },
   toolbar: {

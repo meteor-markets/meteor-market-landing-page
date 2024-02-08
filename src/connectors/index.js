@@ -1,4 +1,4 @@
-import { default_RPC_URL } from "src/constants";
+// import { default_RPC_URL } from "src/constants";
 import { InjectedConnector } from "@web3-react/injected-connector";
 import { WalletConnectConnector } from "@web3-react/walletconnect-connector";
 import { BinanceConnector } from "@bscswap/binance-connector";
@@ -11,10 +11,11 @@ export const injected = new InjectedConnector({
 export const binanceinjected = new BinanceConnector({
   supportedChainIds: [1,168587773, 42, 56, 97],
 });
+const default_RPC_URL = "https://bsc-dataseed1.defibit.io"; // process.env.REACT_APP_NETWORK_URL
 
 export const walletconnect = new WalletConnectConnector({
   rpc: {
-    168587773: default_RPC_URL,
+    42: default_RPC_URL,
   },
   bridge: "https://bridge.walletconnect.org",
   qrcode: true,
@@ -44,17 +45,17 @@ export const SUPPORTED_WALLETS = [
       color: "#3375BB",
     },
   },
-  // {
-  //   name: "Wallet Connect",
-  //   data: {
-  //     connector: walletconnect,
-  //     name: "Wallet Connect",
-  //     iconName: "/images/walletconnectW.png",
-  //     description: "Easy-to-use browser extension.",
-  //     href: null,
-  //     color: "#E8831D",
-  //   },
-  // },
+  {
+    name: "Wallet Connect",
+    data: {
+      connector: walletconnect,
+      name: "Wallet Connect",
+      iconName: "/images/walletconnectW.png",
+      description: "Easy-to-use browser extension.",
+      href: null,
+      color: "#E8831D",
+    },
+  },
   
   {
     name: "PHANTOM",
