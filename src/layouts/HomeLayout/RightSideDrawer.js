@@ -151,8 +151,9 @@ const NavBar = () => {
   const handleDesconnect = () => {
     setRightBar(false);
     user?.disconnectWallet();
+    sessionStorage.removeItem("walletName")
+    
   };
-  console.log("account", account);
   const classes = useStyles();
   const [rightBar, setRightBar] = useState(false);
   const history = useHistory();
@@ -161,12 +162,11 @@ const NavBar = () => {
   const [getBalance, setGetBalance] = useState();
   const [CoinName, setCoinName] = useState();
 
-  console.log("sdjfkasdf", CoinName);
   const FetchCoin = async () => {
+    setCoinName([])
     const response = await FetchCoinList()
     if (response?.length > 0) {
       let filterData = response?.filter((ele) => ele?.chainId == chainId)
-      console.log("response1", account, chainId, filterData[1], response);
 
       setCoinName(filterData[1])
     }
@@ -178,6 +178,8 @@ const NavBar = () => {
     window.localStorage.removeItem("token");
   };
   const getUserbalce = async () => {
+    setGetBalance("")
+
     var web3 = new Web3(library.provider);
     const balance = await web3.eth.getBalance(account);
     const balanceImETH = await web3.utils.fromWei(balance);
@@ -190,6 +192,10 @@ const NavBar = () => {
   useEffect(() => {
     if (account) {
       getUserbalce();
+    }else{
+      setGetBalance("")
+    setCoinName([])
+
     }
   }, [account, library]);
   const content = (

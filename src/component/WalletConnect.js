@@ -1,14 +1,14 @@
-import React,{ useContext, useEffect } from 'react';
+import React,{ useContext, useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import { Typography,makeStyles } from '@material-ui/core';
 import { CgCloseO } from "react-icons/cg";
-import ConnectWallet from './ConnectWalletPopUp';
 import { SUPPORTED_WALLETS } from "src/connectors";
 import { UserContext } from "src/context/User";
 import { useWeb3React } from "@web3-react/core";
+// import { usePhantomWallet } from '@solana/wallet-adapter-react';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +45,9 @@ const useStyles = makeStyles((theme) => ({
 export default function WalletConnect({ open, handleClose}) {
   const classes = useStyles();
   const user = useContext(UserContext);
+  const [connected, setConnected] = useState(false);
+  // const { publicKey, connect, disconnect } = usePhantomWallet();
+
   const { account } = useWeb3React();
 
   useEffect(() => {
@@ -52,6 +55,29 @@ export default function WalletConnect({ open, handleClose}) {
       handleClose();
     }
   }, [account]);
+  // useEffect(() => {
+  //   if (publicKey) {
+  //     setConnected(true);
+  //   }
+  // }, [publicKey]);
+ 
+  // const handleConnect = async () => {
+  //   try {
+  //     await connect();
+  //   } catch (error) {
+  //     console.error('Failed to connect to Phantom wallet', error);
+  //   }
+  // };
+
+  // const handleDisconnect = async () => {
+  //   try {
+  //     await disconnect();
+  //     setConnected(false);
+  //   } catch (error) {
+  //     console.error('Failed to disconnect from Phantom wallet', error);
+  //   }
+  // };
+
 console.log("SUPPORTED_WALLETS",SUPPORTED_WALLETS);
   return (
     <div>
@@ -64,7 +90,7 @@ console.log("SUPPORTED_WALLETS",SUPPORTED_WALLETS);
         // style={{position:"relative"}}
       >
         <DialogContent>
-          <Typography variant="h4" align="center">Connect a wallet</Typography>
+          <Typography variant="h4" align="center">Connect a wallet..</Typography>
           <Typography variant="body1" align="center" style={{marginTop:"10px",marginBottom:"20px"}}>By connecting your wallet, you agree to our Terms of Service and our Privacy Policy</Typography>
           {/* <ConnectWallet
           open={open}
@@ -73,7 +99,7 @@ console.log("SUPPORTED_WALLETS",SUPPORTED_WALLETS);
 
         {SUPPORTED_WALLETS.map((item, i) => {
           return (
-            <Button fullWidth variant="contained" className={classes.walletBtns} 
+            <Button fullWidth variant="contained" disabled={item.data.name=="Phantom Wallet" || item.data.name=="Coinbase Wallet"} className={classes.walletBtns} 
             onClick={() => {
                   window.sessionStorage.removeItem("walletName");
                   window.sessionStorage.setItem("walletName", item.name);
@@ -85,9 +111,20 @@ console.log("SUPPORTED_WALLETS",SUPPORTED_WALLETS);
           <Button fullWidth variant="contained" className={classes.walletBtns}><img src='../images/coinbaseW.png'/>Coinbase Wallet</Button>
           <Button fullWidth variant="contained" className={classes.walletBtns}><img src='../images/walletconnectW.png'/>Wallet Connect</Button>
           <Button fullWidth variant="contained" className={classes.walletBtns}><img src='../images/blocto.png'/>Phantom</Button>
-          <Button fullWidth variant="contained" className={classes.walletBtns}><img src='../images/safepal.png'/>Safepal</Button> */}
+          <Button fullWidth variant="contained" className={classes.walletBtns}><img src='../images/safepal.png'/>Safepal</Button>
           <Button fullWidth variant="contained" className={classes.walletBtns}>Learn About Wallet</Button>
-        </DialogContent>
+        */}
+          {/*
+        
+        <div>
+          {connected ? (
+            <button onClick={handleDisconnect}>Disconnect from Phantom</button>
+          ) : (
+            <button onClick={handleConnect}>Connect to Phantom</button>
+          )}
+        </div>
+        */}
+          </DialogContent>
         <DialogActions>
           {/* <Button
             variant="containedPrimary"
@@ -105,3 +142,5 @@ console.log("SUPPORTED_WALLETS",SUPPORTED_WALLETS);
     </div>
   );
 }
+
+

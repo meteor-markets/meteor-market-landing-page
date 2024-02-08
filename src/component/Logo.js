@@ -8,11 +8,11 @@ const Logo = (props) => {
   return (
     <Box style={{ padding: " 0px 10px", borderRadius: "4px" }}>
       <img
-        onClick={() => history.push("/dashboard")}
-        src="/images/kian-logo.png"
+        onClick={() => history.push("/")}
+        src="https://i.ibb.co/NtRnxg4/Kian-logo.png"
         alt="Logo"
         {...props}
-        width="auto"
+        width="70px"
       />
     </Box>
   );

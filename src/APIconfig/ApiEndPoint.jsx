@@ -9,7 +9,19 @@ export const FetchCoinList = async (data, dispatch) => {
           "Content-Type": `application/json`,
         },
       });
-      console.log("response",response?.data?.result);
+      return response?.data?.result;
+    } catch (error) {
+      return error?.response?.data
+    }
+  };
+  export const supplyCoins = async (body, dispatch) => {
+    
+    try {
+      let response = await axios.post(Apiconfigs?.supplyCoin, body,{
+        headers: {
+          "Content-Type": `application/json`,
+        },
+      });
       return response?.data?.result;
     } catch (error) {
       return error?.response?.data

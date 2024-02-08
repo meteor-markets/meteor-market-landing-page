@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { SUPPORTED_WALLETS } from "../connectors";
 import { useWeb3React } from "@web3-react/core";
+
 import { ACTIVE_NETWORK, NetworkDetails } from "../constants/";
 import { toast } from "react-toastify";
 import Web3 from "web3";
@@ -39,7 +40,6 @@ export default function AuthProvider(props) {
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [subscritionList, setSubsritionList] = useState([]);
   const [mySubscriptionList, setMySubscription] = useState([]);
-
   const [isAdmin, setIsAdmin] = useState(false);
   useEffect(() => {
     const cancelTokenSource = axios.CancelToken.source();
@@ -55,7 +55,7 @@ export default function AuthProvider(props) {
       cancelTokenSource.cancel();
     };
   }, [account, profileData]);
-
+console.log("account",account,chainId);
   useEffect(() => {
     if (profileData) {
       setIsAdmin(profileData.role == "ADMIN");
@@ -197,6 +197,7 @@ export default function AuthProvider(props) {
       activate(connector, undefined, true).catch((error) => {
         if (error) {
           toast.error(JSON.stringify(error.message));
+          console.log("errr",JSON.stringify(error.message),error.message);
           window.sessionStorage.removeItem("walletName");
           activate(connector);
         }

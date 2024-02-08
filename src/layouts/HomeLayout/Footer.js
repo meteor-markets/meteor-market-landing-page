@@ -11,7 +11,7 @@ export default function Footer() {
       <Grid container spacing={5} justifyContent="space-between">
         <Grid item lg={5}>
           <Box>
-            <img src="/images/kian-logo.png" alt="Logo" width="100%" style={{maxWidth:"70px"}} />
+            <img src="https://i.ibb.co/NtRnxg4/Kian-logo.png" alt="Logo" width="100%" style={{maxWidth:"70px"}} />
           </Box>
           <Typography variant="body1" className="textColorFormate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temposLorem ipsum dolor sit amet</Typography>
         </Grid>

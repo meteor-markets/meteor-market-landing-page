@@ -34,8 +34,8 @@ const StyledMenu = withStyles((theme) => ({
   paper: {
     width: '188px !important',
     background: theme.palette.background.dark1,
-    border: '1px solid #e1e1e1',
-    borderTop: '3px solid #5a86ff',
+    // border: '1px solid #e1e1e1',
+    // borderTop: '3px solid #5a86ff',
     borderRadius: 0,
   },
 }))((props) => (
@@ -64,54 +64,23 @@ const StyledMenuItem = withStyles((theme) => ({
   },
 }))(MenuItem)
 const headersData = [
+ 
   {
-    label: 'HOME',
-    href: '/',
+    label: 'Twitter',
+    href: '/twitter',
   },
   {
-    label: 'COINS',
-    href: '/flow-chart',
+    label: 'Medium',
+    href: '/medium',
   },
   {
-    label: 'ADD TOKEN',
-    href: '/add-token',
+    label: 'Discord',
+    href: '/discord',
   },
-  // {
-  //   label: "TOKEN ADD",
-  //   href: "/flow-chart",
-  // },
-
-  {
-    label: 'WIKI',
-    href: '/tokens',
-  },
-  {
-    label: 'BLOG',
-    href: '/login',
-  },
-  {
-    label: 'CONTACT',
-    href: '/contact-us',
-  },
-  {
-    label: 'WHITE PAPER',
-    href: '/',
-  },
-  // {
-  //   label: "DASHBOARD",
-  //   href: "/dashboard",
-  // },
-  // {
-  //   label: "SignIn",
-  //   href: "/login",
-  // },
 ]
 
 const headersData2 = [
-  {
-    label: 'HOME',
-    href: '/',
-  },
+  
   {
     label: 'WHITE PAPER',
     href: '/',
@@ -122,9 +91,9 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     color: theme.palette.text.black,
     borderBottom: '5px solid transparent',
-    padding: ' 0px 10px',
-    fontSize: ' 16px',
-    fontWeight: ' 800 !important',
+    padding: ' 0px 0px 0px 100px',
+    fontSize: ' 18px',
+    fontWeight: ' 500 !important',
     minWidth: '100px',
     lineHeight: '24px',
     borderRadius: 0,
@@ -143,10 +112,10 @@ const useStyles = makeStyles((theme) => ({
       alignItems: 'flex-start',
     },
     '&:active': {
-      borderBottom: '5px solid #5a86ff',
+      borderBottom: '5px solid #fb6621',
     },
     '&:hover': {
-      borderBottom: '5px solid #5a86ff',
+      borderBottom: '5px solid #fb6621',
     },
   },
   toolbar: {
@@ -154,10 +123,10 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.background.dark1,
 
     marginTop: '40px',
-    border: '1px solid #e1e1e1',
+    // border: '1px solid #e1e1e1',
     borderRadius: '7px',
     overflow: 'hidden',
-    boxShadow: 'rgb(99 99 99 / 20%) 0px 2px 8px 0px',
+    // boxShadow: 'rgb(99 99 99 / 20%) 0px 2px 8px 0px',
     display: 'flex',
     justifyContent: 'space-between',
     height: '90px',
@@ -241,16 +210,16 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.background.dark1,
   },
   mainHeader: {
-    border: '1px solid #e1e1e1',
+    // border: '1px solid #e1e1e1',
     height: '60px',
     display: 'flex',
     padding: 0,
     overflow: 'hidden',
-    boxShadow: 'rgb(99 99 99 / 20%) 0px 2px 8px 0px',
+    // boxShadow: 'rgb(99 99 99 / 20%) 0px 2px 8px 0px',
     marginTop: '16px',
     borderRadius: '7px',
     justifyContent: 'space-between',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#0B0B0F',
     alignItems: 'center',
   },
   search: {
@@ -326,7 +295,7 @@ const useStyles = makeStyles((theme) => ({
   },
   logoBox: {
     height: '100%',
-    borderRight: ' 1px solid #e1e1e1',
+    // borderRight: ' 1px solid #e1e1e1',
     '& a': {
       height: '100%',
       '& div': {
@@ -471,13 +440,16 @@ export default function Header() {
             item
             direction="row"
             alignItems="center"
-            style={{ paddingLeft: '0px', height: '100%' }}
+            style={{ paddingLeft: '0px', height: '100%',textAlign:"center" }}
           >
             <Grid item xs={10} style={{ height: '100%' }}>
               {getMenuButtons()}
             </Grid>
             <Grid item xs={2} style={{ height: '100%' }}>
-              {signin}
+            <Box display="flex" alignItems="center" justifyContent="end" style={{height:"100%"}}>
+              <Button variant="contained" style={{minWidth:"145px"}} onClick={() => history.push("/overview")}>Launch App</Button>
+            </Box>
+              {/* {signin} */}
             </Grid>
           </Grid>
         </Toolbar>
@@ -503,7 +475,7 @@ export default function Header() {
           <div className={drawerContainer}>
             <img className={logoDrawer} src="images/logo.png" alt="" />
             {getDrawerChoices()}
-            {signin}
+            {/* {signin} */}
           </div>
         </Drawer>
 
@@ -527,7 +499,7 @@ export default function Header() {
               <MenuIcon
                 width="60px"
                 height="60px"
-                style={{ color: '#197ab3', fontSize: '30px' }}
+                style={{ color: '#fff', fontSize: '30px' }}
               />
             </IconButton>
           </Grid>
@@ -623,11 +595,11 @@ export default function Header() {
         position={history.location.pathname !== '/' ? 'relative' : 'relative'}
         elevation={0}
         // style={{ backgroundColor: "#ccc0", border: "none" }}
-        style={
-          history.location.pathname !== '/'
-            ? { backgroundColor: '#f5f7fa' }
-            : { backgroundColor: '#f5f7fa' }
-        }
+        // style={
+        //   history.location.pathname !== '/'
+        //     ? { backgroundColor: '#f5f7fa' }
+        //     : { backgroundColor: '#f5f7fa' }
+        // }
       >
         <Container
           maxWidth={history.location.pathname !== '/' ? 'fixed' : 'fixed'}
