@@ -21,13 +21,13 @@
     "@material-ui/styles": "^4.11.3",
     "@mdi/js": "^5.9.55",
     "@mdi/react": "^1.4.0",
-    "@solana/wallet-adapter-base": "^0.9.4",
-        "@solana/wallet-adapter-react": "^0.15.3",
-        "@solana/wallet-adapter-react-ui": "^0.9.5",
-        "@solana/wallet-adapter-wallets": "^0.16.0",
-        "@solana/web3.js": "^1.36.0",
     "@ramonak/react-progress-bar": "^4.4.0",
+    "@solana/wallet-adapter-base": "^0.9.4",
     "@solana/wallet-adapter-phantom": "^0.9.24",
+    "@solana/wallet-adapter-react": "^0.15.3",
+    "@solana/wallet-adapter-react-ui": "^0.9.5",
+    "@solana/wallet-adapter-wallets": "^0.16.0",
+    "@solana/web3.js": "^1.36.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -107,6 +107,7 @@
   },
   "devDependencies": {
     "@babel/helper-call-delegate": "^7.11.4",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "prettier": "^2.1.1"
   }
 }
