@@ -3,58 +3,58 @@ export default {
     fontWeight: 500,
     fontSize: 35,
     fontFamily: "'Saira Semi Condensed', sans-serif",
-    color: "#fff",
-    "@media(max-width:767px)": {
-      fontSize: "20px",
-    },
+    color: '#fff',
+    '@media(max-width:767px)': {
+      fontSize: '20px'
+    }
   },
 
   h2: {
     fontWeight: 500,
     fontSize: 30,
-    fontFamily: "'Saira Semi Condensed', sans-serif",
+    fontFamily: "'Saira Semi Condensed', sans-serif"
   },
   h3: {
     fontWeight: 500,
     fontSize: 25,
     fontFamily: "'Saira Semi Condensed', sans-serif",
-    color: "#fff",
+    color: '#fff'
   },
   h4: {
     fontWeight: 500,
     fontSize: 20,
     fontFamily: "'Saira Semi Condensed', sans-serif",
-    color: "#fff",
+    color: '#fff'
   },
   h5: {
     fontWeight: 500,
     fontSize: 18,
-    color: "#fff",
-    fontFamily: "'Saira Semi Condensed', sans-serif",
+    color: '#fff',
+    fontFamily: "'Saira Semi Condensed', sans-serif"
   },
   h6: {
     fontWeight: 500,
     fontSize: 16,
-    fontFamily: "'Saira Semi Condensed', sans-serif",
+    fontFamily: "'Saira Semi Condensed', sans-serif"
   },
   overline: {
-    fontWeight: 500,
+    fontWeight: 500
   },
   button: {
-    textTransform: "capitalize",
+    textTransform: 'capitalize',
     borderRadius: 27,
-    fontFamily: "'Saira Semi Condensed', sans-serif",
+    fontFamily: "'Saira Semi Condensed', sans-serif"
   },
   body1: {
     fontSize: 16,
-    color: "#898CA9",
-    fontFamily: "'Saira Semi Condensed', sans-serif",
+    color: '#898CA9',
+    fontFamily: "'Saira Semi Condensed', sans-serif"
   },
   body2: {
     fontSize: 14,
-    fontWeight: "300",
-    color: "#fff",
-    lineHeight: "21px",
-    fontFamily: "'Saira Semi Condensed', sans-serif",
-  },
-};
+    fontWeight: '300',
+    color: '#fff',
+    lineHeight: '21px',
+    fontFamily: "'Saira Semi Condensed', sans-serif"
+  }
+}

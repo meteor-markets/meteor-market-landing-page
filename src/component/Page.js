@@ -1,7 +1,7 @@
-import React from "react";
-import { Helmet } from "react-helmet";
+import React from 'react'
+import { Helmet } from 'react-helmet'
 export default function Page(props) {
-  const { title, children } = props;
+  const { title, children } = props
 
   return (
     <>
@@ -10,5 +10,5 @@ export default function Page(props) {
       </Helmet>
       <div>{children}</div>
     </>
-  );
+  )
 }

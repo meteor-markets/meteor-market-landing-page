@@ -1,27 +1,22 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import { Typography } from '@material-ui/core';
+import React from 'react'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import { Typography } from '@material-ui/core'
 
 export default function WarningDialog({ open, handleClose, desc }) {
   return (
     <div>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
+      <Dialog open={open} onClose={handleClose} aria-labelledby='alert-dialog-title' aria-describedby='alert-dialog-description'>
         <DialogContent>
-          <Typography color="error">{desc}</Typography>
+          <Typography color='error'>{desc}</Typography>
         </DialogContent>
         <DialogActions>
           <Button
-            variant="containedPrimary"
+            variant='containedPrimary'
             onClick={() => {
-              handleClose();
+              handleClose()
             }}
           >
             Close
@@ -29,5 +24,5 @@ export default function WarningDialog({ open, handleClose, desc }) {
         </DialogActions>
       </Dialog>
     </div>
-  );
+  )
 }

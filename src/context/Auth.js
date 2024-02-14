@@ -1,81 +1,81 @@
-import React, { createContext, useState, useEffect } from "react";
-import axios from "axios";
-import apiConfig from "src/APIconfig/ApiConfig";
-import { toast } from "react-toastify";
+import React, { createContext, useState, useEffect } from 'react'
+import axios from 'axios'
+import apiConfig from 'src/APIconfig/ApiConfig'
+import { toast } from 'react-toastify'
 
-export const AuthContext = createContext();
+export const AuthContext = createContext()
 
 const setSession = (accessToken) => {
   if (accessToken) {
-    localStorage.setItem("creatturAccessToken", accessToken);
-    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+    localStorage.setItem('creatturAccessToken', accessToken)
+    axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`
   } else {
-    localStorage.removeItem("creatturAccessToken");
-    delete axios.defaults.headers.common.Authorization;
+    localStorage.removeItem('creatturAccessToken')
+    delete axios.defaults.headers.common.Authorization
   }
-};
+}
 
 function checkLogin() {
-  const accessToken = window.sessionStorage.getItem("token");
-  return accessToken ? true : false;
+  const accessToken = window.sessionStorage.getItem('token')
+  return accessToken ? true : false
 }
 
 export default function AuthProvider(props) {
-  const [isLogin, setIsLogin] = useState(checkLogin());
-  const [userData, setUserData] = useState({});
-  const [searchToken, setSearchToken] = useState("");
-  const [theme, setTheme] = useState(true);
-  const token = window.sessionStorage.getItem("token");
+  const [isLogin, setIsLogin] = useState(checkLogin())
+  const [userData, setUserData] = useState({})
+  const [searchToken, setSearchToken] = useState('')
+  const [theme, setTheme] = useState(true)
+  const token = window.sessionStorage.getItem('token')
   const getProfileHandler = async (accessToken) => {
     try {
       const res = await axios({
-        method: "GET",
+        method: 'GET',
         url: apiConfig.myProfile,
         headers: {
-          token: accessToken,
-        },
-      });
+          token: accessToken
+        }
+      })
       if (res.data.responseCode === 200) {
-        setUserData(res.data.result);
+        setUserData(res.data.result)
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
   useEffect(() => {
     if (token) {
-      getProfileHandler(token);
+      getProfileHandler(token)
     }
-  }, [window.sessionStorage.getItem("token")]);
+  }, [window.sessionStorage.getItem('token')])
 
   const getPolygonContractDetailsHandler = async (searchKey) => {
     try {
       const res = await axios({
-        method: "GET",
+        method: 'GET',
         url: apiConfig.getPolygonContractDetails,
         headers: {
-          token: token,
+          token: token
         },
         params: {
-          contractAddress: searchKey,
-        },
-      });
+          contractAddress: searchKey
+        }
+      })
       if (res.data.responseCode === 200) {
-        console.log("finalDAta*****", res.data.result);
+        console.log('finalDAta*****', res.data.result)
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
   useEffect(() => {
-    if (searchToken !== "") {
+    if (searchToken !== '') {
       if (token) {
-        getPolygonContractDetailsHandler(searchToken);
+        getPolygonContractDetailsHandler(searchToken)
       } else {
-        toast.warn("Please login first!!");
+        toast.warn('Please login first!!')
       }
     }
-  }, [searchToken, token]);
+  }, [searchToken, token])
 
   let data = {
     userLoggedIn: isLogin,
@@ -85,13 +85,11 @@ export default function AuthProvider(props) {
     setTheme: (data) => setTheme(data),
     setSearchToken: (data) => setSearchToken(data),
     userLogIn: (type, data) => {
-      setSession(data);
-      setIsLogin(type);
+      setSession(data)
+      setIsLogin(type)
     },
-    getProfileHandler: (data) => getProfileHandler(data),
-  };
+    getProfileHandler: (data) => getProfileHandler(data)
+  }
 
-  return (
-    <AuthContext.Provider value={data}>{props.children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={data}>{props.children}</AuthContext.Provider>
 }
