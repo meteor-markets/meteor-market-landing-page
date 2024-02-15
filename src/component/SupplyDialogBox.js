@@ -52,17 +52,15 @@ const useStyles = makeStyles((theme) => ({
 function SupplyDialogBox({ open, handleClose ,supplyData}) {
   const classes = useStyles();
 
-  const [age, setAge] = useState(10);
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
   const handleSypplyCoin = async () => {
     let data={
-      coinName:supplyData?.coinName,
+      coinId:supplyData?.id,
       walletAddress:"0xB72c3642EA32deFDA74C68FAe6e6095B49441444",
       amount:0.1,
-      transactionDetails:"",
+      transactionDetails: {
+        "transactionHash": "0x32137b75e23D6384EeBf2Fb797CE421c4CF37e62"
+    },
+    "transactionStatus": "SUCCESS",
 
 
     }
