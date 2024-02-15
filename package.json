@@ -93,7 +93,13 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "no-unused-vars": "warn",
+      "eqeqeq": "warn",
+      "default-case": "warn",
+      "import/no-anonymous-default-export": "warn"
+    }
   },
   "browserslist": {
     "production": [
