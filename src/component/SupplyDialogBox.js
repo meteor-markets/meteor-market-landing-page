@@ -73,6 +73,7 @@ function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
       const response = await supplyCoins(data)
       console.log("response", response);
       if (response?.responseCode == 200) {
+        toast.success(response?.responseMessage)
         handleClose()
         FetchCoin()
         setAmount("")

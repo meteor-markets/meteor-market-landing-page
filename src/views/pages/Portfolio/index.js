@@ -79,6 +79,9 @@ export default function Index() {
 const getUserProfile= async()=>{
 const response = await FetchUserPortfolio()
 if (response?.responseCode ===200) {
+  let assets = response?.result.assets;
+  assets = assets.filter(a => ['SNX','DAI'].indexOf(a.coinName) < 0 );
+  response.result.assets = assets;
 setGetportfolio(response?.result)
 }
 }
