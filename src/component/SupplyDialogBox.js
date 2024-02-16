@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Typography,
   makeStyles,
@@ -16,6 +16,8 @@ import {
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { supplyCoins } from "src/APIconfig/ApiEndPoint";
+import { UserContext } from "src/context/User";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles((theme) => ({
   closeBtn: {
@@ -34,43 +36,55 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "9px",
     padding: "20px",
   },
-  dialogAction:{
+  dialogAction: {
     justifyContent: "start",
     paddingLeft: "24px",
     paddingRight: "24px",
   },
-  DialogContent:{
+  DialogContent: {
     paddingLeft: "24px",
     paddingRight: "24px",
-    [theme.breakpoints.down("xs")]:{
+    [theme.breakpoints.down("xs")]: {
       paddingLeft: "0px",
       paddingRight: "0px",
     }
   }
 }));
 
-function SupplyDialogBox({ open, handleClose ,supplyData}) {
+function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
+  const user = useContext(UserContext);
+
+  const [amount, setAmount] = useState("")
   const classes = useStyles();
-console.log("supplyData",supplyData);
+  console.log("supplyData", amount);
   const handleSypplyCoin = async () => {
-    let data={
-      coinId:supplyData?._id,
-      walletAddress:"0xB72c3642EA32deFDA74C68FAe6e6095B49441444",
-      amount:0.1,
+    let data = {
+      coinId: supplyData?._id,
+      walletAddress: "0xB72c3642EA32deFDA74C68FAe6e6095B49441444",
+      amount: amount,
       transactionDetails: {
         "transactionHash": "0x32137b75e23D6384EeBf2Fb797CE421c4CF37e62"
-    },
-    "transactionStatus": "SUCCESS",
+      },
+      "transactionStatus": "SUCCESS",
 
 
     }
-    const response = await supplyCoins(data)
-    if (response?.length > 0) {
-
-      // setCoinName(response)
+    if (user.accounts) {
+      const response = await supplyCoins(data)
+      console.log("response", response);
+      if (response?.responseCode == 200) {
+        handleClose()
+        FetchCoin()
+        setAmount("")
+      } else {
+        toast.error(response)
+      }
+    } else {
+      toast.warn("Please Connect your wallet")
     }
+
   }
- 
+
   return (
     <Box>
       <Dialog
@@ -112,15 +126,15 @@ console.log("supplyData",supplyData);
             >
               <span className={classes.smallText}>Supply Amount</span>{" "}
               <span className={classes.mediumText}>
-                Wallet Balance 112.900 {supplyData?.coinName}
+                Wallet Balance {supplyData?.coinName}
               </span>
             </Box>
             <FormControl variant="outlined">
-              <OutlinedInput
+              <OutlinedInput onChange={(e) => setAmount(e.target.value)} value={amount} type="number"
                 endAdornment={
                   <InputAdornment position="end">
                     <span style={{ marginRight: "15px", textAlign: "end" }}>
-                    {supplyData?.coinName} <br /> -$0.00
+                      {supplyData?.coinName} <br /> -$0.00
                     </span>
                     <Button variant="contained">MAX</Button>
                   </InputAdornment>
@@ -202,7 +216,7 @@ console.log("supplyData",supplyData);
               </Box>
             </Box>
             <Box textAlign={"center"} mt={5}>
-              <Button variant="contained" style={{minWidth:"170px"}} onClick={()=>handleSypplyCoin()}>Supply</Button>
+              <Button disabled={!amount} variant="contained" style={{ minWidth: "170px" }} onClick={() => handleSypplyCoin()}>Supply</Button>
             </Box>
           </form>
         </DialogContent>

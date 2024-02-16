@@ -101,7 +101,7 @@ export default function WalletConnect({ open, handleClose}) {
                 onWalletConnectHandler(data.data);
               }
                  
-                }}><img src={data.data.iconName} alt="icon-name"/>{data.data.name}</Button>
+                }}><img src={data.data.iconName} style={{borderRadius:"7px"}} width="30" height="30" alt="icon-name"/>{data.data.name}</Button>
           );
         })}
           </DialogContent>

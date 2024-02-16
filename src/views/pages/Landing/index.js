@@ -424,7 +424,7 @@ const [currentPage, setCurrentPage] = useState(1);
           </Box>
         </TableContainer>
       </Box>
-      <SupplyDialogBox open={openSupplyModel} handleClose={handleCloseModel} supplyData={supplyData}/>
+      <SupplyDialogBox open={openSupplyModel} FetchCoin={FetchCoin} handleClose={handleCloseModel} supplyData={supplyData}/>
       <WithdrawDialogBox open={openWithdrawModel} handleClose={handleCloseModel} supplyData={supplyData}/>
       <BorrowDialogBox open={openBorrowModel} handleClose={handleCloseModel}/>
       <RepayDialogBox open={openRepayModel} handleClose={handleCloseModel}/>

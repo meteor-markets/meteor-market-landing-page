@@ -136,7 +136,7 @@ let useraddress = sessionStorage?.getItem("userAddress")
         );
         
         if (res.status === 200 || res.status === 205) {
-          let token = `Bearer ${res?.data?.result?.token}`
+          let token = `${res?.data?.result?.token}`
           sessionStorage.setItem("loginToken",token)
           sessionStorage.setItem("userAddress",res?.data?.result?.walletAddress)
 setAccount(res?.data?.result?.walletAddress)

@@ -125,7 +125,7 @@ export default function Index() {
                   Total Supply
                 </Typography>
                 <Typography variant="h2" className="textColorFormate">
-                  $ {getUserposrtFolio?.totalAssets}
+                  $ {getUserposrtFolio?.totalSupply}
                 </Typography>
               </Box>
             </Box>

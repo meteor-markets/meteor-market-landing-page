@@ -48,7 +48,7 @@ export const SUPPORTED_WALLETS = [
     data: {
       connector: injected,
       name: "Phantom Wallet",
-      iconName: "/images/coinbaseW.png", 
+      iconName: "/images/phantom.svg", 
       description: "Solana-based crypto wallet",
       href: null,
       color: "#347eff",

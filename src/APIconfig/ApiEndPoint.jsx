@@ -16,61 +16,55 @@ export const FetchCoinList = async (data, dispatch) => {
 };
 export const supplyCoins = async (body, dispatch) => {
   let tokenAddrss = sessionStorage.getItem("loginToken")
-  let AuthToken = ""
   if (tokenAddrss) {
-    AuthToken = sessionStorage.getItem("loginToken").split(" ")[1];
-
+    try {
+      let response = await axios.post(Apiconfigs?.supplyCoin, body, {
+        headers: {
+          "Content-Type": `application/json`,
+          token: tokenAddrss,
+        },
+      });
+      return response?.data;
+    } catch (error) {
+      return error?.response?.data
+    }
   }
-  try {
-    let response = await axios.post(Apiconfigs?.supplyCoin, body, {
-      headers: {
-        "Content-Type": `application/json`,
-        token: AuthToken,
-      },
-    });
-    return response?.data?.result;
-  } catch (error) {
-    return error?.response?.data
-  }
+  
 };
 export const FetchUserPortfolio = async (data, dispatch) => {
   let userAdress = sessionStorage.getItem("userAddress");
   let tokenAddrss = sessionStorage.getItem("loginToken")
-  let AuthToken = ""
-  if (tokenAddrss) {
-    AuthToken = sessionStorage.getItem("loginToken").split(" ")[1];
-
-  }
-
-
+ 
+if (tokenAddrss) {
   try {
     let response = await axios.get(`${Apiconfigs?.getuserprotfolio}?walletAddress=${userAdress}`, {
       headers: {
         "Content-Type": `application/json`,
-        token: AuthToken,
+        token: tokenAddrss,
       },
     });
     return response?.data;
   } catch (error) {
     return error?.response?.data
   }
+}
+
+
 };
 export const FetchOverview = async (data, dispatch) => {
   let tokenAddrss = sessionStorage.getItem("loginToken")
-  let AuthToken = ""
-  if (tokenAddrss) {
-    AuthToken = sessionStorage.getItem("loginToken").split(" ")[1];
-
-  }
+ if (tokenAddrss) {
   try {
     let response = await axios.get(Apiconfigs?.overview, {
       headers: {
         "Content-Type": `application/json`,
-        token: AuthToken,
+        token: tokenAddrss,
       },
     });
     return response?.data;
   } catch (error) {
     return error?.response?.data
   }
+ }
+ 
 };
