@@ -24,8 +24,8 @@ function HomeBanner() {
   return (
     <Box className={classes.headBox}>
      <Container>
-        <Typography variant="h1" style={{maxWidth:"410px"}}>Enabling Risk-free Leverage on Meteor Markets</Typography>
-        <Button variant="contained" style={{minWidth:"120px",marginTop:"10px"}} onClick={() => history.push("/overview")}>Launch App</Button>
+        <Typography variant="h1" style={{maxWidth:"410px"}}>Enabling Interest-free Leverage on Meteor Markets</Typography>
+        <Button variant="contained" style={{minWidth:"120px",marginTop:"20px"}} onClick={() => history.push("/overview")}>Launch App</Button>
      </Container>
     </Box>
   )

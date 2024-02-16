@@ -26,7 +26,29 @@ const useStyles = makeStyles((theme) => ({
     minWidth:"120px",
     position:"relative",
     top:"40px"
-  }
+  },
+  centeredBox: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%', 
+    color: '#fff'
+  },
+  gradientText: {
+    fontSize: 32,
+    fontWeight: "bold",
+    // Assuming the gradient is from a dark orange to a lighter orange based on the button image
+    background: 'linear-gradient(to right, #FC6A03, #FED8B1)', // Gradient has been set to similar colors as the button
+    backgroundClip: 'text',
+    textFillColor: 'transparent',
+    transition: '0.3s', // Smooth transition for hover effect
+    '&:hover': {
+      filter: 'brightness(90%)', // Darkens the text on hover
+      backgroundColor: '#FED8B1',
+    },
+    marginTop: 5
+  },
 }));
 
 function WhyMeteorMarkets() {
@@ -36,31 +58,29 @@ function WhyMeteorMarkets() {
   return (
     <Container>
       <Box className={classes.headBox}>
-      <Typography variant="h1">Why Meteor Markets?</Typography>
-        <Grid container spacing={4}>
+      <Typography variant="h1" className={classes.gradientText}>Why Meteor Markets?</Typography>
+        <Grid container spacing={8} padding={5}>
           <Grid item xs={12} sm={6} md={4}>
-            <Box>
-                <Typography variant="h3">Zero-fee Borrowing</Typography>
-                <Typography variant="body1" style={{color:"#fff"}}>
-                By leveraging Blast's native yield <br/> functionality, Meteor Markets enables <br/> borrowing at zero fees.<br/>
-                Talk about risk-free leverage.
+            <Box className={classes.centeredBox}>
+                <Typography variant="h3">Interest-free Borrowing</Typography>
+                <Typography variant="body1" style={{color:"#fff", fontSize: '16px'}}>
+                We leverage Blast's native yields to unlock borrowing at zero fees.
                 </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
-            <Box>
+            <Box className={classes.centeredBox}>
                 <Typography variant="h3">Lending</Typography>
-                <Typography variant="body1" style={{color:"#fff"}}>
-                Multi-asset lending on Meteor<br/> Markets allows users to earn <br/>yield. Say no to idle capital.
+                <Typography variant="body1" style={{color:"#fff", fontSize: '16px'}}>
+                Multi-asset peer-to-peer lending/borrowing protocol on Blast.
                 </Typography>
             </Box>
           </Grid>
           <Grid item xs={12} sm={6} md={4}>
-            <Box>
-                <Typography variant="h3">Automate</Typography>
-                <Typography variant="body1" style={{color:"#fff"}}>
-                By leveraging Blast's native yield <br/> functionality, Meteor Markets enables <br/> borrowing at zero fees.<br/>
-                Talk about risk-free leverage.
+            <Box className={classes.centeredBox}>
+                <Typography variant="h3">Leverage</Typography>
+                <Typography variant="body1" style={{color:"#fff", fontSize: '16px'}}>
+                Meteor Markets will offer the cheapest leverage opportunity on Blast.
                 </Typography>
             </Box>
           </Grid>
