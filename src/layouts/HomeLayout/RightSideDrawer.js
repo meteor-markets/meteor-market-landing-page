@@ -167,14 +167,14 @@ const NavBar = () => {
   const [openConnectWallet, setOpenConnectWallet] = useState(false);
   const [getBalance, setGetBalance] = useState();
   const [CoinName, setCoinName] = useState();
-
+console.log("CoinName",CoinName);
   const FetchCoin = async () => {
     setCoinName([])
     const response = await FetchCoinList()
     if (response?.length > 0) {
-      let filterData = response?.filter((ele) => ele?.chainId === chainId)
-
-      setCoinName(filterData[1])
+      let filterData = response?.filter((ele) => ele?.coinName =="BLAST")
+console.log("filterData",filterData);
+      setCoinName(filterData[0])
     }
   }
  
@@ -196,7 +196,7 @@ const NavBar = () => {
   };
 
   useEffect(() => {
-    if (account) {
+    if (account || user.accounts) {
       getUserbalce();
     }else{
       setGetBalance("")
@@ -204,7 +204,7 @@ const NavBar = () => {
 
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, library]);
+  }, [account, library,user.accounts]);
   const content = (
     <Box height="100%" display="flex" flexDirection="column">
       {open && (

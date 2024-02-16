@@ -15,11 +15,17 @@ export const FetchCoinList = async (data, dispatch) => {
   }
 };
 export const supplyCoins = async (body, dispatch) => {
+  let tokenAddrss = sessionStorage.getItem("loginToken")
+  let AuthToken = ""
+  if (tokenAddrss) {
+    AuthToken = sessionStorage.getItem("loginToken").split(" ")[1];
 
+  }
   try {
     let response = await axios.post(Apiconfigs?.supplyCoin, body, {
       headers: {
         "Content-Type": `application/json`,
+        token: AuthToken,
       },
     });
     return response?.data?.result;
@@ -29,7 +35,13 @@ export const supplyCoins = async (body, dispatch) => {
 };
 export const FetchUserPortfolio = async (data, dispatch) => {
   let userAdress = sessionStorage.getItem("userAddress");
-  let AuthToken = sessionStorage.getItem("loginToken").split(" ")[1];
+  let tokenAddrss = sessionStorage.getItem("loginToken")
+  let AuthToken = ""
+  if (tokenAddrss) {
+    AuthToken = sessionStorage.getItem("loginToken").split(" ")[1];
+
+  }
+
 
   try {
     let response = await axios.get(`${Apiconfigs?.getuserprotfolio}?walletAddress=${userAdress}`, {
@@ -44,7 +56,12 @@ export const FetchUserPortfolio = async (data, dispatch) => {
   }
 };
 export const FetchOverview = async (data, dispatch) => {
-  let AuthToken = sessionStorage.getItem("loginToken").split(" ")[1];
+  let tokenAddrss = sessionStorage.getItem("loginToken")
+  let AuthToken = ""
+  if (tokenAddrss) {
+    AuthToken = sessionStorage.getItem("loginToken").split(" ")[1];
+
+  }
   try {
     let response = await axios.get(Apiconfigs?.overview, {
       headers: {

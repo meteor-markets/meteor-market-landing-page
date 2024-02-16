@@ -51,10 +51,10 @@ const useStyles = makeStyles((theme) => ({
 
 function SupplyDialogBox({ open, handleClose ,supplyData}) {
   const classes = useStyles();
-
+console.log("supplyData",supplyData);
   const handleSypplyCoin = async () => {
     let data={
-      coinId:supplyData?.id,
+      coinId:supplyData?._id,
       walletAddress:"0xB72c3642EA32deFDA74C68FAe6e6095B49441444",
       amount:0.1,
       transactionDetails: {
