@@ -11,6 +11,8 @@ const Apiconfigs = {
   myAccount: `${user}/getProfile`,
   connectwallet: `${user}/connectWallet`,
   coinlist: `${admin}/listCoin`,
+  overview: `${admin}/overview`,
+
   supplyCoin: `${transaction}/supply`,
   getuserprotfolio: `${user}/getPortfolio`,
 };

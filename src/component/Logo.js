@@ -9,10 +9,10 @@ const Logo = (props) => {
     <Box style={{ padding: " 0px 10px", borderRadius: "4px" }}>
       <img
         onClick={() => history.push("/")}
-        src="https://i.ibb.co/NtRnxg4/Kian-logo.png"
+        src="https://res.cloudinary.com/dtbw2hh88/image/upload/v1708023413/h0bpj8tuiys51ex2t9dp.png"
         alt="Logo"
         {...props}
-        width="70px"
+        width="100px"
       />
     </Box>
   );

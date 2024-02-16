@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Grid,
   Box,
@@ -7,6 +7,7 @@ import {
 } from "@material-ui/core";
 import Page from "src/component/Page";
 import Footer from "src/layouts/HomeLayout/Footer";
+import { FetchOverview } from "src/APIconfig/ApiEndPoint";
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -61,6 +62,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Index() {
   const classes = useStyles();
+  const [getUserposrtFolio, setGetportfolio] = useState();
+
+  const getOverview = async () => {
+    const response = await FetchOverview()
+    if (response?.responseCode === 200) {
+      setGetportfolio(response.result[0])
+    }
+  }
+
+  useEffect(() => {
+    getOverview();
+  }, []);
 
 
   return (
@@ -87,7 +100,7 @@ export default function Index() {
                   Total Assets
                 </Typography>
                 <Typography variant="h2" className="textColorFormate">
-                  $ 87.743
+                  $ {getUserposrtFolio?.totalAssets}
                 </Typography>
               </Box>
             </Box>
@@ -112,7 +125,7 @@ export default function Index() {
                   Total Supply
                 </Typography>
                 <Typography variant="h2" className="textColorFormate">
-                  $ 78,342
+                  $ {getUserposrtFolio?.totalAssets}
                 </Typography>
               </Box>
             </Box>
@@ -134,10 +147,10 @@ export default function Index() {
               </Box>
               <Box>
                 <Typography variant="h4" className="textColorFormate">
-                Total Borrow
+                  Total Borrow
                 </Typography>
                 <Typography variant="h2" className="textColorFormate">
-                $ 78,342
+                  $ {getUserposrtFolio?.totalBorrow}
                 </Typography>
               </Box>
             </Box>
@@ -156,7 +169,7 @@ export default function Index() {
         </Box>
       </Box>
 
-    <Footer/>
+      <Footer />
     </Page>
   );
 }

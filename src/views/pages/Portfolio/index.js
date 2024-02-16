@@ -115,7 +115,7 @@ const [currentPage, setCurrentPage] = useState(1);
                 <Box>
                   <Typography variant="h4">Your Supply Balance</Typography>
                   <Typography variant="h2" className="textColorFormate">
-                    $1.00M
+                    ${getUserposrtFolio?.supplyBalance}
                   </Typography>
                 </Box>
                 <Box>
@@ -127,7 +127,7 @@ const [currentPage, setCurrentPage] = useState(1);
                     className="textColorFormate"
                     style={{ textAlign: "end" }}
                   >
-                    -3%
+                  {getUserposrtFolio?.netAPY}%
                   </Typography>
                 </Box>
               </Box>
@@ -137,7 +137,7 @@ const [currentPage, setCurrentPage] = useState(1);
                 <Box>
                   <Typography variant="h4">Your Borrow Balance</Typography>
                   <Typography variant="h2" className="textColorFormate">
-                    $500.00K
+                    ${getUserposrtFolio?.borrowBalance}
                   </Typography>
                 </Box>
                 <Box>
@@ -149,7 +149,7 @@ const [currentPage, setCurrentPage] = useState(1);
                     className="textColorFormate"
                     style={{ textAlign: "end" }}
                   >
-                    60.5%
+                  {getUserposrtFolio?.borrowLimit}%
                   </Typography>
                 </Box>
               </Box>
