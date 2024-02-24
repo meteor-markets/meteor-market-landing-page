@@ -91,9 +91,10 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     color: theme.palette.text.black,
     borderBottom: '5px solid transparent',
-    padding: ' 0px 0px 0px 100px',
+    // padding: ' 0px 0px 0px 100px',
+    margin:"0px 40px",
     fontSize: ' 18px',
-    fontWeight: ' 500 !important',
+    fontWeight: ' 400 !important',
     minWidth: '100px',
     lineHeight: '24px',
     borderRadius: 0,
@@ -186,6 +187,9 @@ const useStyles = makeStyles((theme) => ({
     '@media (max-width: 500px)': {
       padding: '7px 0',
       width: '100%',
+    },
+    '&:hover': {
+      color: '#FC4A1A',
     },
   },
   menuMobile2: {
