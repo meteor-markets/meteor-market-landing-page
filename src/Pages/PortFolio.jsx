@@ -94,6 +94,7 @@ const PortFolio = () => {
   }
 
   useEffect(() => {
+    console.log("userAdress",userAdress);
     if (userAdress) {
 
       getUserProfile();

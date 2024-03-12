@@ -3,13 +3,15 @@ import { useConnectWallet } from "@web3-onboard/react";
 import { ethers } from "ethers";
 import { Box, Button, Dialog, Tooltip, Typography, makeStyles } from "@material-ui/core";
 import { UserContext } from "./Context/User";
-import { FetchCoinList, connectWallet, getProfileHandler } from "./APIconfig/ApiEndPoint";
+import { FetchCoinList, FetchOverview, connectWallet, getProfileHandler } from "./APIconfig/ApiEndPoint";
 import { FaArrowRight, FaSignOutAlt } from "react-icons/fa";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import ConfirmationDialog from "./ConfirmationDialog";
 import { sortAddress } from "./utils";
 import CopyToClipboard from "react-copy-to-clipboard";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
+import { useDispatch, useSelector } from "react-redux";
+import { addOverviewDetails, addWalletDetails } from "./Store/walletSlice";
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -96,20 +98,19 @@ const sections = [
 ];
 const ConnectWallet = () => {
   const classes = useStyles();
+  const dispatch = useDispatch()
   const [CoinName, setCoinName] = useState();
   const [open, setOpen] = useState(false);
   const [rightBar, setRightBar] = useState(false);
-
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
   const [
     ethersProvider,
     setProvider
   ] = useState();
   const [account, setAccount] = useState(null);
-  console.log("ethersProvider",  account);
+  
   useEffect(() => {
     if (wallet?.provider) {
-      console.log("wallet?.provider", wallet?.provider);
       const { name, avatar } = wallet?.accounts[0].ens ?? {};
       let data =
       {
@@ -120,10 +121,8 @@ const ConnectWallet = () => {
       walletConect(wallet.accounts[0].address)
       localStorage.setItem("walletDetails", JSON.stringify(data))
       sessionStorage.setItem("userAddress",wallet.accounts[0].address)
-
-      
+      dispatch(addWalletDetails(data))
       setAccount(data);
-      // user.seAcountDetails(data)
     }
   }, [wallet]);
 
@@ -131,25 +130,21 @@ const ConnectWallet = () => {
   const walletConect = async (address) => {
     const response = await connectWallet(address)
     sessionStorage.setItem("token", response?.token)
-    getProfile(response?.token)
+    getOverview(response?.token)
     FetchCoin()
-    // sessionStorage.setItem("balance",response?.token)
-
-    console.log("response", response);
   }
-  // get user profile 
-  const getProfile = (token) => {
-    const response = getProfileHandler(token)
-    console.log("response", response);
+
+  const getOverview = async (token) => {
+    const response = await FetchOverview(token)
+    if (response?.responseCode === 200) {
+     dispatch(addOverviewDetails(response.result[0])) 
+    }
   }
 
 
   useEffect(() => {
-    // If the wallet has a provider than the wallet is connected
     if (wallet?.provider) {
       setProvider(new ethers.providers.Web3Provider(wallet.provider, "any"));
-      // if using ethers v6 this is:
-      // ethersProvider = new ethers.BrowserProvider(wallet.provider, 'any')
     }
   }, [wallet]);
 
@@ -226,6 +221,9 @@ const ConnectWallet = () => {
     sessionStorage.removeItem("userAddress")
     sessionStorage.removeItem("token")
     setRightBar(false)
+    dispatch(addWalletDetails({}))
+    dispatch(addOverviewDetails({})) 
+
   }
   return (
     <div>

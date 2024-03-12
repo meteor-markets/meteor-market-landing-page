@@ -8,6 +8,7 @@ import {
 import Page from "../Component/Page";
 import Footer from "../HomeLayout/Footer";
 import { FetchOverview } from "../APIconfig/ApiEndPoint";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -62,18 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
  const OverviewPage=()=> {
   const classes = useStyles();
-  const [getUserposrtFolio, setGetportfolio] = useState();
-
-  const getOverview = async () => {
-    const response = await FetchOverview()
-    if (response?.responseCode === 200) {
-      setGetportfolio(response.result[0])
-    }
-  }
-
-  useEffect(() => {
-    getOverview();
-  }, []);
+  const getUserOverViewData = useSelector(state => state.walletDeatils.getUserOverView);
 
 
   return (
@@ -100,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
                   Total Assets
                 </Typography>
                 <Typography variant="h2" className="textColorFormate">
-                  $ {getUserposrtFolio?.totalAssets}
+                  $ {getUserOverViewData?.totalAssets}
                 </Typography>
               </Box>
             </Box>
@@ -125,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
                   Total Supply
                 </Typography>
                 <Typography variant="h2" className="textColorFormate">
-                  $ {getUserposrtFolio?.totalSupply}
+                  $ {getUserOverViewData?.totalSupply}
                 </Typography>
               </Box>
             </Box>
@@ -150,7 +140,7 @@ const useStyles = makeStyles((theme) => ({
                   Total Borrow
                 </Typography>
                 <Typography variant="h2" className="textColorFormate">
-                  $ {getUserposrtFolio?.totalBorrow}
+                  $ {getUserOverViewData?.totalBorrow}
                 </Typography>
               </Box>
             </Box>

@@ -6,12 +6,15 @@ import injectedModule from "@web3-onboard/injected-wallets";
 import walletConnectModule from "@web3-onboard/walletconnect";
 // import trustModule from "@web3-onboard/trust";
 import walletLinkModule from "@web3-onboard/walletlink";
-
-import ConnectWallet from "./ConnectWallet";
 import phantomModule from '@web3-onboard/phantom'
 import * as serviceWorker from "./serviceWorker";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { store } from './Store/index';
+import { Provider } from 'react-redux';
+
+
+
 const rootElement = document.getElementById("root");
 
 
@@ -55,11 +58,12 @@ const web3Onboard = init({
 ReactDOM.render(
   <StrictMode>
 
-  
+  <Provider store={store}>
   <Web3OnboardProvider web3Onboard={web3Onboard}>
   <App />
   <ToastContainer />
 </Web3OnboardProvider>
+</Provider>
 
   </StrictMode>,
   rootElement

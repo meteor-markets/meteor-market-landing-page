@@ -80,14 +80,14 @@ export const FetchCoinList = async (data, dispatch) => {
   
   
   };
-  export const FetchOverview = async (data, dispatch) => {
+  export const FetchOverview = async (dispatchToken) => {
     let tokenAddrss = sessionStorage.getItem("token")
    if (tokenAddrss) {
     try {
       let response = await axios.get(Apiconfigs?.overview, {
         headers: {
           "Content-Type": `application/json`,
-          token: tokenAddrss,
+          token: dispatchToken?dispatchToken:tokenAddrss,
         },
       });
       return response?.data;
