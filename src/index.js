@@ -35,8 +35,22 @@ const chains = [
     id: "0xA0C71FD",
     token: "ETH",
     namespace: "evm",
-    label: "Blast Testnet",
-    rpcUrl: "https://sepolia.blast.io"
+    label: "Blast Sepolia",
+    rpcUrl: "https://sepolia.blast.io",
+  },
+  {
+    id: "0x1", // chain ID must be in hexadecimel
+    token: "ETH", // main chain token
+    namespace: "evm",
+    label: "Ethereum Mainnet",
+    rpcUrl: "https://ropsten.infura.io"
+  },
+  {
+    id: "0x13E31", // chain ID must be in hexadecimel
+    token: "ETH", // main chain token
+    namespace: "evm",
+    label: "Blast",
+    rpcUrl: "https://rpc.blast.io"
   },
 ];
 
@@ -60,7 +74,7 @@ ReactDOM.render(
 
   <Provider store={store}>
   <Web3OnboardProvider web3Onboard={web3Onboard}>
-  <App />
+  <App web3Onboard={web3Onboard} />
   <ToastContainer />
 </Web3OnboardProvider>
 </Provider>

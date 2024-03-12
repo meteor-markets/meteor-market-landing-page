@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useConnectWallet } from "@web3-onboard/react";
+import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { ethers } from "ethers";
-import { Box, Button, Dialog, Tooltip, Typography, makeStyles } from "@material-ui/core";
+import { Box, Button, Dialog, Icon, Menu, MenuItem, Tooltip, Typography, makeStyles } from "@material-ui/core";
 import { UserContext } from "./Context/User";
 import { FetchCoinList, FetchOverview, connectWallet, getProfileHandler } from "./APIconfig/ApiEndPoint";
 import { FaArrowRight, FaSignOutAlt } from "react-icons/fa";
@@ -10,6 +10,8 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import { sortAddress } from "./utils";
 import CopyToClipboard from "react-copy-to-clipboard";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { useDispatch, useSelector } from "react-redux";
 import { addOverviewDetails, addWalletDetails } from "./Store/walletSlice";
 
@@ -99,25 +101,42 @@ const sections = [
 const ConnectWallet = () => {
   const classes = useStyles();
   const dispatch = useDispatch()
+  const walletData = useSelector(state => state.walletDeatils.walletData);
+
   const [CoinName, setCoinName] = useState();
   const [open, setOpen] = useState(false);
   const [rightBar, setRightBar] = useState(false);
+  const [openChangeWallet, setOpenChangeWallet] = React.useState(null);
+  const openWallet = Boolean(openChangeWallet);
+  const handleClick = (event) => {
+    setOpenChangeWallet(event.currentTarget);
+  };
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
+  
+const [
+  {
+    chains,connectedChain,settingChain}, setChain ] = useSetChain()
+    console.log("chains",chains,connectedChain);
+
   const [
     ethersProvider,
     setProvider
   ] = useState();
   const [account, setAccount] = useState(null);
-  
+console.log("walletData",walletData?.chainId);
   useEffect(() => {
     if (wallet?.provider) {
+      let chainId =Number(wallet?.chains[0].id)
       const { name, avatar } = wallet?.accounts[0].ens ?? {};
       let data =
       {
         address: wallet.accounts[0].address,
         balance: wallet.accounts[0].balance,
-        ens: { name, avatar: avatar?.url }
+        ens: { name, avatar: avatar?.url },
+        chainId:chainId
       }
+      
+        FetchCoin(chainId)
       walletConect(wallet.accounts[0].address)
       localStorage.setItem("walletDetails", JSON.stringify(data))
       sessionStorage.setItem("userAddress",wallet.accounts[0].address)
@@ -131,7 +150,7 @@ const ConnectWallet = () => {
     const response = await connectWallet(address)
     sessionStorage.setItem("token", response?.token)
     getOverview(response?.token)
-    FetchCoin()
+    
   }
 
   const getOverview = async (token) => {
@@ -151,13 +170,13 @@ const ConnectWallet = () => {
 
  
 
-  const FetchCoin = async () => {
+  const FetchCoin = async (chainId) => {
     setCoinName([])
     const response = await FetchCoinList()
     if (response?.length > 0) {
-      let filterData = response?.filter((ele) => ele?.chainId == "chainId")
-
-      setCoinName(filterData[1])
+      let filterData = response?.filter((ele) => ele?.chainId == chainId)
+console.log("filterData",filterData);
+      setCoinName(filterData[0])
     }
   }
  
@@ -223,15 +242,50 @@ const ConnectWallet = () => {
     setRightBar(false)
     dispatch(addWalletDetails({}))
     dispatch(addOverviewDetails({})) 
+    setCoinName({})
 
   }
+  const switchNetwork = async (newChainId) => {
+    console.log("newChainId",newChainId);
+    try {
+      // Check if the new chainId is in the list of supported chains
+        // Set the new chain, and set settingChain to true during the process
+        
+        const isChainValid = chains.some((chain) => Number(chain.id) === newChainId);
+console.log("isChainValid",isChainValid);
+        if (isChainValid) {
+          // Set the new chain
+          await setChain({ chainId: newChainId });
+        setOpenChangeWallet(false);
+
+        } else {
+          console.error(`Chain with chainId: ${newChainId} has not been initialized.`);
+        }
+
+        // You can perform additional tasks or checks here if needed
+
+        // After completing the tasks, set settingChain to false to finish the process
+        // setChain({ chainId: newChainId });
+      // } else {
+      //   console.error('Unsupported chain');
+      //   // Handle the case where the selected chain is not supported
+      // }
+    } catch (error) {
+      console.error('Error switching network:', error);
+      // Handle errors during the network switch
+    }
+  };
   return (
     <div>
     <Box display="flex" alignItems="center">
       <Box display="flex" alignItems="center" pr={2}>
+      {/*
+    <p>Connected Chain: {connectedChain}</p>
+    */}
       {CoinName?.coinImage &&
-        <img src={CoinName?.coinImage} alt="image" style={{width:"30px"}} />
-      }
+        <div>
+        <img src={CoinName?.coinImage} alt="image" style={{width:"30px"}} /> 
+        </div>}
       <Typography style={{
         marginLeft: "5px",
         color: "#fff",
@@ -241,6 +295,10 @@ const ConnectWallet = () => {
       {getBalance && getBalance} 
     */}
       <span>{CoinName?.coinName}</span>
+      <span onClick={handleClick}>{openChangeWallet?(<KeyboardArrowUpIcon/>):(<KeyboardArrowDownIcon/>)}</span>
+      <div>
+      
+      </div>
       </Typography>
       </Box>
 
@@ -292,6 +350,61 @@ const ConnectWallet = () => {
       >
         {content}
       </Dialog>
+      <Dialog
+      classes={{ paper: classes.desktopDrawer }}
+      open={openChangeWallet}
+      onClose={() => {
+        setOpenChangeWallet(false);
+      }}
+    >
+    <Box>
+    <Typography variant="h6" align="left" className="textColorFormate">
+      {CoinName?.CoinName}
+    </Typography>
+    <Typography
+      variant="caption"
+      className="textColorFormate"
+      align="left"
+    >
+    <Button
+    fullWidth
+    className={classes.btnHover}
+    style={{
+      justifyContent: "left",
+      color: "white",
+      textTransform: "capitalize",
+    }}
+    onClick={() =>switchNetwork(81457) }
+  >
+    <Icon color="white" /> &nbsp;&nbsp;Blast Mainnet
+  </Button>
+  <Button
+    fullWidth
+    className={classes.btnHover}
+    style={{
+      justifyContent: "left",
+      color: "white",
+      textTransform: "capitalize",
+    }}
+    onClick={() =>switchNetwork(168587773) }
+  >
+    <Icon color="white" /> &nbsp;&nbsp;Blast Testnet
+  </Button>
+  <Button
+    fullWidth
+    className={classes.btnHover}
+    style={{
+      justifyContent: "left",
+      color: "white",
+      textTransform: "capitalize",
+    }}
+    onClick={() =>switchNetwork(1) }
+  >
+    <Icon color="white" /> &nbsp;&nbsp;Ethereum Mainnet
+  </Button>
+    </Typography>
+  </Box>
+    </Dialog>
     </Box>
      
 
