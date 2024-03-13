@@ -62,6 +62,9 @@ const useStyles = makeStyles((theme) => ({
     padding: "4px 10px ",
     minWidth: "100px",
   },
+  desktopDrawer: {
+    maxWidth:"200px"
+  },
   root: {
     backgroundColor: "transparent",
     width: "100%",
@@ -97,6 +100,10 @@ const sections = [
     href: "/dashboard",
     icon: FaSignOutAlt,
   },
+];
+const networkMap = [{networkName:"Blast Testnet",id:168587773},
+{networkName:"Blast Mainnet",id:81457},
+{networkName:"Ethereum Mainnet",id:1}
 ];
 const ConnectWallet = () => {
   const classes = useStyles();
@@ -366,42 +373,23 @@ console.log("isChainValid",isChainValid);
       className="textColorFormate"
       align="left"
     >
-    <Button
-    fullWidth
-    className={classes.btnHover}
-    style={{
-      justifyContent: "left",
-      color: "white",
-      textTransform: "capitalize",
-    }}
-    onClick={() =>switchNetwork(81457) }
-  >
-    <Icon color="white" /> &nbsp;&nbsp;Blast Mainnet
-  </Button>
-  <Button
-    fullWidth
-    className={classes.btnHover}
-    style={{
-      justifyContent: "left",
-      color: "white",
-      textTransform: "capitalize",
-    }}
-    onClick={() =>switchNetwork(168587773) }
-  >
-    <Icon color="white" /> &nbsp;&nbsp;Blast Testnet
-  </Button>
-  <Button
-    fullWidth
-    className={classes.btnHover}
-    style={{
-      justifyContent: "left",
-      color: "white",
-      textTransform: "capitalize",
-    }}
-    onClick={() =>switchNetwork(1) }
-  >
-    <Icon color="white" /> &nbsp;&nbsp;Ethereum Mainnet
-  </Button>
+    {networkMap?.map((network)=>{
+      return(
+        <Button
+        fullWidth
+        disabled={network?.id ==walletData?.chainId}
+        className={classes.btnHover}
+        style={{
+          justifyContent: "left",
+          color: "white",
+          textTransform: "capitalize",
+        }}
+        onClick={() =>switchNetwork(network?.id) }
+      >
+        <Icon color="white" /> {network?.networkName}
+      </Button>
+      )
+    })}
     </Typography>
   </Box>
     </Dialog>

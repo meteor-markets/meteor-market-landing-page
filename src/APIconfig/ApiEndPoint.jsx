@@ -48,11 +48,13 @@ export const FetchCoinList = async (data, dispatch) => {
     }
   };
   export const supplyCoins = async (body, dispatch) => {
+    let tokenAddrss = sessionStorage.getItem("token")
     
     try {
       let response = await axios.post(Apiconfigs?.supplyCoin, body,{
         headers: {
           "Content-Type": `application/json`,
+          token: tokenAddrss,
         },
       });
       return response?.data?.result;
