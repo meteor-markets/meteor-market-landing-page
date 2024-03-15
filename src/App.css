@@ -907,4 +907,14 @@ input[type="number"]::-webkit-outer-spin-button {
 .MuiMenu-list{
   background: black;
 }
+.dioglog-ui{
+  .MuiDialog-container{
+    height: 32%;
+    outline: 0;
+    background-color: transparent;
+  }
+  .MuiDialog-scrollPaper{
+    justify-content: end;
+  }
+}
 /*# sourceMappingURL=main.css.map */

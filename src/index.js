@@ -38,13 +38,13 @@ const chains = [
     label: "Blast Sepolia",
     rpcUrl: "https://sepolia.blast.io",
   },
-  {
-    id: "0x1", // chain ID must be in hexadecimel
-    token: "ETH", // main chain token
-    namespace: "evm",
-    label: "Ethereum Mainnet",
-    rpcUrl: "https://ropsten.infura.io"
-  },
+  // {
+  //   id: "0x1", // chain ID must be in hexadecimel
+  //   token: "ETH", // main chain token
+  //   namespace: "evm",
+  //   label: "Ethereum Mainnet",
+  //   rpcUrl: "https://ropsten.infura.io"
+  // },
   {
     id: "0x13E31", // chain ID must be in hexadecimel
     token: "ETH", // main chain token
