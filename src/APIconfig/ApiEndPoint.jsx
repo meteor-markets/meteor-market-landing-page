@@ -57,7 +57,7 @@ export const FetchCoinList = async (data, dispatch) => {
           token: tokenAddrss,
         },
       });
-      return response?.data?.result;
+      return response?.data;
     } catch (error) {
       return error?.response?.data
     }

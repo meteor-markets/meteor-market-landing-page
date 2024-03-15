@@ -1,21 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { ethers } from "ethers";
-import { Box, Button, Dialog, Icon, Menu, MenuItem, Tooltip, Typography, makeStyles } from "@material-ui/core";
-import { UserContext } from "./Context/User";
+import { Box, Button, Typography, makeStyles } from "@material-ui/core";
 import { FetchCoinList, FetchOverview, connectWallet, getProfileHandler } from "./APIconfig/ApiEndPoint";
 import { FaArrowRight, FaSignOutAlt } from "react-icons/fa";
-import { MdCopyAll } from "react-icons/md";
-import { FaCopy } from "react-icons/fa6";
-import PerfectScrollbar from "react-perfect-scrollbar";
-import ConfirmationDialog from "./ConfirmationDialog";
 import { sortAddress } from "./utils";
 import CopyToClipboard from "react-copy-to-clipboard";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { useDispatch, useSelector } from "react-redux";
-import { addOverviewDetails, addWalletDetails } from "./Store/walletSlice";
+import { addBalllance, addOverviewDetails, addWalletDetails, addWeb3 } from "./Store/walletSlice";
 import { IoCloseSharp } from "react-icons/io5";
 import Web3 from "web3";
 import { toast } from "react-toastify";
@@ -93,19 +88,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const sections = [
 
-  {
-    title: "View on EXplorer",
-    href: "",
-    icon: FaArrowRight,
-  },
-  {
-    title: "Disconnect",
-    href: "/dashboard",
-    icon: FaSignOutAlt,
-  },
-];
 const networkMap = [{ networkName: "Blast Testnet", id: 168587773 },
 { networkName: "Blast Mainnet", id: 81457 },
   // {networkName:"Ethereum Mainnet",id:1}
@@ -113,34 +96,36 @@ const networkMap = [{ networkName: "Blast Testnet", id: 168587773 },
 const ConnectWallet = () => {
   const classes = useStyles();
   const dispatch = useDispatch()
-  const walletData = useSelector(state => state.walletDeatils.walletData);
-  let showExploral = walletData?.chainId ==81457?"https://blastscan.io/address/":"https://sepolia.blastscan.io/address/"
-
   const [CoinName, setCoinName] = useState();
-  const [open, setOpen] = useState(false);
   const [rightBar, setRightBar] = useState(false);
-  const [getBalance, setGetBalance] = useState(false);
-
-
   const [openChangeWallet, setOpenChangeWallet] = React.useState(null);
+  const walletData = useSelector(state => state.walletDeatils.walletData);
+  const balance = useSelector(state => state.walletDeatils.currentbalance);
+  const web3 = useSelector(state => state.walletDeatils.web3);
+
+
+  
+  let showExploral = walletData?.chainId ==81457?"https://blastscan.io/address/":"https://sepolia.blastscan.io/address/"
   const handleClick = (event) => {
     setOpenChangeWallet(event.currentTarget);
   };
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
-
+ 
   const [
     {
       chains, connectedChain, settingChain }, setChain] = useSetChain()
-  console.log("chains", chains, connectedChain);
+  console.log("chains",balance, chains, connectedChain);
 
   const [
     ethersProvider,
     setProvider
   ] = useState();
   const [account, setAccount] = useState(null);
-  console.log("walletData", walletData?.chainId);
+  console.log("walletData", ethersProvider);
   useEffect(() => {
     if (wallet?.provider) {
+      const web3Instance = new Web3(wallet.provider); // Initialize Web3 with the provider from the connected wallet
+      dispatch(addWeb3(web3Instance))
       let chainId = Number(wallet?.chains[0].id)
       const { name, avatar } = wallet?.accounts[0].ens ?? {};
       let data =
@@ -161,23 +146,35 @@ const ConnectWallet = () => {
       setAccount(data);
     }
   }, [wallet]);
-  const getUserbalce = async (account) => {
-    setGetBalance("")
 
-    var web3 = new Web3(wallet?.provider);
-    const balance = await web3.eth.getBalance(account);
-    const numberString = balance.toString(); // Convert the number to a string
-    let checkBalnace = numberString.split("n")[0]
-
-    // const digits = numberString.split("");
-    console.log("account", account, balance, checkBalnace);
-    const balanceImETH = await web3.utils.fromWei(checkBalnace);
-    console.log("balance", balanceImETH);
-    setGetBalance(balanceImETH)
-    // FetchCoin();
-
-    console.log("balanceImETH", balanceImETH);
-  };
+  useEffect(() => {
+    const fetchBalance = async () => {
+      if (web3) {
+        try {
+          // Check if MetaMask is installed and has been detected
+          const accounts = await web3.eth.getAccounts();
+          if (accounts.length > 0) {
+            // If there are accounts available (MetaMask is installed and unlocked), proceed with fetching the balance
+            const account = accounts[0]; // Assuming the first account is the current user's
+            console.log("account",account);
+            // Fetch the balance
+            const balance = await web3.eth.getBalance(account);
+            // Convert from Wei to Ether
+            const balanceInEther = web3.utils.fromWei(balance, 'ether');
+            dispatch(addBalllance(balanceInEther))
+            
+          } else {
+            // Handle case where no accounts are available (MetaMask is not installed or unlocked)
+            console.log('No accounts available');
+          }
+        } catch (error) {
+          console.error('Error fetching balance:', error);
+        }
+      }
+    };
+  
+    fetchBalance();
+  }, [web3]);
 
   // connect wallet api 
   const walletConect = async (address) => {
@@ -197,6 +194,8 @@ const ConnectWallet = () => {
 
   useEffect(() => {
     if (wallet?.provider) {
+      const library = new ethers.providers.Web3Provider(wallet?.provider);
+      console.log("lisbafnabsn",library);
       setProvider(new ethers.providers.Web3Provider(wallet.provider, "any"));
     }
   }, [wallet]);
@@ -210,7 +209,7 @@ const ConnectWallet = () => {
     if (response?.length > 0) {
       let filterData = response?.filter((ele) => ele?.chainId == chainId)
       console.log("filterData", filterData);
-      setCoinName(filterData[0])
+      setCoinName(filterData[filterData?.length-1])
     }
   }
 
@@ -218,7 +217,6 @@ const ConnectWallet = () => {
   const handleDisconnectWallet = () => {
     setAccount(null)
     disconnect({ label: wallet.label })
-    setOpen(false)
     sessionStorage.removeItem("userAddress")
     sessionStorage.removeItem("token")
     setRightBar(false)
@@ -243,18 +241,8 @@ const ConnectWallet = () => {
       } else {
         console.error(`Chain with chainId: ${newChainId} has not been initialized.`);
       }
-
-      // You can perform additional tasks or checks here if needed
-
-      // After completing the tasks, set settingChain to false to finish the process
-      // setChain({ chainId: newChainId });
-      // } else {
-      //   console.error('Unsupported chain');
-      //   // Handle the case where the selected chain is not supported
-      // }
     } catch (error) {
       console.error('Error switching network:', error);
-      // Handle errors during the network switch
     }
   };
   return (
@@ -263,17 +251,15 @@ const ConnectWallet = () => {
         <Box display="flex" alignItems="center" pr={2} sx={{ position: "relative" }}>
           {CoinName?.coinImage &&
             <div>
-              <img src={CoinName?.coinImage} alt="image" style={{ width: "30px" }} />
+              <img src={CoinName?.coinImage} alt="image" style={{ width: "30px",marginTop:"6px" }} />
             </div>}
           <Typography style={{
             marginLeft: "5px",
             color: "#fff",
             cursor: "pointer",
           }}>
-            {/*
-                      {getBalance && getBalance} 
-               */}
-            <span>{CoinName?.coinName}</span>
+                      {balance && balance} 
+            <span>{CoinName?.coinName}</span> &nbsp;
             <span onClick={handleClick}>{openChangeWallet ? (<KeyboardArrowUpIcon />) : (<KeyboardArrowDownIcon />)}</span>
             <div>
               {openChangeWallet &&

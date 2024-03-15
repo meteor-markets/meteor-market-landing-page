@@ -60,9 +60,7 @@ function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
       coinId: supplyData?._id,
       walletAddress: "0xB72c3642EA32deFDA74C68FAe6e6095B49441444",
       amount: amount,
-      transactionDetails: {
-        "transactionHash": "0x32137b75e23D6384EeBf2Fb797CE421c4CF37e62"
-      },
+        "transactionHash": "0x32137b75e23D6384EeBf2Fb797CE421c4CF37e62",
       "transactionStatus": "SUCCESS",
 
 

@@ -8,9 +8,10 @@ import {
 import Page from "../Component/Page";
 import Footer from "../HomeLayout/Footer";
 import { FetchOverview } from "../APIconfig/ApiEndPoint";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ApexChart from "./ApexChart";
 import LineGraph from "./LineGraph";
+import { addOverviewDetails } from "../Store/walletSlice";
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -61,12 +62,30 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     marginRight: "10px",
   },
+  analyticsBox:{
+    marginTop:"20px"
+  }
 }));
 
  const OverviewPage=()=> {
+  const dispatch = useDispatch()
+
   const classes = useStyles();
   const getUserOverViewData = useSelector(state => state.walletDeatils.getUserOverView);
+  let token = sessionStorage?.getItem("token")
+  useEffect(()=>{
+if (token) {
+  getOverview(token)
+}
 
+  },[token])
+  const getOverview = async (token) => {
+    
+    const response = await FetchOverview(token)
+    if (response?.responseCode === 200) {
+      dispatch(addOverviewDetails(response.result[0]))
+    }
+  }
 
   return (
     <Page title="Overview">
@@ -148,16 +167,17 @@ const useStyles = makeStyles((theme) => ({
             </Box>
           </Grid>
         </Grid>
-
         <Box className={classes.analyticsBox}>
+          {/*
           <img
-            alt=""
-            style={{
-              objectFit: "cover",
-            }}
-            width="100%"
-            src={"../images/group-anlytics.png"}
-          />
+          alt=""
+          style={{
+            objectFit: "cover",
+          }}
+          width="100%"
+          src={"../images/group-anlytics.png"}
+        />
+        */}
           <ApexChart/>
           {/*
           <LineGraph/>

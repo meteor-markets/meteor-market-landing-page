@@ -3,6 +3,9 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     walletData: {},
     token:"",
+    currentbalance:"",
+    web3:null,
+
     getUserOverView:{}
 
 }
@@ -14,6 +17,12 @@ export const todoSlice = createSlice({
         addWalletDetails: (state, action) => {
             state.walletData = action.payload
         },
+        addBalllance: (state, action) => {
+            state.currentbalance = action.payload
+        },
+        addWeb3: (state, action) => {
+            state.web3 = action.payload
+        },
         addOverviewDetails: (state, action) => {
             state.getUserOverView = action.payload
         }
@@ -21,7 +30,7 @@ export const todoSlice = createSlice({
 });
 
 // actions per il dispatch
-export const { addWalletDetails,addOverviewDetails } = todoSlice.actions;
+export const { addWalletDetails,addOverviewDetails,addBalllance ,addWeb3} = todoSlice.actions;
 
 // reducer
 export default todoSlice.reducer;
