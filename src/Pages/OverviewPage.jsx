@@ -9,6 +9,8 @@ import Page from "../Component/Page";
 import Footer from "../HomeLayout/Footer";
 import { FetchOverview } from "../APIconfig/ApiEndPoint";
 import { useSelector } from "react-redux";
+import ApexChart from "./ApexChart";
+import LineGraph from "./LineGraph";
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -156,6 +158,10 @@ const useStyles = makeStyles((theme) => ({
             width="100%"
             src={"../images/group-anlytics.png"}
           />
+          <ApexChart/>
+          {/*
+          <LineGraph/>
+        */}
         </Box>
       </Box>
 
