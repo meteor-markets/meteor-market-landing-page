@@ -1,8 +1,9 @@
 // export const baseurl = "http://172.16.2.13:3038"; //local
 
-export const baseurl = 'http://13.214.26.3:2021' // staging
+// export const baseurl = 'http://13.214.26.3:2021' // staging
 // export const baseurl = "https://node-ecommerce.mobiloitte.com/api/v1/"; // staging
-// export const baseurl = "http://192.168.1.40:2021"
+export const baseurl = "http://192.168.1.7:2021"
+// http://192.168.1.7:2021/api-docs/#/
 
 let admin = `${baseurl}/api/v1/admin`
 let user = `${baseurl}/api/v1/user`
@@ -15,7 +16,9 @@ const Apiconfigs = {
   connectwallet: `${user}/connectWallet`,
   coinlist: `${user}/listCoin`,
   overview: `${user}/overview`,
+  withdraw: `${user}/withdraw`,
 
+  
   supplyCoin: `${user}/supply`,
   getuserprotfolio: `${user}/getPortfolio`,
   profile: `${user}/getProfile`,

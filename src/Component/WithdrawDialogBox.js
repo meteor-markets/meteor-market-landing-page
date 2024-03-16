@@ -14,6 +14,9 @@ import {
 } from "@material-ui/core";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { withdrawCoins } from "../APIconfig/ApiEndPoint";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles((theme) => ({
   closeBtn: {
@@ -47,19 +50,25 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function WithdrawDialogBox({ open, handleClose,supplyData }) {
+function WithdrawDialogBox({ open, handleClose,supplyData,FetchCoin }) {
   const classes = useStyles();
+  const balance = useSelector(state => state.walletDeatils.currentbalance);
+  const walletData = useSelector(state => state.walletDeatils.walletData);
+
+
+  const [amount, setAmount] = useState("")
+
   const handleSypplyCoin = async () => {
     let data = {
       coinId: supplyData?._id,
-      walletAddress: "0xB72c3642EA32deFDA74C68FAe6e6095B49441444",
-      amount: 0.01,
+      walletAddress: walletData?.address,
+      amount: amount,
         "transactionHash": "0x32137b75e23D6384EeBf2Fb797CE421c4CF37e62",
       "transactionStatus": "SUCCESS",
 
 
     }
-      const response = await supplyCoins(data)
+      const response = await withdrawCoins(data)
       console.log("response", response);
       if (response?.responseCode == 200) {
         toast.success(response?.responseMessage)
@@ -111,11 +120,12 @@ function WithdrawDialogBox({ open, handleClose,supplyData }) {
             >
               <span className={classes.smallText}>Withdraw Amount</span>
               <span className={classes.mediumText}>
-              Supply Balance 0 {supplyData?.coinName}
+              Supply Balance {balance && parseFloat(balance).toFixed(5)}ETH
               </span>
             </Box>
             <FormControl variant="outlined">
               <OutlinedInput
+              onChange={(e) => setAmount(e.target.value)} value={amount}
                 endAdornment={
                   <InputAdornment position="end">
                     <span style={{ marginRight: "15px", textAlign: "end" }}>
@@ -192,7 +202,7 @@ function WithdrawDialogBox({ open, handleClose,supplyData }) {
               </Box>
             </Box>
             <Box textAlign={"center"} mt={5}>
-              <Button variant="contained" style={{minWidth:"170px"}}>Withdraw</Button>
+              <Button variant="contained" style={{minWidth:"170px"}} onClick={() => handleSypplyCoin()}>Withdraw</Button>
             </Box>
           </form>
         </DialogContent>

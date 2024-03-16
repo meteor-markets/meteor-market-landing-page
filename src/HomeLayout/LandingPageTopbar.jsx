@@ -91,10 +91,10 @@ import {
     menuButton: {
       color: theme.palette.text.black,
       borderBottom: '5px solid transparent',
-      padding: ' 0px 0px 0px 100px',
+      marginLeft:"100px",
+      // padding: ' 0px 0px 0px 100px',
       fontSize: ' 18px',
       fontWeight: ' 500 !important',
-      minWidth: '100px',
       lineHeight: '24px',
       borderRadius: 0,
       letterSpacing: '1px',

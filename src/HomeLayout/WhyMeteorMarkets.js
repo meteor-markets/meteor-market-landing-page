@@ -10,22 +10,13 @@ import {
 import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
-  headBox: {
-    backgroundColor:"#343434",
-    padding:"25px",
-    borderRadius:"19px",
-    "& h1":{
-        textAlign:"center",
-        marginBottom:"3rem"
-    },
-    "& h3":{
-        marginBottom:"1.5rem"
+  whyChooseBox: {
+    background: "#1C1C1C",
+    borderRadius: "26px",
+    "& h2": {
+      marginBottom: "1.5rem",
+      color: "#fff"
     }
-  },
-  launchBtn:{
-    minWidth:"120px",
-    position:"relative",
-    top:"40px"
   }
 }));
 
@@ -35,38 +26,51 @@ function WhyMeteorMarkets() {
 
   return (
     <Container>
-      <Box className={classes.headBox}>
-      <Typography variant="h1">Why Meteor Markets?</Typography>
-        <Grid container spacing={4}>
-          <Grid item xs={12} sm={6} md={4}>
-            <Box>
-                <Typography variant="h3">Zero-fee Borrowing</Typography>
-                <Typography variant="body1" style={{color:"#fff"}}>
-                By leveraging Blast's native yield <br/> functionality, Meteor Markets enables <br/> borrowing at zero fees.<br/>
-                Talk about risk-free leverage.
+      <Box>
+        <Typography variant="h1" style={{ textAlign: "center" }}>Why Meteor Markets?</Typography>
+        <Box className={classes.whyChooseBox} mt={7}>
+          <Grid container justifyContent="space-between" alignItems="center">
+            <Grid item xs={12} sm={6} md={6}>
+              <Box p={5}>
+                <Typography variant="h2">Interest-Free Borrowing</Typography>
+                <Typography variant="body1" style={{ maxWidth: "380px" }}>We leverage Blast's native yields to unlock borrowing at zero fees.
                 </Typography>
-            </Box>
+                <Button variant="contained" style={{ minWidth: "120px", marginTop: "30px" }} onClick={() => history.push("/overview")}>Launch App</Button>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={4} md={4} style={{ display: "flex", alignItems: "center" }}>
+              <img src="images/interst-free-img.svg" width="100%" />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Box>
-                <Typography variant="h3">Lending</Typography>
-                <Typography variant="body1" style={{color:"#fff"}}>
-                Multi-asset lending on Meteor<br/> Markets allows users to earn <br/>yield. Say no to idle capital.
+        </Box>
+        <Box className={classes.whyChooseBox} mt={5}>
+          <Grid container justifyContent="space-between" alignItems="center">
+            <Grid item xs={12} sm={4} md={4} style={{ display: "flex", alignItems: "center" }}>
+              <img src="images/lending-right.svg" width="100%" />
+            </Grid>
+            <Grid item xs={12} sm={6} md={6}>
+              <Box p={5}>
+                <Typography variant="h2">Lending</Typography>
+                <Typography variant="body1" style={{ maxWidth: "380px" }}>Multi-asset peer-to-peer lending/borrowing protocol on Blast.</Typography>
+                <Button variant="contained" style={{ minWidth: "120px", marginTop: "30px" }} onClick={() => history.push("/overview")}>Launch App</Button>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
+        <Box className={classes.whyChooseBox} mt={5}>
+          <Grid container justifyContent="space-between" alignItems="center">
+            <Grid item xs={12} sm={6} md={6}>
+              <Box p={5}>
+                <Typography variant="h2">Leverage</Typography>
+                <Typography variant="body1" style={{ maxWidth: "380px" }}>Meteor Markets will offer the cheapest leverage opportunity on Blast.
                 </Typography>
-            </Box>
+                <Button variant="contained" style={{ minWidth: "120px", marginTop: "30px" }} onClick={() => history.push("/overview")}>Launch App</Button>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={4} md={4} style={{ display: "flex", alignItems: "center" }}>
+              <img src="images/leverage.svg" width="100%" />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
-            <Box>
-                <Typography variant="h3">Automate</Typography>
-                <Typography variant="body1" style={{color:"#fff"}}>
-                By leveraging Blast's native yield <br/> functionality, Meteor Markets enables <br/> borrowing at zero fees.<br/>
-                Talk about risk-free leverage.
-                </Typography>
-            </Box>
-          </Grid>
-        </Grid>
-        <Box textAlign={"center"} mt={4}>
-        <Button variant="contained" className={classes.launchBtn} onClick={() => history.push("/overview")}>Launch App</Button>
         </Box>
       </Box>
     </Container>

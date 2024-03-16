@@ -21,6 +21,7 @@ import { HiOutlineExclamationCircle } from "react-icons/hi2";
 import { IoSwapVertical } from "react-icons/io5";
 import Page from "../Component/Page";
 import Footer from "../HomeLayout/Footer";
+import { useSelector } from "react-redux";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -78,6 +79,7 @@ let coinsData = [
 const Swap=()=> {
   const classes = useStyles();
   const [age, setAge] = useState(10);
+  const balance = useSelector(state => state.walletDeatils.currentbalance);
 
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -109,7 +111,7 @@ const Swap=()=> {
               >
                 <span className={classes.smallText}>Supply Amount</span>{" "}
                 <span className={classes.mediumText}>
-                  Wallet Balance 112.900 DAI
+                Wallet Balance {balance && parseFloat(balance).toFixed(5)}
                 </span>
               </Box>
 

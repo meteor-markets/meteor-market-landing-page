@@ -17,6 +17,7 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { toast } from "react-toastify";
 import { supplyCoins } from "../APIconfig/ApiEndPoint";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   closeBtn: {
@@ -51,6 +52,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
+  const balance = useSelector(state => state.walletDeatils.currentbalance);
+  const walletData = useSelector(state => state.walletDeatils.walletData);
+console.log("walletData",walletData);
 
   const [amount, setAmount] = useState("")
   const classes = useStyles();
@@ -58,7 +62,7 @@ function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
   const handleSypplyCoin = async () => {
     let data = {
       coinId: supplyData?._id,
-      walletAddress: "0xB72c3642EA32deFDA74C68FAe6e6095B49441444",
+      walletAddress: walletData?.address,
       amount: amount,
         "transactionHash": "0x32137b75e23D6384EeBf2Fb797CE421c4CF37e62",
       "transactionStatus": "SUCCESS",
@@ -122,7 +126,7 @@ function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
             >
               <span className={classes.smallText}>Supply Amount</span>{" "}
               <span className={classes.mediumText}>
-                Wallet Balance {supplyData?.coinName}
+                Wallet Balance {balance && parseFloat(balance).toFixed(5)}
               </span>
             </Box>
             <FormControl variant="outlined">

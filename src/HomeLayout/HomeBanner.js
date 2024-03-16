@@ -24,9 +24,13 @@ function HomeBanner() {
 
   return (
     <Box className={classes.headBox}>
-     <Container>
-        <Typography variant="h1" style={{maxWidth:"450px"}}>Enabling Risk-free Leverage on Meteor Markets</Typography>
-        <Button variant="contained" style={{minWidth:"120px",marginTop:"10px"}} onClick={() => history.push("/overview")}>Launch App</Button>
+     <Container style={{textAlign:"center"}}>
+        <Typography variant="h1" style={{maxWidth:"550px",textAlign:"center",marginLeft:"auto",marginRight:"auto"}}>Enabling Interest-free Leverage on Meteor Markets</Typography>
+        <Typography variant="body1" style={{maxWidth:"380px",textAlign:"center",marginLeft:"auto",marginRight:"auto",marginTop:"30px"}}>We leverage Blast's native yields to unlock borrowing at zero fees.</Typography>
+        <Button variant="contained" style={{minWidth:"120px",marginTop:"30px"}} onClick={() => history.push("/overview")}>Launch App</Button>
+        <Box my={5} pt={4}>
+          <img src="images/home-banner-img.svg" width="100%"/>
+        </Box>
      </Container>
     </Box>
   )

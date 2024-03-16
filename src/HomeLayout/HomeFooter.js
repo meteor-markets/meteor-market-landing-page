@@ -1,108 +1,59 @@
 import React from "react";
-import {
-  Grid,
-  Box,
-  Typography,
-  makeStyles,
-  Container,
-  Link,
-} from "@material-ui/core";
-import { RiArrowRightFill } from "react-icons/ri";
-
+import { Grid, Box, Typography, makeStyles, Container } from "@material-ui/core";
+import { FaTwitter,FaGithub,FaTelegram } from "react-icons/fa";
 const useStyles = makeStyles((theme) => ({
-  footerBox: {
-    backgroundColor: "#e8ebf0",
-    padding: "25px",
-    borderRadius: "19px",
-    borderRadius: "19px",
-    height:"100%",
-    "& h1": {
-      textAlign: "center",
-      marginBottom: "3rem",
-      color: "#000",
-    },
-    "& h3": {
-      marginBottom: "1.5rem",
-      color: "#000",
-    },
-    "& h4": {
-      marginBottom: "1.5rem",
-      color: "#000",
-    },
-    "& h5": {
-      color: "#000",
-      marginBottom: "15px",
-        display:"flex",
-        alignItems:"center"
-    },
-  },
+  mainFooter: {
+    background: "#25252F"
+  }
+
 }));
 
-function HomeFooter() {
+export default function HomeFooter() {
   const classes = useStyles();
-
   return (
-    <Box mt={6} pb={5}>
+    <Box className={classes.mainFooter}  mt={5}  pt={5}>
       <Container>
-        <Grid container spacing={5} justifyContent="space-between">
-          <Grid item xs={12} sm={6} md={5}>
-            <Box className={classes.footerBox}>
-              <Typography variant="h3">Learn</Typography>
-              <Typography variant="h4">Explore Meteor Markets</Typography>
-              <Typography variant="h5">
-                <Link href="#" color="inherit">
-                  Docs
-                </Link>
-                <RiArrowRightFill style={{marginLeft:"5px"}}/>
-              </Typography>
-              <Typography variant="h5">
-                <Link href="#" color="inherit">
-                  WhitePaper
-                </Link>
-                <RiArrowRightFill style={{marginLeft:"5px"}}/>
-              </Typography>
-              <Typography variant="h5">
-                <Link href="#" color="inherit">
-                GitHub
-                </Link>
-                <RiArrowRightFill style={{marginLeft:"5px"}}/>
-              </Typography>
+        <Grid container spacing={2} justifyContent="space-between" mr={2} >
+          <Grid item lg={3}>
+            <Box>
+              <img src="images/logo.png" alt="Logo" width="100%" style={{ maxWidth: "200px" }} />
             </Box>
           </Grid>
-          <Grid item xs={12} sm={6} md={5}>
-            <Box className={classes.footerBox}>
-              <Typography variant="h3">Support</Typography>
-              <Typography variant="h4">Contact the Meteor Markets</Typography>
-              <Typography variant="h5">
-                <Link href="#" color="inherit">
-                  FAQ
-                </Link>
-                <RiArrowRightFill style={{marginLeft:"5px"}}/>
-              </Typography>
-              <Typography variant="h5">
-                <Link href="#" color="inherit">
-                  Discord
-                </Link>
-                <RiArrowRightFill style={{marginLeft:"5px"}}/>
-              </Typography>
-              <Typography variant="h5">
-                <Link href="#" color="inherit">
-                Twitter
-                </Link>
-                <RiArrowRightFill style={{marginLeft:"5px"}}/>
-              </Typography>
-              <Typography variant="h5">
-                <Link href="#" color="inherit">
-                Blog
-                </Link>
-                <RiArrowRightFill style={{marginLeft:"5px"}}/>
-              </Typography>
-            </Box>
+          <Grid item lg={3}>
+            <Typography variant="h3">Learn</Typography>&nbsp;
+            <a href="/overview"   className="textColorFormate"> <Typography variant="h5" className="textColorFormate">Explore Meteor Markets</Typography></a>
+            <Typography variant="body1" className="textColorFormate">Docs</Typography>
+            <Typography variant="body1" className="textColorFormate">WhitePaper</Typography>
+            <Typography variant="body1" className="textColorFormate">GitHub</Typography>
           </Grid>
+          <Grid item lg={2}>
+            <Typography variant="h3">Support</Typography>&nbsp;
+            <Typography variant="body1" className="textColorFormate">Contact the Meteor Markets</Typography>
+            <Typography variant="body1" className="textColorFormate">FAQ  </Typography>
+            <a href="https://twitter.com/MeteorMarkets" target="_blank"  className="textColorFormate"> <Typography variant="body1" className="textColorFormate">Twitter</Typography></a>
+            <Typography variant="body1" className="textColorFormate">Discord</Typography>
+          </Grid>
+          <Grid item lg={12}>
+          <div style={{ borderBottom: "2px solid white", height: 10,marginTop:"-12px" }}></div>
+          </Grid>
+          <Grid item lg={4}style={{color:"white"}}>© 2024 Meteor Markets, All Right Reserved.</Grid>
+          <Grid item lg={6}></Grid>
+          <Grid item lg={2}>
+          <div style={{display:"flex", justifyContent:"space-evenly"}}>
+          <a href="https://twitter.com/MeteorMarkets" target="_blank"  className="textColorFormate">  <FaTwitter style={{color:"white"}}/></a>
+
+         
+          <FaGithub style={{color:"white"}}/>
+          <FaTelegram style={{color:"white"}}/>
+          </div>
+          </Grid>
+          
+
+
+
         </Grid>
+
       </Container>
     </Box>
   );
 }
-
-export default HomeFooter;

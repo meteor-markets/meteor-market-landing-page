@@ -47,11 +47,27 @@ export const FetchCoinList = async (data, dispatch) => {
       return error?.response?.data
     }
   };
+  
   export const supplyCoins = async (body, dispatch) => {
     let tokenAddrss = sessionStorage.getItem("token")
     
     try {
       let response = await axios.post(Apiconfigs?.supplyCoin, body,{
+        headers: {
+          "Content-Type": `application/json`,
+          token: tokenAddrss,
+        },
+      });
+      return response?.data;
+    } catch (error) {
+      return error?.response?.data
+    }
+  };
+  export const withdrawCoins = async (body, dispatch) => {
+    let tokenAddrss = sessionStorage.getItem("token")
+    
+    try {
+      let response = await axios.post(Apiconfigs?.withdraw, body,{
         headers: {
           "Content-Type": `application/json`,
           token: tokenAddrss,

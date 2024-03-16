@@ -1,17 +1,20 @@
 import React from "react";
 import { Grid, Box, Typography, makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  
+}));
 
 export default function Footer() {
   const classes = useStyles();
 
   return (
     <Box className={classes.mainFooter} mt={5} pt={5}>
+    
       <Grid container spacing={5} justifyContent="space-between">
         <Grid item lg={5}>
           <Box>
-            <img src="https://i.ibb.co/NtRnxg4/Kian-logo.png" alt="Logo" width="100%" style={{maxWidth:"60px"}} />
+            <img src="images/logo.png" alt="Logo" width="100%" style={{maxWidth:"60px"}} />
           </Box>
           <Typography variant="body1" className="textColorFormate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod temposLorem ipsum dolor sit amet</Typography>
         </Grid>
