@@ -166,7 +166,8 @@ if (token) {
               </Box>
             </Box>
           </Grid>
-        </Grid>
+          <Grid item lg={3}></Grid>
+          <Grid item lg={12}>
         <Box className={classes.analyticsBox}>
           {/*
           <img
@@ -178,11 +179,13 @@ if (token) {
           src={"../images/group-anlytics.png"}
         />
         */}
-          <ApexChart/>
+          <ApexChart isCharActualValue={getUserOverViewData?.totalSupply}/>
           {/*
           <LineGraph/>
         */}
         </Box>
+        </Grid>
+        </Grid>
       </Box>
 
       <Footer />

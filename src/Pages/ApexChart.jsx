@@ -1,28 +1,27 @@
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
-const ApexChart = () => {
+const ApexChart = ({isCharActualValue}) => {
 
- 
   const data = [
-    { name: '18 March', borrow: 4000, supply: 2400 },
-    { name: '20 March', borrow: 3000, supply: 1398 },
-    { name: '22 March', borrow: 2000, supply: 9800 },
-    { name: '24 March', borrow: 2780, supply: 3908 },
-    { name: '26 March', borrow: 1890, supply: 4800 },
-    { name: '28 March', borrow: 2390, supply: 3800 },
-    { name: '30 March', borrow: 3490, supply: 4300 },
-    { name: '2 April', borrow: 1890, supply: 4800 },
-    { name: '4 April', borrow: 2390, supply: 3800 },
-    { name: '6 April', borrow: 3490, supply: 4300 },
-    { name: '8 April', borrow: 3490, supply: 4300 },
+    { name: '18 March', borrow: 400, supply: 240 },
+    { name: '20 March', borrow: 300, supply: 139 },
+    { name: '22 March', borrow: 200, supply: 300 },
+    { name: '24 March', borrow: 278, supply: 390 },
+    { name: '26 March', borrow: 189, supply: 480 },
+    { name: '28 March', borrow: 239, supply: 380 },
+    { name: '30 March', borrow: 349, supply: 430 },
+    { name: '2 April', borrow: 189, supply: 480 },
+    { name: '4 April', borrow: 239, supply: 380 },
+    { name: '6 April', borrow: 349, supply: 430 },
+    { name: '8 April', borrow: 349, supply: 430 },
   ];
 
   return (
     <div>
-      <div id="chart">
+      <div id="chart" style={{ width: '100%' }}>
         
-      <AreaChart width={900} height={350} data={data}
+      <AreaChart  width={900} height={350} data={data}
       margin={{ top: 30, right: 30, left: 0, bottom: 0 }}>
       <defs>
         <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">

@@ -49,7 +49,27 @@ const useStyles = makeStyles((theme) => ({
 
 function WithdrawDialogBox({ open, handleClose,supplyData }) {
   const classes = useStyles();
+  const handleSypplyCoin = async () => {
+    let data = {
+      coinId: supplyData?._id,
+      walletAddress: "0xB72c3642EA32deFDA74C68FAe6e6095B49441444",
+      amount: 0.01,
+        "transactionHash": "0x32137b75e23D6384EeBf2Fb797CE421c4CF37e62",
+      "transactionStatus": "SUCCESS",
 
+
+    }
+      const response = await supplyCoins(data)
+      console.log("response", response);
+      if (response?.responseCode == 200) {
+        toast.success(response?.responseMessage)
+        handleClose()
+        FetchCoin()
+        setAmount("")
+      } else {
+        toast.error(response)
+      }
+    } 
   return (
     <Box>
       <Dialog

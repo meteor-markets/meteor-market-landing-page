@@ -222,6 +222,8 @@ const ConnectWallet = () => {
     setRightBar(false)
     dispatch(addWalletDetails({}))
     dispatch(addOverviewDetails({}))
+    dispatch(addWeb3(null))
+    dispatch(addBalllance(null))
     setCoinName({})
 
   }
@@ -249,18 +251,30 @@ const ConnectWallet = () => {
     <div>
       <Box display="flex" alignItems="center">
         <Box display="flex" alignItems="center" pr={2} sx={{ position: "relative" }}>
-          {CoinName?.coinImage &&
+          {balance &&
             <div>
-              <img src={CoinName?.coinImage} alt="image" style={{ width: "30px",marginTop:"6px" }} />
+              {/*
+            <img src={CoinName?.coinImage} alt="image" style={{ width: "30px",marginTop:"6px" }} />
+            */}
+              <img src="https://sepolia.blastscan.io/images/svg/brands/main-light.svg?v=24.2.2.1" alt="image" style={{ width: "30px",marginTop:"6px" }} />
+
             </div>}
           <Typography style={{
             marginLeft: "5px",
             color: "#fff",
             cursor: "pointer",
           }}>
-                      {balance && balance} 
-            <span>{CoinName?.coinName}</span> &nbsp;
-            <span onClick={handleClick}>{openChangeWallet ? (<KeyboardArrowUpIcon />) : (<KeyboardArrowDownIcon />)}</span>
+                      {balance && parseFloat(balance).toFixed(5)}  &nbsp;
+            {/*
+          <span>{CoinName?.coinName}</span> &nbsp;
+          */}
+          
+            <span>{balance && "ETH"}</span> &nbsp;
+{balance &&
+
+  
+  <span onClick={handleClick}>{openChangeWallet ? (<KeyboardArrowUpIcon />) : (<KeyboardArrowDownIcon />)}</span>
+}
             <div>
               {openChangeWallet &&
                 <Box sx={{ "top": "28px", "right": "0px", "width": "200px", "height": "160px", "position": "absolute", "background": "rgb(28, 28, 28)", "borderRadius": "10px", "boxShadow": "rgba(0, 0, 0, 0.1) 0px 4px 12px",border:"1px solid rgb(255 145 66 / 10%)" }}>
