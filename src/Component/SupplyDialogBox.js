@@ -12,12 +12,18 @@ import {
   FormControl,
   Select,
   MenuItem,
+  CircularProgress,
 } from "@material-ui/core";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { toast } from "react-toastify";
 import { supplyCoins } from "../APIconfig/ApiEndPoint";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import blastdexABI from '../ABI/blastdexABI.json'
+import Web3 from "web3";
+import { useConnectWallet } from "@web3-onboard/react";
+import { cToken, mainContractAddress } from "../constants";
+import { addBalllance } from "../Store/walletSlice";
 
 const useStyles = makeStyles((theme) => ({
   closeBtn: {
@@ -52,38 +58,85 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
+  const dispatch = useDispatch()
+  const classes = useStyles();
   const balance = useSelector(state => state.walletDeatils.currentbalance);
+  const web3 = useSelector(state => state.walletDeatils.web3);
   const walletData = useSelector(state => state.walletDeatils.walletData);
-console.log("walletData",walletData);
 
   const [amount, setAmount] = useState("")
-  const classes = useStyles();
+  const [isLoading, setIsLoading] = useState(false)
+
+
   console.log("supplyData", amount);
-  const handleSypplyCoin = async () => {
+  const handleSypplyCoin = async (address,transactionHash) => {
     let data = {
       coinId: supplyData?._id,
-      walletAddress: walletData?.address,
+      walletAddress: address,
       amount: amount,
-        "transactionHash": "0x32137b75e23D6384EeBf2Fb797CE421c4CF37e62",
+      "transactionHash": transactionHash,
       "transactionStatus": "SUCCESS",
 
 
     }
-      const response = await supplyCoins(data)
-      console.log("response", response);
-      if (response?.responseCode == 200) {
-        toast.success(response?.responseMessage)
-        handleClose()
-        FetchCoin()
-        setAmount("")
-      } else {
-        toast.error(response)
-      }
-    } 
-    // else {
-    //   toast.warn("Please Connect your wallet")
-    // }
+    const response = await supplyCoins(data)
+    console.log("response", response);
+    if (response?.responseCode == 200) {
+      toast.success(response?.responseMessage)
+      handleClose()
+      FetchCoin()
+      setAmount("")
+      setIsLoading(false)
+    } else {
+      toast.error(response)
+      setIsLoading(false)
 
+    }
+  }
+ 
+  const getSupplyToken = async (tokenName) => {
+    if (web3) {
+      if (amount>0) {
+        let balance =""
+        let balanceInEther=""
+         balance = await web3.eth.getBalance(walletData?.address);
+        // Convert from Wei to Ether
+         balanceInEther = web3.utils.fromWei(balance, 'ether');
+         if (balanceInEther>amount) {
+           try {
+            setIsLoading(true)
+            const contract = await new web3.eth.Contract(blastdexABI, mainContractAddress)
+            const amountInWei = web3.utils.toWei(amount, "ether");
+            console.log("contract",contract);
+            let result = await contract.methods.supply(amountInWei,cToken).send({ from: walletData?.address })
+            balance = await web3.eth.getBalance(result?.from);
+             balanceInEther = web3.utils.fromWei(balance, 'ether');
+
+            dispatch(addBalllance(balanceInEther))
+            if (result) {
+              handleSypplyCoin(result?.from,result?.transactionHash)
+            }
+            console.log("contract", result,balanceInEther);
+          
+          } catch (error) {
+            setIsLoading(false)
+            toast.error(error?.message)
+            console.log("ERROR", error?.message);
+          }
+         }else{
+          toast.error(`Ballance should be less than ${balanceInEther}`)
+         }
+      }else{
+        toast.warn("Enter a valid amount")
+      }
+     
+      
+    }
+     else {
+    toast.warn("Please Connect your wallet")
+  }
+
+  };
 
   return (
     <Box>
@@ -127,6 +180,8 @@ console.log("walletData",walletData);
               <span className={classes.smallText}>Supply Amount</span>{" "}
               <span className={classes.mediumText}>
                 Wallet Balance {balance && parseFloat(balance).toFixed(5)}
+                <br/>
+               
               </span>
             </Box>
             <FormControl variant="outlined">
@@ -142,6 +197,14 @@ console.log("walletData",walletData);
                 labelWidth={0}
                 placeholder="$0.00"
               />
+              
+              {balance==0 && web3 &&
+                <Box variant="body"  sx={{color:"red",marginTop:"4px"}}>Insufficient balance</Box>
+              }
+              {!web3 &&
+                <Box variant="body"  sx={{color:"#FF9142",marginTop:"4px"}}>Please connect your wallet</Box>
+              }
+
             </FormControl>
 
             {/*
@@ -216,7 +279,7 @@ console.log("walletData",walletData);
               </Box>
             </Box>
             <Box textAlign={"center"} mt={5}>
-              <Button disabled={!amount} variant="contained" style={{ minWidth: "170px" }} onClick={() => handleSypplyCoin()}>Supply</Button>
+              <Button disabled={!amount  || isLoading} variant="contained" style={{ minWidth: "170px" }} onClick={() => getSupplyToken()}>Supply &nbsp;  {isLoading && <CircularProgress style={{width:"20px",height:"20px"}} color="primary"  />}</Button>
             </Box>
           </form>
         </DialogContent>

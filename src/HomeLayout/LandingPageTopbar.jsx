@@ -483,7 +483,6 @@ import {
   
           <Grid container alignItems="center">
             <Grid item xs={9}>
-              {getDrawerChoices2()}
             </Grid>
             <Grid item xs={3}>
               <IconButton

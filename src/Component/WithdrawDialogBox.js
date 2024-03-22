@@ -15,8 +15,14 @@ import {
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { withdrawCoins } from "../APIconfig/ApiEndPoint";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { addBalllance } from "../Store/walletSlice";
+import blastdexABI from '../ABI/blastdexABI.json'
+import tokenABI from '../ABI/tokenABI.json'
+
+import { cToken, mainContractAddress } from "../constants";
+
 
 const useStyles = makeStyles((theme) => ({
   closeBtn: {
@@ -52,21 +58,22 @@ const useStyles = makeStyles((theme) => ({
 
 function WithdrawDialogBox({ open, handleClose,supplyData,FetchCoin }) {
   const classes = useStyles();
+  const dispatch = useDispatch()
+  const [amount, setAmount] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+
   const balance = useSelector(state => state.walletDeatils.currentbalance);
   const walletData = useSelector(state => state.walletDeatils.walletData);
+  const web3 = useSelector(state => state.walletDeatils.web3);
 
 
-  const [amount, setAmount] = useState("")
-
-  const handleSypplyCoin = async () => {
+  const handleSypplyCoin = async  (address,transactionHash) => {
     let data = {
       coinId: supplyData?._id,
-      walletAddress: walletData?.address,
+      walletAddress: address,
       amount: amount,
-        "transactionHash": "0x32137b75e23D6384EeBf2Fb797CE421c4CF37e62",
+      "transactionHash": transactionHash,
       "transactionStatus": "SUCCESS",
-
-
     }
       const response = await withdrawCoins(data)
       console.log("response", response);
@@ -79,6 +86,64 @@ function WithdrawDialogBox({ open, handleClose,supplyData,FetchCoin }) {
         toast.error(response)
       }
     } 
+    const getSupplyToken = async (tokenName) => {
+      if (web3) {
+        if (amount>0) {
+          let balance =""
+          let balanceInEther=""
+           balance = await web3.eth.getBalance(walletData?.address);
+          // Convert from Wei to Ether
+           balanceInEther = web3.utils.fromWei(balance, 'ether');
+           if (balanceInEther>amount) {
+             try {
+              setIsLoading(true)
+              const contract = await new web3.eth.Contract(blastdexABI, mainContractAddress)
+              const contract1 = await new web3.eth.Contract(tokenABI, cToken)
+              console.log("contract",contract,contract1);
+
+              const amountInWei = web3.utils.toWei(amount, "ether");
+              let result = await contract.methods.withdraw(cToken,amountInWei).send({ from: walletData?.address })
+              balance = await web3.eth.getBalance(result?.from);
+               balanceInEther = web3.utils.fromWei(balance, 'ether');
+              // console.log("contract",contract,contract1);
+              // // let tokenApprove = await contract1.methods.approve(mainContractAddress,amountInWei).send({ from: walletData?.address })
+              // // console.log("tokenApprove",tokenApprove);
+              // let result = await contract.methods.repay(cToken,amountInWeiRepay).send({ from: walletData?.address })
+              // balance = await web3.eth.getBalance(result?.from);
+              //  balanceInEther = web3.utils.fromWei(balance, 'ether');
+
+              // const amountInWei = web3.utils.toWei(amount, "ether");
+              // console.log("contract",contract);
+              // // let tokenApprove = contract1.methods.approve
+              // let result = await contract.methods.borrow(amountInWei,cToken,1710688400).send({ from: walletData?.address })
+              // balance = await web3.eth.getBalance(result?.from);
+              //  balanceInEther = web3.utils.fromWei(balance, 'ether');
+  
+              dispatch(addBalllance(balanceInEther))
+              if (result) {
+                handleSypplyCoin(result?.from,result?.transactionHash)
+              }
+              console.log("contract", result,balanceInEther);
+            
+            } catch (error) {
+              setIsLoading(false)
+              toast.error(error?.message)
+              console.log("ERROR", error?.message);
+            }
+           }else{
+            toast.error(`Ballance should be less than ${balanceInEther}`)
+           }
+        }else{
+          toast.warn("Enter a valid amount")
+        }
+       
+        
+      }
+       else {
+      toast.warn("Please Connect your wallet")
+    }
+  
+    };
   return (
     <Box>
       <Dialog
@@ -120,7 +185,7 @@ function WithdrawDialogBox({ open, handleClose,supplyData,FetchCoin }) {
             >
               <span className={classes.smallText}>Withdraw Amount</span>
               <span className={classes.mediumText}>
-              Supply Balance {balance && parseFloat(balance).toFixed(5)}ETH
+              Withdraw Balance {balance && parseFloat(balance).toFixed(5)}ETH
               </span>
             </Box>
             <FormControl variant="outlined">
@@ -202,7 +267,7 @@ function WithdrawDialogBox({ open, handleClose,supplyData,FetchCoin }) {
               </Box>
             </Box>
             <Box textAlign={"center"} mt={5}>
-              <Button variant="contained" style={{minWidth:"170px"}} onClick={() => handleSypplyCoin()}>Withdraw</Button>
+              <Button variant="contained" style={{minWidth:"170px"}} onClick={() => getSupplyToken()}>Withdraw</Button>
             </Box>
           </form>
         </DialogContent>

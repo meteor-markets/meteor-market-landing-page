@@ -34,6 +34,19 @@ export function getProviderOrSigner(library, account) {
   return account ? getSigner(library, account) : library
 }
 
+export const getWeb3Obj = async (RPC_URL = default_RPC_URL) => {
+  const httpProvider = new Web3.providers.HttpProvider(RPC_URL);
+  const web3 = await new Web3(httpProvider);
+  return web3;
+};
+export const getWeb3ContractObject = async (
+  abi,
+  web3
+) => {
+  const contract = await  web3.eth.Contract(abi);
+  return contract;
+};
+
 export function getContract(address, ABI, library, account) {
   return new Contract(address, ABI, getProviderOrSigner(library, account))
 }

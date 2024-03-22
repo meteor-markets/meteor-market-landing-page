@@ -1,8 +1,8 @@
 // export const baseurl = "http://172.16.2.13:3038"; //local
 
-// export const baseurl = 'http://13.214.26.3:2021' // staging
+export const baseurl = 'http://13.214.26.3:2021' // staging
 // export const baseurl = "https://node-ecommerce.mobiloitte.com/api/v1/"; // staging
-export const baseurl = "http://192.168.1.7:2021"
+// export const baseurl = "http://192.168.1.7:2021"
 // http://192.168.1.7:2021/api-docs/#/
 
 let admin = `${baseurl}/api/v1/admin`

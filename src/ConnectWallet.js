@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useConnectWallet, useSetChain } from "@web3-onboard/react";
 import { ethers } from "ethers";
 import { Box, Button, Typography, makeStyles } from "@material-ui/core";
-import { FetchCoinList, FetchOverview, connectWallet, getProfileHandler } from "./APIconfig/ApiEndPoint";
+import { FetchCoinList, FetchOverview, connectWallet } from "./APIconfig/ApiEndPoint";
 import { FaArrowRight, FaSignOutAlt } from "react-icons/fa";
 import { sortAddress } from "./utils";
 import CopyToClipboard from "react-copy-to-clipboard";
@@ -14,6 +14,7 @@ import { addBalllance, addOverviewDetails, addWalletDetails, addWeb3 } from "./S
 import { IoCloseSharp } from "react-icons/io5";
 import Web3 from "web3";
 import { toast } from "react-toastify";
+import { defaultChainID, mainnetChainID } from "./constants";
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -104,77 +105,61 @@ const ConnectWallet = () => {
   const web3 = useSelector(state => state.walletDeatils.web3);
 
 
-  
-  let showExploral = walletData?.chainId ==81457?"https://blastscan.io/address/":"https://sepolia.blastscan.io/address/"
+
+  let showExploral = walletData?.chainId == mainnetChainID ? "https://blastscan.io/address/" : "https://sepolia.blastscan.io/address/"
   const handleClick = (event) => {
     setOpenChangeWallet(event.currentTarget);
   };
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet();
- 
+
   const [
     {
       chains, connectedChain, settingChain }, setChain] = useSetChain()
-  console.log("chains",balance, chains, connectedChain);
-
-  const [
-    ethersProvider,
-    setProvider
-  ] = useState();
+  console.log("chains", balance, chains, connectedChain);
   const [account, setAccount] = useState(null);
-  console.log("walletData", ethersProvider);
   useEffect(() => {
     if (wallet?.provider) {
+      const library = new ethers.providers.Web3Provider(wallet?.provider,"any");
       const web3Instance = new Web3(wallet.provider); // Initialize Web3 with the provider from the connected wallet
       dispatch(addWeb3(web3Instance))
       let chainId = Number(wallet?.chains[0].id)
+      console.log("chainId",chainId);
       const { name, avatar } = wallet?.accounts[0].ens ?? {};
       let data =
       {
         address: wallet.accounts[0].address,
         balance: wallet.accounts[0].balance,
         ens: { name, avatar: avatar?.url },
-        chainId: chainId
+        chainId: chainId,
+        library:library
       }
-
-
-
+      if (chainId != defaultChainID || chainId != mainnetChainID) {
+        switchNetwork(defaultChainID)
+      }
       FetchCoin(chainId)
       walletConect(wallet.accounts[0].address)
-      localStorage.setItem("walletDetails", JSON.stringify(data))
       sessionStorage.setItem("userAddress", wallet.accounts[0].address)
       dispatch(addWalletDetails(data))
       setAccount(data);
-    }
-  }, [wallet]);
-
-  useEffect(() => {
     const fetchBalance = async () => {
-      if (web3) {
+      if (web3Instance) {
         try {
-          // Check if MetaMask is installed and has been detected
-          const accounts = await web3.eth.getAccounts();
-          if (accounts.length > 0) {
-            // If there are accounts available (MetaMask is installed and unlocked), proceed with fetching the balance
-            const account = accounts[0]; // Assuming the first account is the current user's
-            console.log("account",account);
-            // Fetch the balance
-            const balance = await web3.eth.getBalance(account);
-            // Convert from Wei to Ether
-            const balanceInEther = web3.utils.fromWei(balance, 'ether');
-            dispatch(addBalllance(balanceInEther))
-            
-          } else {
-            // Handle case where no accounts are available (MetaMask is not installed or unlocked)
-            console.log('No accounts available');
-          }
+          const balance = await web3Instance.eth.getBalance(wallet.accounts[0].address,);
+          // Convert from Wei to Ether
+          const balanceInEther = web3Instance.utils.fromWei(balance, 'ether');
+          console.log("balance", balance, balanceInEther);
+          dispatch(addBalllance(balanceInEther))
         } catch (error) {
           console.error('Error fetching balance:', error);
         }
       }
     };
-  
     fetchBalance();
-  }, [web3]);
+  }
+
+  }, [wallet]);
+
+
 
   // connect wallet api 
   const walletConect = async (address) => {
@@ -192,24 +177,13 @@ const ConnectWallet = () => {
   }
 
 
-  useEffect(() => {
-    if (wallet?.provider) {
-      const library = new ethers.providers.Web3Provider(wallet?.provider);
-      console.log("lisbafnabsn",library);
-      setProvider(new ethers.providers.Web3Provider(wallet.provider, "any"));
-    }
-  }, [wallet]);
-
-
-
-
   const FetchCoin = async (chainId) => {
     setCoinName([])
     const response = await FetchCoinList()
     if (response?.length > 0) {
       let filterData = response?.filter((ele) => ele?.chainId == chainId)
       console.log("filterData", filterData);
-      setCoinName(filterData[filterData?.length-1])
+      setCoinName(filterData[filterData?.length - 1])
     }
   }
 
@@ -227,12 +201,10 @@ const ConnectWallet = () => {
     setCoinName({})
 
   }
-  const switchNetwork = async (newChainId) => {
-    console.log("newChainId", newChainId);
-    try {
-      // Check if the new chainId is in the list of supported chains
-      // Set the new chain, and set settingChain to true during the process
 
+
+  const switchNetwork = async (newChainId) => {
+    try {
       const isChainValid = chains.some((chain) => Number(chain.id) === newChainId);
       console.log("isChainValid", isChainValid);
       if (isChainValid) {
@@ -256,7 +228,7 @@ const ConnectWallet = () => {
               {/*
             <img src={CoinName?.coinImage} alt="image" style={{ width: "30px",marginTop:"6px" }} />
             */}
-              <img src="https://sepolia.blastscan.io/images/svg/brands/main-light.svg?v=24.2.2.1" alt="image" style={{ width: "30px",marginTop:"6px" }} />
+              <img src="https://sepolia.blastscan.io/images/svg/brands/main-light.svg?v=24.2.2.1" alt="image" style={{ width: "30px", marginTop: "6px" }} />
 
             </div>}
           <Typography style={{
@@ -264,20 +236,20 @@ const ConnectWallet = () => {
             color: "#fff",
             cursor: "pointer",
           }}>
-                      {balance && parseFloat(balance).toFixed(5)}  &nbsp;
+            {balance && parseFloat(balance).toFixed(5)}  &nbsp;
             {/*
           <span>{CoinName?.coinName}</span> &nbsp;
           */}
-          
-            <span>{balance && "ETH"}</span> &nbsp;
-{balance &&
 
-  
-  <span onClick={handleClick}>{openChangeWallet ? (<KeyboardArrowUpIcon />) : (<KeyboardArrowDownIcon />)}</span>
-}
+            <span>{balance && "ETH"}</span> &nbsp;
+            {balance &&
+
+
+              <span onClick={handleClick}>{openChangeWallet ? (<KeyboardArrowUpIcon />) : (<KeyboardArrowDownIcon />)}</span>
+            }
             <div>
               {openChangeWallet &&
-                <Box sx={{ "top": "28px", "right": "0px", "width": "200px", "height": "160px", "position": "absolute", "background": "rgb(28, 28, 28)", "borderRadius": "10px", "boxShadow": "rgba(0, 0, 0, 0.1) 0px 4px 12px",border:"1px solid rgb(255 145 66 / 10%)" }}>
+                <Box sx={{ "top": "28px", "right": "0px", "width": "200px", "height": "160px", "position": "absolute", "background": "rgb(28, 28, 28)", "borderRadius": "10px", "boxShadow": "rgba(0, 0, 0, 0.1) 0px 4px 12px", border: "1px solid rgb(255 145 66 / 10%)" }}>
                   <div style={{ display: "flex", justifyContent: "space-between" }}>
                     <Typography variant="h6" sx={{ marginTop: "10px" }}><span style={{ padding: "10px", fontSize: "20px" }}>Select Network</span> </Typography>
                     <IoCloseSharp onClick={() => {
@@ -331,10 +303,10 @@ const ConnectWallet = () => {
             >
               {/* {account} */}
               {sortAddress(account?.address)}
-            
+
             </Button>
             {rightBar &&
-              <Box sx={{ "top": "46px", "right": "0px", "width": "200px", "height": "180px", "position": "absolute", "background": "rgb(28, 28, 28)", "borderRadius": "10px", "boxShadow": "rgba(0, 0, 0, 0.1) 0px 4px 12px",color:"white",border:"1px solid rgb(255 145 66 / 10%)" }}>
+              <Box sx={{ "top": "46px", "right": "0px", "width": "200px", "height": "180px", "position": "absolute", "background": "rgb(28, 28, 28)", "borderRadius": "10px", "boxShadow": "rgba(0, 0, 0, 0.1) 0px 4px 12px", color: "white", border: "1px solid rgb(255 145 66 / 10%)" }}>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography variant="h6" sx={{ marginTop: "10px" }}><span style={{ padding: "10px", fontSize: "20px" }}>Expert Mode</span> </Typography>
                   <IoCloseSharp onClick={() => {
@@ -362,43 +334,44 @@ const ConnectWallet = () => {
                           cursor: "pointer",
                         }}
                         fontSize="small"
-                        onClick={() =>{ toast.info("Copied", {
-                          position: toast.POSITION.TOP_RIGHT
-                        })
-                        setRightBar(false)
-                      }}
+                        onClick={() => {
+                          toast.info("Copied", {
+                            position: toast.POSITION.TOP_RIGHT
+                          })
+                          setRightBar(false)
+                        }}
                       />
                       <div>
                         &nbsp;Copy Address
                       </div>
                     </div>
                   </CopyToClipboard>
-                 
 
-                  <Button 
-                  fullWidth
-                  className={classes.btnHover}
-                  style={{
-                    justifyContent: "left",
-                    textTransform: "capitalize",
-                  }}
-                  onClick={()=>setRightBar(false)}
-                >
-                <a style={{color:"white",textDecoration:"none"}} href={`${showExploral}${account?.address}`} target="_blank"><FaSignOutAlt color="white" /> &nbsp;View on EXplorer</a>
-                  
-                </Button  >
+
                   <Button
-                  fullWidth
-                  className={classes.btnHover}
-                  style={{
-                    justifyContent: "left",
-                    color: "white",
-                    textTransform: "capitalize",
-                  }}
-                  onClick={() => handleDisconnectWallet()}
-                >
-                  <FaArrowRight color="white" /> &nbsp;&nbsp;Disconnect
-                </Button>
+                    fullWidth
+                    className={classes.btnHover}
+                    style={{
+                      justifyContent: "left",
+                      textTransform: "capitalize",
+                    }}
+                    onClick={() => setRightBar(false)}
+                  >
+                    <a style={{ color: "white", textDecoration: "none" }} href={`${showExploral}${account?.address}`} target="_blank"><FaSignOutAlt color="white" /> &nbsp;View on EXplorer</a>
+
+                  </Button  >
+                  <Button
+                    fullWidth
+                    className={classes.btnHover}
+                    style={{
+                      justifyContent: "left",
+                      color: "white",
+                      textTransform: "capitalize",
+                    }}
+                    onClick={() => handleDisconnectWallet()}
+                  >
+                    <FaArrowRight color="white" /> &nbsp;&nbsp;Disconnect
+                  </Button>
                 </Box>
               </Box>
             }
