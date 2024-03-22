@@ -6,7 +6,9 @@ const initialState = {
     currentbalance:"",
     web3:null,
 
-    getUserOverView:{}
+    getUserOverView:{},
+    userDetails:{}
+
 
 }
 
@@ -25,12 +27,15 @@ export const todoSlice = createSlice({
         },
         addOverviewDetails: (state, action) => {
             state.getUserOverView = action.payload
+        },
+        findUserDetails: (state, action) => {
+            state.userDetails = action.payload
         }
     }
 });
 
 // actions per il dispatch
-export const { addWalletDetails,addOverviewDetails,addBalllance ,addWeb3} = todoSlice.actions;
+export const { addWalletDetails,addOverviewDetails,addBalllance ,addWeb3,findUserDetails} = todoSlice.actions;
 
 // reducer
 export default todoSlice.reducer;

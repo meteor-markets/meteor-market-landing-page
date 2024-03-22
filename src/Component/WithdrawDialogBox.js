@@ -21,7 +21,7 @@ import { addBalllance } from "../Store/walletSlice";
 import blastdexABI from '../ABI/blastdexABI.json'
 import tokenABI from '../ABI/tokenABI.json'
 
-import { cToken, mainContractAddress } from "../constants";
+import { cToken, fetchTotalSupplied, mainContractAddress } from "../constants";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -61,11 +61,12 @@ function WithdrawDialogBox({ open, handleClose,supplyData,FetchCoin }) {
   const dispatch = useDispatch()
   const [amount, setAmount] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const userDetails = useSelector(state => state.walletDeatils.userDetails);
 
   const balance = useSelector(state => state.walletDeatils.currentbalance);
   const walletData = useSelector(state => state.walletDeatils.walletData);
   const web3 = useSelector(state => state.walletDeatils.web3);
-
+  
 
   const handleSypplyCoin = async  (address,transactionHash) => {
     let data = {
@@ -82,60 +83,61 @@ function WithdrawDialogBox({ open, handleClose,supplyData,FetchCoin }) {
         handleClose()
         FetchCoin()
         setAmount("")
+      fetchTotalSupplied(blastdexABI,walletData ,web3,dispatch)
+
       } else {
         toast.error(response)
       }
     } 
     const getSupplyToken = async (tokenName) => {
       if (web3) {
-        if (amount>0) {
-          let balance =""
-          let balanceInEther=""
-           balance = await web3.eth.getBalance(walletData?.address);
-          // Convert from Wei to Ether
-           balanceInEther = web3.utils.fromWei(balance, 'ether');
-           if (balanceInEther>amount) {
-             try {
-              setIsLoading(true)
-              const contract = await new web3.eth.Contract(blastdexABI, mainContractAddress)
-              const contract1 = await new web3.eth.Contract(tokenABI, cToken)
-              console.log("contract",contract,contract1);
-
-              const amountInWei = web3.utils.toWei(amount, "ether");
-              let result = await contract.methods.withdraw(cToken,amountInWei).send({ from: walletData?.address })
-              balance = await web3.eth.getBalance(result?.from);
-               balanceInEther = web3.utils.fromWei(balance, 'ether');
-              // console.log("contract",contract,contract1);
-              // // let tokenApprove = await contract1.methods.approve(mainContractAddress,amountInWei).send({ from: walletData?.address })
-              // // console.log("tokenApprove",tokenApprove);
-              // let result = await contract.methods.repay(cToken,amountInWeiRepay).send({ from: walletData?.address })
-              // balance = await web3.eth.getBalance(result?.from);
-              //  balanceInEther = web3.utils.fromWei(balance, 'ether');
-
-              // const amountInWei = web3.utils.toWei(amount, "ether");
-              // console.log("contract",contract);
-              // // let tokenApprove = contract1.methods.approve
-              // let result = await contract.methods.borrow(amountInWei,cToken,1710688400).send({ from: walletData?.address })
-              // balance = await web3.eth.getBalance(result?.from);
-              //  balanceInEther = web3.utils.fromWei(balance, 'ether');
+        if (amount<userDetails?.totalSupply) {
+          if (amount>0) {
+            let balance =""
+            let balanceInEther=""
+             balance = await web3.eth.getBalance(walletData?.address);
+            // Convert from Wei to Ether
+             balanceInEther = web3.utils.fromWei(balance, 'ether');
+             if (balanceInEther>amount) {
+               try {
+                setIsLoading(true)
+                const contract = await new web3.eth.Contract(blastdexABI, mainContractAddress)
+                const contract1 = await new web3.eth.Contract(tokenABI, cToken)
+                console.log("contract",contract,contract1);
   
-              dispatch(addBalllance(balanceInEther))
-              if (result) {
-                handleSypplyCoin(result?.from,result?.transactionHash)
+                const amountInWei = web3.utils.toWei(amount, "ether");
+                let result = await contract.methods.withdraw(cToken,amountInWei).send({ from: walletData?.address })
+                balance = await web3.eth.getBalance(result?.from);
+                 balanceInEther = web3.utils.fromWei(balance, 'ether');
+                // console.log("contract",contract,contract1);
+                // // let tokenApprove = await contract1.methods.approve(mainContractAddress,amountInWei).send({ from: walletData?.address })
+                // // console.log("tokenApprove",tokenApprove);
+                // let result = await contract.methods.repay(cToken,amountInWeiRepay).send({ from: walletData?.address })
+                // balance = await web3.eth.getBalance(result?.from);
+                //  balanceInEther = web3.utils.fromWei(balance, 'ether');
+                dispatch(addBalllance(balanceInEther))
+                if (result) {
+                  handleSypplyCoin(result?.from,result?.transactionHash)
+                }
+                console.log("contract", result,balanceInEther);
+              
+              } catch (error) {
+                setIsLoading(false)
+                toast.error(error?.message)
+                console.log("ERROR", error?.message);
               }
-              console.log("contract", result,balanceInEther);
-            
-            } catch (error) {
-              setIsLoading(false)
-              toast.error(error?.message)
-              console.log("ERROR", error?.message);
-            }
-           }else{
-            toast.error(`Ballance should be less than ${balanceInEther}`)
-           }
+             }else{
+              toast.error(`Ballance should be less than ${balanceInEther}`)
+             }
+          }else{
+            toast.warn("Enter a valid amount")
+          }
+          
         }else{
-          toast.warn("Enter a valid amount")
+          toast.info(`Withdraw amount should be less than ${userDetails?.totalSupply}`)
+         
         }
+       
        
         
       }

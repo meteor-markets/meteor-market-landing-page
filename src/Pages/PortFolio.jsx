@@ -24,6 +24,10 @@ import Page from "../Component/Page";
 import Apiconfigs from "../APIconfig/ApiConfig";
 import { Pagination } from "@material-ui/lab";
 import { FetchUserPortfolio } from "../APIconfig/ApiEndPoint";
+import { useDispatch, useSelector } from "react-redux";
+import blastdexABI from '../ABI/blastdexABI.json'
+import { convertValuesFromWeiToEther, fetchTotalSupplied, mainContractAddress } from "../constants";
+import { findUserDetails } from "../Store/walletSlice";
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -81,6 +85,12 @@ const StyledTableRow = withStyles((theme) => ({
 
 const PortFolio = () => {
   const classes = useStyles();
+  const dispatch = useDispatch()
+  const web3 = useSelector(state => state.walletDeatils.web3);
+  const walletData = useSelector(state => state.walletDeatils.walletData);
+  const userDetails = useSelector(state => state.walletDeatils.userDetails);
+  console.log("userDetails", userDetails);
+
   const [getUserposrtFolio, setGetportfolio] = useState();
   let userAdress = sessionStorage.getItem("userAddress");
   const getUserProfile = async () => {
@@ -94,8 +104,9 @@ const PortFolio = () => {
   }
 
   useEffect(() => {
-    console.log("userAdress",userAdress);
+    console.log("userAdress", userAdress);
     if (userAdress) {
+      fetchTotalSupplied(blastdexABI,walletData ,web3,dispatch)
 
       getUserProfile();
     }
@@ -116,6 +127,7 @@ const PortFolio = () => {
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
+
   return (
     <Page title="Landing">
       <Box className={classes.headBox}>
@@ -126,7 +138,7 @@ const PortFolio = () => {
                 <Box>
                   <Typography variant="h4">Your Supply Balance</Typography>
                   <Typography variant="h2" className="textColorFormate">
-                    ${getUserposrtFolio?.supplyBalance}
+                    ${userDetails?.totalSupply}
                   </Typography>
                 </Box>
                 <Box>
@@ -148,7 +160,7 @@ const PortFolio = () => {
                 <Box>
                   <Typography variant="h4">Your Borrow Balance</Typography>
                   <Typography variant="h2" className="textColorFormate">
-                    ${getUserposrtFolio?.borrowBalance}
+                    ${userDetails?.totalBorrow}
                   </Typography>
                 </Box>
                 <Box>
@@ -160,7 +172,7 @@ const PortFolio = () => {
                     className="textColorFormate"
                     style={{ textAlign: "end" }}
                   >
-                    {getUserposrtFolio?.borrowLimit}%
+                    ${userDetails?.borrowLimit}
                   </Typography>
                 </Box>
               </Box>

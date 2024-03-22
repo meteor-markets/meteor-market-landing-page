@@ -7,10 +7,9 @@ import {
 } from "@material-ui/core";
 import Page from "../Component/Page";
 import Footer from "../HomeLayout/Footer";
-import { FetchOverview } from "../APIconfig/ApiEndPoint";
 import { useDispatch, useSelector } from "react-redux";
 import ApexChart from "./ApexChart";
-import LineGraph from "./LineGraph";
+import { fetchData } from "../constants";
 import { addOverviewDetails } from "../Store/walletSlice";
 
 const useStyles = makeStyles((theme) => ({
@@ -72,26 +71,30 @@ const useStyles = makeStyles((theme) => ({
 
   const classes = useStyles();
   const getUserOverViewData = useSelector(state => state.walletDeatils.getUserOverView);
-  let token = sessionStorage?.getItem("token")
-  useEffect(()=>{
-if (token) {
-  getOverview(token)
-}
-
-  },[token])
-  const getOverview = async (token) => {
-    
-    const response = await FetchOverview(token)
-    if (response?.responseCode === 200) {
-      dispatch(addOverviewDetails(response.result[0]))
-    }
-  }
-
+  const [alloverViewData,setOverviewData]=useState()
+  
+  useEffect(() => {
+    const fetchOverView = async () => {
+      const response = await fetchData();
+      console.log("response",response);
+      setOverviewData(response);
+      dispatch(addOverviewDetails(response));
+    };
+  
+    // Call fetchOverView initially
+    fetchOverView();
+  
+    // Set interval to call fetchOverView every 5 seconds
+    const intervalId = setInterval(fetchOverView, 10000);
+  
+    // Clean up function to clear the interval when the component unmounts or the dependency array changes
+    return () => clearInterval(intervalId);
+  }, []);
   return (
     <Page title="Overview">
       <Box className={classes.headBox}>
         <Grid container spacing={3} style={{ marginTop: "30px" }}>
-          <Grid item lg={3}>
+          <Grid item lg={4}>
             <Box display={"flex"} alignItems={"center"}>
               <Box className={classes.lokedIconBox}>
                 <img
@@ -111,12 +114,12 @@ if (token) {
                   Total Assets
                 </Typography>
                 <Typography variant="h2" className="textColorFormate">
-                  $ {getUserOverViewData?.totalAssets}
+                ${Number(alloverViewData?.total_collateral_value).toFixed(2)}
                 </Typography>
               </Box>
             </Box>
           </Grid>
-          <Grid item lg={3}>
+          <Grid item lg={4}>
             <Box display={"flex"} alignItems={"center"}>
               <Box className={classes.lokedIconBox}>
                 <img
@@ -136,12 +139,12 @@ if (token) {
                   Total Supply
                 </Typography>
                 <Typography variant="h2" className="textColorFormate">
-                  $ {getUserOverViewData?.totalSupply}
+                  ${Number(alloverViewData?.total_supply_value).toFixed(2)}
                 </Typography>
               </Box>
             </Box>
           </Grid>
-          <Grid item lg={3}>
+          <Grid item lg={4}>
             <Box display={"flex"} alignItems={"center"}>
               <Box className={classes.lokedIconBox}>
                 <img
@@ -161,12 +164,11 @@ if (token) {
                   Total Borrow
                 </Typography>
                 <Typography variant="h2" className="textColorFormate">
-                  $ {getUserOverViewData?.totalBorrow}
+                  ${Number(alloverViewData?.total_borrow_value).toFixed(2)}
                 </Typography>
               </Box>
             </Box>
           </Grid>
-          <Grid item lg={3}></Grid>
           <Grid item lg={12}>
         <Box className={classes.analyticsBox}>
           {/*

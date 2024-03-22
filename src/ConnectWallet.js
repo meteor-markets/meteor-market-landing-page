@@ -10,7 +10,7 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { useDispatch, useSelector } from "react-redux";
-import { addBalllance, addOverviewDetails, addWalletDetails, addWeb3 } from "./Store/walletSlice";
+import { addBalllance, addOverviewDetails, addWalletDetails, addWeb3, findUserDetails } from "./Store/walletSlice";
 import { IoCloseSharp } from "react-icons/io5";
 import Web3 from "web3";
 import { toast } from "react-toastify";
@@ -115,7 +115,6 @@ const ConnectWallet = () => {
   const [
     {
       chains, connectedChain, settingChain }, setChain] = useSetChain()
-  console.log("chains", balance, chains, connectedChain);
   const [account, setAccount] = useState(null);
   useEffect(() => {
     if (wallet?.provider) {
@@ -198,6 +197,7 @@ const ConnectWallet = () => {
     dispatch(addOverviewDetails({}))
     dispatch(addWeb3(null))
     dispatch(addBalllance(null))
+    dispatch(findUserDetails())
     setCoinName({})
 
   }

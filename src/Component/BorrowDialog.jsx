@@ -11,12 +11,18 @@ import {
   OutlinedInput,
   FormControl,
   Select,
-  MenuItem
+  MenuItem,
+  TextField,
+  CircularProgress
 } from '@material-ui/core'
 import { FaArrowLeftLong } from 'react-icons/fa6'
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
 import { withdrawCoins } from '../APIconfig/ApiEndPoint'
+import { cToken, fetchTotalSupplied, handleConvertToUnix, mainContractAddress } from '../constants'
+import { addBalllance } from '../Store/walletSlice'
+import blastdexABI from '../ABI/blastdexABI.json'
+import { toast } from 'react-toastify'
 
 const useStyles = makeStyles((theme) => ({
   closeBtn: {
@@ -59,6 +65,8 @@ function BorrowDialogBox({ open, handleClose,supplyData,FetchCoin }) {
   const balance = useSelector(state => state.walletDeatils.currentbalance);
   const walletData = useSelector(state => state.walletDeatils.walletData);
   const web3 = useSelector(state => state.walletDeatils.web3);
+  const [borrowDuration, setDuration] = useState()
+  const userDetails = useSelector(state => state.walletDeatils.userDetails);
 
 
   const handleSypplyCoin = async  (address,transactionHash) => {
@@ -74,6 +82,8 @@ function BorrowDialogBox({ open, handleClose,supplyData,FetchCoin }) {
       if (response?.responseCode == 200) {
         toast.success(response?.responseMessage)
         handleClose()
+      fetchTotalSupplied(blastdexABI,walletData ,web3,dispatch)
+
         FetchCoin()
         setAmount("")
       } else {
@@ -82,7 +92,7 @@ function BorrowDialogBox({ open, handleClose,supplyData,FetchCoin }) {
     } 
     const getSupplyToken = async (tokenName) => {
       if (web3) {
-        if (amount>0) {
+        if (amount>0 &&borrowDuration ) {
           let balance =""
           let balanceInEther=""
            balance = await web3.eth.getBalance(walletData?.address);
@@ -92,29 +102,16 @@ function BorrowDialogBox({ open, handleClose,supplyData,FetchCoin }) {
              try {
               setIsLoading(true)
               const contract = await new web3.eth.Contract(blastdexABI, mainContractAddress)
-              const contract1 = await new web3.eth.Contract(tokenABI, cToken)
-              console.log("contract",contract,contract1);
-
+              console.log("contract",contract);
               const amountInWei = web3.utils.toWei(amount, "ether");
-              let result = await contract.methods.withdraw(cToken,amountInWei).send({ from: walletData?.address })
+              // amount ctoken and time  
+              let result = await contract.methods.borrow(amountInWei,cToken,borrowDuration).send({ from: walletData?.address })
               balance = await web3.eth.getBalance(result?.from);
                balanceInEther = web3.utils.fromWei(balance, 'ether');
-              // console.log("contract",contract,contract1);
-              // // let tokenApprove = await contract1.methods.approve(mainContractAddress,amountInWei).send({ from: walletData?.address })
-              // // console.log("tokenApprove",tokenApprove);
-              // let result = await contract.methods.repay(cToken,amountInWeiRepay).send({ from: walletData?.address })
-              // balance = await web3.eth.getBalance(result?.from);
-              //  balanceInEther = web3.utils.fromWei(balance, 'ether');
-
-              // const amountInWei = web3.utils.toWei(amount, "ether");
-              // console.log("contract",contract);
-              // // let tokenApprove = contract1.methods.approve
-              // let result = await contract.methods.borrow(amountInWei,cToken,1710688400).send({ from: walletData?.address })
-              // balance = await web3.eth.getBalance(result?.from);
-              //  balanceInEther = web3.utils.fromWei(balance, 'ether');
   
               dispatch(addBalllance(balanceInEther))
               if (result) {
+              setIsLoading(false)
                 handleSypplyCoin(result?.from,result?.transactionHash)
               }
               console.log("contract", result,balanceInEther);
@@ -128,7 +125,7 @@ function BorrowDialogBox({ open, handleClose,supplyData,FetchCoin }) {
             toast.error(`Ballance should be less than ${balanceInEther}`)
            }
         }else{
-          toast.warn("Enter a valid amount")
+          toast.warn("Enter a valid amount and valid date")
         }
        
         
@@ -139,11 +136,14 @@ function BorrowDialogBox({ open, handleClose,supplyData,FetchCoin }) {
   
     };
 
-  const [age, setAge] = useState(10)
 
   const handleChange = (event) => {
-    setAge(event.target.value)
+    console.log("event.target.value",event.target.value);
+   let convertedTime =  handleConvertToUnix(event.target.value)
+
+    setDuration(convertedTime)
   }
+  const today = new Date().toISOString().split('T')[0];
 
   return (
     <Box>
@@ -155,7 +155,7 @@ function BorrowDialogBox({ open, handleClose,supplyData,FetchCoin }) {
               handleClose()
             }}
           />
-          <Typography variant='h4'>Borrow DAI</Typography>
+          <Typography variant='h4'>Borrow {supplyData?.coinName}</Typography>
           <img
             alt=''
             style={{
@@ -166,20 +166,21 @@ function BorrowDialogBox({ open, handleClose,supplyData,FetchCoin }) {
               marginRight: '15px'
             }}
             width='100%'
-            src='../images/DAI-logo1.png'
+            src={supplyData?.coinImage}
           />
         </DialogActions>
         <DialogContent className={classes.DialogContent}>
           <form>
             <Box mt={4} display={'flex'} justifyContent={'space-between'} alignItems={'end'} mb={'4px'}>
-              <span className={classes.smallText}>Borrow Amount</span> <span className={classes.mediumText}>Borrow Limit 0.0000 DAI</span>
+              <span className={classes.smallText}>Borrow Amount</span> <span className={classes.mediumText}>Borrow Limit ${userDetails?.borrowLimit}</span>
             </Box>
             <FormControl variant='outlined'>
               <OutlinedInput
+              onChange={(e) => setAmount(e.target.value)} value={amount} type="number"
                 endAdornment={
                   <InputAdornment position='end'>
                     <span style={{ marginRight: '15px', textAlign: 'end' }}>
-                      DAI <br /> -$0.00
+                    {supplyData?.coinName} <br /> -$0.00
                     </span>
                     <Button variant='contained'>MAX</Button>
                   </InputAdornment>
@@ -188,16 +189,29 @@ function BorrowDialogBox({ open, handleClose,supplyData,FetchCoin }) {
                 placeholder='$0.00'
               />
             </FormControl>
-
+            {balance==0 && web3 &&
+              <Box variant="body"  sx={{color:"red",marginTop:"4px"}}>Insufficient balance</Box>
+            }
+            {!web3 &&
+              <Box variant="body"  sx={{color:"#FF9142",marginTop:"4px"}}>Please connect your wallet</Box>
+            }
             <Box mt={5} mb={'4px'}>
               <span className={classes.smallText}>Lend Duration</span>
             </Box>
             <FormControl variant='outlined'>
-              <Select value={age} onChange={handleChange}>
-                <MenuItem value={10}>3 months {'{3.91% interest}'}</MenuItem>
-                <MenuItem value={20}>3 months {'{3.91% interest}'}</MenuItem>
-                <MenuItem value={30}>3 months {'{3.91% interest}'}</MenuItem>
-              </Select>
+              <TextField
+              placeholder='Date'
+              value={borrowDuration}
+              variant="outlined"
+              InputProps={{
+                inputProps: {
+                  min: new Date().toISOString().split('T')[0],
+                },
+              }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+              type='datetime-local' onChange={(e)=>handleChange(e)}/>
             </FormControl>
             <Box mt={5} className={classes.summryMainBox}>
               <Box display={'flex'} justifyContent={'space-between'} alignItems={'end'}>
@@ -225,9 +239,7 @@ function BorrowDialogBox({ open, handleClose,supplyData,FetchCoin }) {
               </Box>
             </Box>
             <Box textAlign={'center'} mt={5}>
-              <Button variant='contained' style={{ minWidth: '170px' }}>
-                Borrow
-              </Button>
+            <Button disabled={!amount  || isLoading} variant="contained" style={{ minWidth: "170px" }} onClick={() => getSupplyToken()}>Borrow &nbsp;  {isLoading && <CircularProgress style={{width:"20px",height:"20px"}} color="primary"  />}</Button>
             </Box>
           </form>
         </DialogContent>

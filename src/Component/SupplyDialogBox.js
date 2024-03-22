@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import blastdexABI from '../ABI/blastdexABI.json'
 import Web3 from "web3";
 import { useConnectWallet } from "@web3-onboard/react";
-import { cToken, mainContractAddress } from "../constants";
+import { cToken, fetchTotalSupplied, mainContractAddress } from "../constants";
 import { addBalllance } from "../Store/walletSlice";
 
 const useStyles = makeStyles((theme) => ({
@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
+  
   const dispatch = useDispatch()
   const classes = useStyles();
   const balance = useSelector(state => state.walletDeatils.currentbalance);
@@ -87,6 +88,8 @@ function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
       FetchCoin()
       setAmount("")
       setIsLoading(false)
+      fetchTotalSupplied(blastdexABI,walletData ,web3,dispatch)
+
     } else {
       toast.error(response)
       setIsLoading(false)

@@ -28,6 +28,7 @@ import SupplyDialogBox from "../Component/SupplyDialogBox";
 import WithdrawDialogBox from "../Component/WithdrawDialogBox";
 import { FetchCoinList } from "../APIconfig/ApiEndPoint";
 import Footer from "../HomeLayout/Footer";
+import { useSelector } from "react-redux";
 const useStyles = makeStyles((theme) => ({
   headBox: {
     borderRadius: "9px",
@@ -146,7 +147,8 @@ function a11yProps(index) {
   const [openRepayModel, setRepayModel] = useState(false);
   const [supplyData, setSupplyData] = useState({});
   const [CoinName, setCoinName] = useState();
-
+  const userDetails = useSelector(state => state.walletDeatils.userDetails);
+  console.log("userDetails", userDetails);
   const FetchCoin = async () => {
     const response = await FetchCoinList()
     if (response?.length > 0) {
@@ -212,7 +214,7 @@ const [currentPage, setCurrentPage] = useState(1);
               <Box className={classes.numberBox}>
                 <Typography variant="h4">Supplied Assets</Typography>
                 <Typography variant="h2" className="textColorFormate">
-                  $1871,560.70
+                  ${userDetails?.totalSupply}
                 </Typography>
               </Box>
             </Grid>
@@ -220,7 +222,7 @@ const [currentPage, setCurrentPage] = useState(1);
               <Box className={classes.numberBox}>
                 <Typography variant="h4">Borrowed Assets</Typography>
                 <Typography variant="h2" className="textColorFormate">
-                  $3876,617.38
+                  ${userDetails?.totalBorrow}
                 </Typography>
               </Box>
             </Grid>
@@ -384,14 +386,14 @@ const [currentPage, setCurrentPage] = useState(1);
                               <Button
                                 variant="contained"
                                 className={classes.supplyBtns}
-                                onClick={(e)=>handleOpenModel("Borrow")}
+                                onClick={(e)=>handleOpenModel("Borrow",data)}
                               >
                                 Borrow
                               </Button>
                               <Button
                                 variant="contained"
                                 className={classes.detailsBtns}
-                                onClick={(e)=>handleOpenModel()}
+                                onClick={(e)=>handleOpenModel("Repay",data)}
                               >
                                 Repay
                               </Button>
@@ -426,8 +428,8 @@ const [currentPage, setCurrentPage] = useState(1);
       </Box>
       <SupplyDialogBox open={openSupplyModel} FetchCoin={FetchCoin} handleClose={handleCloseModel} supplyData={supplyData}/>
       <WithdrawDialogBox open={openWithdrawModel} handleClose={handleCloseModel} FetchCoin={FetchCoin} supplyData={supplyData}/>
-      <BorrowDialogBox open={openBorrowModel} handleClose={handleCloseModel}/>
-      <RepayDialogBox open={openRepayModel} handleClose={handleCloseModel}/>
+      <BorrowDialogBox open={openBorrowModel} handleClose={handleCloseModel} FetchCoin={FetchCoin} supplyData={supplyData}/>
+      <RepayDialogBox open={openRepayModel} handleClose={handleCloseModel} FetchCoin={FetchCoin} supplyData={supplyData}/>
       <Footer />
     </Page>
   );
