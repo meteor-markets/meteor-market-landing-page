@@ -26,6 +26,7 @@ import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
+    border:"1px solid rgba(255, 145, 66, 0.1)",
     borderRadius: "9px",
     background: "#1C1C1C",
     padding: "35px 35px",
@@ -38,7 +39,14 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "9px",
     padding: "24px 24px",
     // textAlign: "center",
-    border: "1px solid rgba(255, 255, 255, 5%)",
+    border: "1px solid rgba(255, 145, 66, 0.1)",
+    width:"10vw",
+    margin:"10px",
+    // height:"10vh",
+    display:"flex",
+    justifyContent:"center",
+    alignItems:"center",
+    textAlign:"center"
   },
   smallText: {
     color: "rgba(255,255,255,80%)",
@@ -96,155 +104,182 @@ const Swap=()=> {
             Easily swap crypto assets across platforms.
           </Typography>
         </Box>
-        <Container maxWidth="sm">
-          <Box className={classes.numberBox}>
-            <Typography variant="h3" className="textColorFormate">
-              Swap
-            </Typography>
-            <form>
-              <Box
-                mt={4}
-                display={"flex"}
-                justifyContent={"space-between"}
-                alignItems={"end"}
-                mb={"4px"}
-              >
-                <span className={classes.smallText}>Supply Amount</span>{" "}
-                <span className={classes.mediumText}>
-                Wallet Balance {balance && parseFloat(balance).toFixed(5)}
-                </span>
-              </Box>
-
-              <Grid container>
-                <Grid item xs={8}>
-                  <FormControl>
-                    <BootstrapInput
-                      value={"1.2 ($2813.15)"}
-                      id="demo-customized-textbox"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={4}>
-                  <FormControl>
-                    <NativeSelect
-                      id="demo-customized-select-native"
-                      value={age}
-                      onChange={handleChange}
-                      input={<BootstrapInput />}
-                    >
-                      <option value={10}>DAI</option>
-                      <option value={20}>DAI</option>
-                      <option value={30}>DAI</option>
-                    </NativeSelect>
-                  </FormControl>
-                </Grid>
-              </Grid>
-              <Box
-                mt={1}
-                display={"flex"}
-                justifyContent={"right"}
-                alignItems={"end"}
-                mb={"4px"}
-              >
-                <Button variant="contained" style={{ marginRight: "20px" }}>
-                  HALF
-                </Button>
-                <Button variant="contained">MAX</Button>
-              </Box>
-
-              <Box textAlign={"center"} my={3}>
-                <IoSwapVertical fontSize={"3rem"}
-                    style={{ marginRight: "9px",color:"#fff" }}/>
-              </Box>
-
-              <Box
-                mt={4}
-                display={"flex"}
-                justifyContent={"space-between"}
-                alignItems={"end"}
-                mb={"4px"}
-              >
-                <span className={classes.smallText}>You Receive</span>
-              </Box>
-
-              <Grid container>
-                <Grid item xs={8}>
-                  <FormControl>
-                    <BootstrapInput
-                      value={"0.066 ($2812.45)"}
-                      id="demo-customized-textbox"
-                    />
-                  </FormControl>
-                </Grid>
-                <Grid item xs={4}>
-                  <FormControl>
-                    <NativeSelect
-                      id="demo-customized-select-native"
-                      value={age}
-                      onChange={handleChange}
-                      input={<BootstrapInput />}
-                    >
-                      <option value={10}>DAI</option>
-                      <option value={20}>DAI</option>
-                      <option value={30}>DAI</option>
-                    </NativeSelect>
-                  </FormControl>
-                </Grid>
-              </Grid>
-
-              <Box mt={5} className={classes.summryMainBox}>
-                <Box
-                  display={"flex"}
-                  justifyContent={"space-between"}
-                  alignItems={"end"}
-                >
-                  <Typography variant="h5">Summary</Typography>
-                  <MdOutlineKeyboardArrowDown color="#fff" fontSize={"24px"} />
-                </Box>
-                <Box mt={3} display={"flex"} alignItems={"center"}>
-                  <HiOutlineExclamationCircle
-                    fontSize={"18px"}
-                    style={{ marginRight: "9px" }}
-                    className={classes.smallText}
-                  />
-                  <span className={classes.smallText}>
-                    Price = 15.017 per BTC
-                  </span>
-                </Box>
-                <Box mt={3} display={"flex"} alignItems={"center"}>
-                  <HiOutlineExclamationCircle
-                    fontSize={"18px"}
-                    style={{ marginRight: "9px" }}
-                    className={classes.smallText}
-                  />
-                  <span className={classes.smallText}>
-                  Gas Fee = $13.50
-                  </span>
-                </Box>
-                <Box mt={3} display={"flex"} alignItems={"center"}>
-                  <HiOutlineExclamationCircle
-                    fontSize={"18px"}
-                    style={{ marginRight: "9px" }}
-                    className={classes.smallText}
-                  />
-                  <span className={classes.smallText}>
-                  Slippage Tolerance = 0.5%
-                  </span>
-                </Box>
-                
-              </Box>
-              <Box textAlign={"center"} mt={5}>
-                <Button variant="contained" style={{ minWidth: "170px" }}>
-                Initiate Swap
-                </Button>
-              </Box>
-            </form>
-          </Box>
-        </Container>
-      </Box>
+        <Box style={{display:"flex", justifyContent:"center", width:"100%"}}>
+         <Box className={classes.numberBox}>
+         <img src="https://sonne.finance/assets/images/velodrome-icon.png" width={50}/> &nbsp;<a style={{textDecoration:"none"}} href=" https://velodrome.finance/swap?from=0x4200000000000000000000000000000000000006&to=eth" target="_blank">
+         <Typography variant="h4">Velodrom</Typography></a>
+         
+         </Box>
+         <Box className={classes.numberBox}>
+         <img src="https://sonne.finance/assets/images/openocean.png" width={50} /> &nbsp;<a style={{textDecoration:"none"}} href="https://app.openocean.finance/CLASSIC#/BLAST/ETH/USDB" target="_blank">
+         <Typography variant="h4">Open Ocean</Typography></a>
+         
+         </Box>
+        </Box>
+        <Box style={{display:"flex", justifyContent:"center", width:"100%"}}>
+        <Box className={classes.numberBox}>
+        <img src="images/firebird.webp" width={50}/> &nbsp;<a style={{textDecoration:"none"}} href="https://app.firebird.finance/swap" target="_blank">
+        <Typography variant="h4">Firebird</Typography></a>
+        
+        </Box>
+        <Box className={classes.numberBox}>
+        <img src="https://sonne.finance/assets/images/squid.svg" width={50}/><a style={{textDecoration:"none"}} href="https://app.squidrouter.com/?chains=1%2C81457&tokens=0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2%2C0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" target="_blank">
+        <Typography variant="h4">Bridge on Squid</Typography></a>
+        
+        </Box>
+        </Box>
+        </Box>
       <Footer />
     </Page>
   );
 }
 
 export default Swap
+
+
+
+// <Container maxWidth="sm">
+//           <Box className={classes.numberBox}>
+//             <Typography variant="h3" className="textColorFormate">
+//               Swap
+//             </Typography>
+//             <form>
+//               <Box
+//                 mt={4}
+//                 display={"flex"}
+//                 justifyContent={"space-between"}
+//                 alignItems={"end"}
+//                 mb={"4px"}
+//               >
+//                 <span className={classes.smallText}>Supply Amount</span>{" "}
+//                 <span className={classes.mediumText}>
+//                 Wallet Balance {balance && parseFloat(balance).toFixed(5)}
+//                 </span>
+//               </Box>
+
+//               <Grid container>
+//                 <Grid item xs={8}>
+//                   <FormControl>
+//                     <BootstrapInput
+//                       value={"1.2 ($2813.15)"}
+//                       id="demo-customized-textbox"
+//                     />
+//                   </FormControl>
+//                 </Grid>
+//                 <Grid item xs={4}>
+//                   <FormControl>
+//                     <NativeSelect
+//                       id="demo-customized-select-native"
+//                       value={age}
+//                       onChange={handleChange}
+//                       input={<BootstrapInput />}
+//                     >
+//                       <option value={10}>DAI</option>
+//                       <option value={20}>DAI</option>
+//                       <option value={30}>DAI</option>
+//                     </NativeSelect>
+//                   </FormControl>
+//                 </Grid>
+//               </Grid>
+//               <Box
+//                 mt={1}
+//                 display={"flex"}
+//                 justifyContent={"right"}
+//                 alignItems={"end"}
+//                 mb={"4px"}
+//               >
+//                 <Button variant="contained" style={{ marginRight: "20px" }}>
+//                   HALF
+//                 </Button>
+//                 <Button variant="contained">MAX</Button>
+//               </Box>
+
+//               <Box textAlign={"center"} my={3}>
+//                 <IoSwapVertical fontSize={"3rem"}
+//                     style={{ marginRight: "9px",color:"#fff" }}/>
+//               </Box>
+
+//               <Box
+//                 mt={4}
+//                 display={"flex"}
+//                 justifyContent={"space-between"}
+//                 alignItems={"end"}
+//                 mb={"4px"}
+//               >
+//                 <span className={classes.smallText}>You Receive</span>
+//               </Box>
+
+//               <Grid container>
+//                 <Grid item xs={8}>
+//                   <FormControl>
+//                     <BootstrapInput
+//                       value={"0.066 ($2812.45)"}
+//                       id="demo-customized-textbox"
+//                     />
+//                   </FormControl>
+//                 </Grid>
+//                 <Grid item xs={4}>
+//                   <FormControl>
+//                     <NativeSelect
+//                       id="demo-customized-select-native"
+//                       value={age}
+//                       onChange={handleChange}
+//                       input={<BootstrapInput />}
+//                     >
+//                       <option value={10}>DAI</option>
+//                       <option value={20}>DAI</option>
+//                       <option value={30}>DAI</option>
+//                     </NativeSelect>
+//                   </FormControl>
+//                 </Grid>
+//               </Grid>
+
+//               <Box mt={5} className={classes.summryMainBox}>
+//                 <Box
+//                   display={"flex"}
+//                   justifyContent={"space-between"}
+//                   alignItems={"end"}
+//                 >
+//                   <Typography variant="h5">Summary</Typography>
+//                   <MdOutlineKeyboardArrowDown color="#fff" fontSize={"24px"} />
+//                 </Box>
+//                 <Box mt={3} display={"flex"} alignItems={"center"}>
+//                   <HiOutlineExclamationCircle
+//                     fontSize={"18px"}
+//                     style={{ marginRight: "9px" }}
+//                     className={classes.smallText}
+//                   />
+//                   <span className={classes.smallText}>
+//                     Price = 15.017 per BTC
+//                   </span>
+//                 </Box>
+//                 <Box mt={3} display={"flex"} alignItems={"center"}>
+//                   <HiOutlineExclamationCircle
+//                     fontSize={"18px"}
+//                     style={{ marginRight: "9px" }}
+//                     className={classes.smallText}
+//                   />
+//                   <span className={classes.smallText}>
+//                   Gas Fee = $13.50
+//                   </span>
+//                 </Box>
+//                 <Box mt={3} display={"flex"} alignItems={"center"}>
+//                   <HiOutlineExclamationCircle
+//                     fontSize={"18px"}
+//                     style={{ marginRight: "9px" }}
+//                     className={classes.smallText}
+//                   />
+//                   <span className={classes.smallText}>
+//                   Slippage Tolerance = 0.5%
+//                   </span>
+//                 </Box>
+                
+//               </Box>
+//               <Box textAlign={"center"} mt={5}>
+//                 <Button variant="contained" style={{ minWidth: "170px" }}>
+//                 Initiate Swap
+//                 </Button>
+//               </Box>
+//             </form>
+//           </Box>
+//         </Container>

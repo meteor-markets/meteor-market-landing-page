@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Typography,
   makeStyles,
@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import blastdexABI from '../ABI/blastdexABI.json'
 import Web3 from "web3";
 import { useConnectWallet } from "@web3-onboard/react";
-import { blastCToken, fetchTotalSupplied, mainContractAddress } from "../constants";
+import { blastCToken, convertUnixToDateTime, convertValue, fetchTotalSupplied, mainContractAddress } from "../constants";
 import { addBalllance } from "../Store/walletSlice";
 
 import tokenABI from '../ABI/tokenABI.json'
@@ -65,37 +65,25 @@ function RepayDialogBox({ open, handleClose,supplyData ,FetchCoin }) {
   const balance = useSelector(state => state.walletDeatils.currentbalance);
   const web3 = useSelector(state => state.walletDeatils.web3);
   const walletData = useSelector(state => state.walletDeatils.walletData);
-
+  const userDetails = useSelector(state => state.walletDeatils.userDetails);
+  const [borrowBalance, setBorrowBalance] = useState()
+console.log("borrowBalance",borrowBalance);
   const [amount, setAmount] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [intrestAmount, setIntrestAmount] = useState()
+  const [timeDuration, setTimeDuration] = useState()
+  const [remainingTime, setRemainingTime] = useState('');
 
+console.log("remainingTime",remainingTime,timeDuration);
 
   const handleSypplyCoin = async (address,transactionHash) => {
-    let data = {
-      coinId: supplyData?._id,
-      walletAddress: address,
-      amount: amount,
-      "transactionHash": transactionHash,
-      "transactionStatus": "SUCCESS",
-
-
-    }
-    const response = await supplyCoins(data)
-    console.log("response", response);
-    if (response?.responseCode == 200) {
-      toast.success(response?.responseMessage)
+      toast.success("Repayed Successfully")
       handleClose()
       fetchTotalSupplied(blastdexABI,walletData ,web3,dispatch)
-
       FetchCoin()
       setAmount("")
       setIsLoading(false)
-    } else {
-      toast.error(response)
-      setIsLoading(false)
-
-    }
+ 
   }
  
   const getSupplyToken = async (tokenName) => {
@@ -110,7 +98,6 @@ function RepayDialogBox({ open, handleClose,supplyData ,FetchCoin }) {
            try {
             let intrestBalnace = Number(amount)*5/100
             let intresApproveBalance = Number(amount)+intrestBalnace
-            setIntrestAmount(intrestBalnace)
             setIsLoading(true)
             const contract = await new web3.eth.Contract(blastdexABI, mainContractAddress)
             const contract1 = await new web3.eth.Contract(tokenABI, supplyData?.cToken)
@@ -149,6 +136,61 @@ function RepayDialogBox({ open, handleClose,supplyData ,FetchCoin }) {
   }
 
   };
+  const getBorrowAmount = async()=>{
+    if (web3 && userDetails?.borrowDurationUnix) {
+      const contract = await new web3.eth.Contract(blastdexABI, mainContractAddress)
+    // blast 
+    let blastTokenbalence = await contract.methods.getBorrowAmount(blastCToken).call()
+    let findBorrowVlue = convertValue(web3,blastTokenbalence)
+    setBorrowBalance(findBorrowVlue)
+    console.log("userDetails",userDetails);
+    let  timeshow = convertUnixToDateTime(userDetails?.borrowDurationUnix)
+    if (timeshow) {
+      
+      setTimeDuration(timeshow)
+    }
+    console.log("timeshow",timeshow);
+    }
+  }
+  useEffect(()=>{
+    if (web3 && userDetails?.borrowDurationUnix) {
+      getBorrowAmount()
+    }
+  },[web3,userDetails?.borrowDurationUnix])
+    // State for remaining time
+  
+    // Function to calculate remaining time
+    const calculateRemainingTime = (timeDuration) => {
+      const dateTime = new Date(timeDuration); // Assuming theDateTime is in UTC
+      const actualTime = new Date(); // Assuming theActualTime is in UTC
+      const difference = dateTime - actualTime;
+      
+      // If the actual time is past the target time, set remaining time to "Time expired"
+      if (difference <= 0) {
+        setRemainingTime('Time expired');
+      } else {
+        // Calculate remaining time components
+        const seconds = Math.floor((difference / 1000) % 60);
+        const minutes = Math.floor((difference / 1000 / 60) % 60);
+        const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        
+        // Format remaining time
+        const formattedTime = `${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+        setRemainingTime(formattedTime);
+      }
+    };
+    useEffect(() => {
+      if (timeDuration) {
+        
+      const interval = setInterval(() => {
+        calculateRemainingTime(timeDuration);
+      }, 1000);
+  
+      return () => clearInterval(interval);
+    }
+
+    }, [timeDuration]);
   return (
     <Box>
       <Dialog fullWidth open={open} onClose={handleClose} style={{ backgroundColor: '#00000070' }} maxWidth={'md'}>
@@ -176,11 +218,15 @@ function RepayDialogBox({ open, handleClose,supplyData ,FetchCoin }) {
         <DialogContent className={classes.DialogContent}>
           <form>
             <Box mt={4} display={'flex'} justifyContent={'space-between'} alignItems={'end'} mb={'4px'}>
-              <span className={classes.smallText}>Borrow Amount</span> <span className={classes.mediumText}>Borrow Balance 0.00 DAI</span>
+              <span className={classes.smallText}>Borrow Amount</span> <span className={classes.mediumText}>Borrow Balance 0.00</span>
             </Box>
             <FormControl variant='outlined'>
               <OutlinedInput
-              onChange={(e) => setAmount(e.target.value)} value={amount} type="number"
+              onChange={(e) =>{ setAmount(e.target.value)
+                let intrestBalnace = Number(e.target.value)*5/100
+                let intresApproveBalance = Number(e.target.value)+intrestBalnace
+                setIntrestAmount(intresApproveBalance)
+              }} value={amount} type="number"
                 endAdornment={
                   <InputAdornment position='end'>
                     <span style={{ marginRight: '15px', textAlign: 'end' }}>
@@ -192,6 +238,10 @@ function RepayDialogBox({ open, handleClose,supplyData ,FetchCoin }) {
                 labelWidth={0}
                 placeholder='$0.00'
               />
+              {remainingTime != "Time expired" &&
+            <Box sx={{color:"red",marginTop:"4px"}}>
+            {remainingTime}</Box>
+            }
               {balance==0 && web3 &&
                 <Box variant="body"  sx={{color:"red",marginTop:"4px"}}>Insufficient balance</Box>
               }
@@ -220,23 +270,28 @@ function RepayDialogBox({ open, handleClose,supplyData ,FetchCoin }) {
                 <MdOutlineKeyboardArrowDown color='#fff' fontSize={'24px'} />
               </Box>
               <Box mt={3} display={'flex'} justifyContent={'space-between'} alignItems={'end'}>
+                <span className={classes.smallText}>Total Amount Adding (5% interest):</span>
+                <span className={classes.mediumText}>{intrestAmount}</span>
+              </Box>
+              <Box mt={3} display={'flex'} justifyContent={'space-between'} alignItems={'end'}>
                 <span className={classes.smallText}>Borrow APY:</span>
-                <span className={classes.mediumText}>0.18%</span>
+                <span className={classes.mediumText}>0%</span>
               </Box>
               <Box mt={2} display={'flex'} justifyContent={'space-between'} alignItems={'end'}>
                 <span className={classes.smallText}>Borrow Balance:</span>
-                <span className={classes.mediumText}>$45</span>
+                <span className={classes.mediumText}>${borrowBalance}</span>
               </Box>
+              
               <Box mt={3}>
                 <Typography variant='h5'>Borrow Limit</Typography>
               </Box>
               <Box mt={3} display={'flex'} justifyContent={'space-between'} alignItems={'end'}>
                 <span className={classes.smallText}>Your Borrow Limit:</span>
-                <span className={classes.mediumText}>$0 {'->'} $0.00</span>
+                <span className={classes.mediumText}>${userDetails?.borrowLimit}</span>
               </Box>
               <Box mt={3} display={'flex'} justifyContent={'space-between'} alignItems={'end'}>
                 <span className={classes.smallText}>Borrow Limit Used:</span>
-                <span className={classes.mediumText}>{'0% -> 0%'}</span>
+                <span className={classes.mediumText}>{userDetails?.totalBorrow}</span>
               </Box>
             </Box>
             <Box textAlign={'center'} mt={5}>

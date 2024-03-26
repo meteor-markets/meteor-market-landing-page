@@ -14,7 +14,7 @@ import { addAllBalance, addBalllance, addLendingPageCoinDetails, addOverviewDeta
 import { IoCloseSharp } from "react-icons/io5";
 import Web3 from "web3";
 import { toast } from "react-toastify";
-import { defaultChainID,  fetchPortFoliyoDetails, fetchTotalSupplied, fetchtokenSupplyValueForBlast, mainnetChainID } from "./constants";
+import { blastCToken, defaultChainID,  fetchPortFoliyoDetails, fetchTotalSupplied, fetchtokenSupplyValueForBlast, mainnetChainID } from "./constants";
 import blastdexABI from './ABI/blastdexABI.json'
 
 const useStyles = makeStyles((theme) => ({
@@ -139,8 +139,6 @@ console.log("allBalance",allBalance);
       sessionStorage.setItem("userAddress", wallet.accounts[0].address)
       dispatch(addWalletDetails(data))
       setAccount(data);
-      console.log("web3Instance",web3Instance);
-        fetchPortFoliyoDetails(web3Instance)
         fetchtokenSupplyValueForBlast(web3Instance,dispatch)
         fetchTotalSupplied(blastdexABI,wallet.accounts[0].address ,web3Instance,dispatch)
 

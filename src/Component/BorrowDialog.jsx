@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Typography,
   makeStyles,
@@ -19,7 +19,7 @@ import { FaArrowLeftLong } from 'react-icons/fa6'
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
 import { withdrawCoins } from '../APIconfig/ApiEndPoint'
-import { blastCToken, fetchTotalSupplied, handleConvertToUnix, mainContractAddress } from '../constants'
+import { blastCToken, convertValue, fetchTotalSupplied, handleConvertToUnix, mainContractAddress } from '../constants'
 import { addBalllance } from '../Store/walletSlice'
 import blastdexABI from '../ABI/blastdexABI.json'
 import { toast } from 'react-toastify'
@@ -61,34 +61,27 @@ function BorrowDialogBox({ open, handleClose,supplyData,FetchCoin }) {
   const dispatch = useDispatch()
   const [amount, setAmount] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [borrowBalance, setBorrowBalance] = useState()
+
 
   const balance = useSelector(state => state.walletDeatils.currentbalance);
   const walletData = useSelector(state => state.walletDeatils.walletData);
   const web3 = useSelector(state => state.walletDeatils.web3);
   const [borrowDuration, setDuration] = useState()
+  const [durationInUnix, setdurationInUnix] = useState()
+
   const userDetails = useSelector(state => state.walletDeatils.userDetails);
 
 
   const handleSypplyCoin = async  (address,transactionHash) => {
-    let data = {
-      coinId: supplyData?._id,
-      walletAddress: address,
-      amount: amount,
-      "transactionHash": transactionHash,
-      "transactionStatus": "SUCCESS",
-    }
-      const response = await withdrawCoins(data)
-      console.log("response", response);
-      if (response?.responseCode == 200) {
-        toast.success(response?.responseMessage)
+   
+        toast.success("Borrowed Successfully ")
         handleClose()
       fetchTotalSupplied(blastdexABI,walletData ,web3,dispatch)
 
         FetchCoin()
         setAmount("")
-      } else {
-        toast.error(response)
-      }
+     
     } 
     const getSupplyToken = async (tokenName) => {
       if (web3) {
@@ -105,7 +98,8 @@ function BorrowDialogBox({ open, handleClose,supplyData,FetchCoin }) {
               console.log("contract",contract);
               const amountInWei = web3.utils.toWei(amount, "ether");
               // amount ctoken and time  
-              let result = await contract.methods.borrow(amountInWei,supplyData?.cToken,borrowDuration).send({ from: walletData?.address })
+              console.log("amountInWei",amountInWei,durationInUnix,supplyData?.cToken);
+              let result = await contract.methods.borrow(amountInWei,supplyData?.cToken,durationInUnix).send({ from: walletData?.address })
               balance = await web3.eth.getBalance(result?.from);
                balanceInEther = web3.utils.fromWei(balance, 'ether');
   
@@ -141,10 +135,25 @@ function BorrowDialogBox({ open, handleClose,supplyData,FetchCoin }) {
     console.log("event.target.value",event.target.value);
    let convertedTime =  handleConvertToUnix(event.target.value)
 
-    setDuration(convertedTime)
+    setDuration(event.target.value)
+    setdurationInUnix(convertedTime)
+
   }
   const today = new Date().toISOString().split('T')[0];
-
+const getBorrowAmount = async()=>{
+  if (web3) {
+    const contract = await new web3.eth.Contract(blastdexABI, mainContractAddress)
+  // blast 
+  let blastTokenbalence = await contract.methods.getBorrowAmount(blastCToken).call()
+  let findBorrowVlue = convertValue(web3,blastTokenbalence)
+  setBorrowBalance(findBorrowVlue)
+  }
+}
+useEffect(()=>{
+  if (web3) {
+    getBorrowAmount()
+  }
+},[web3])
   return (
     <Box>
       <Dialog fullWidth open={open} onClose={handleClose} style={{ backgroundColor: '#00000070' }} maxWidth={'md'}>
@@ -220,22 +229,22 @@ function BorrowDialogBox({ open, handleClose,supplyData,FetchCoin }) {
               </Box>
               <Box mt={3} display={'flex'} justifyContent={'space-between'} alignItems={'end'}>
                 <span className={classes.smallText}>Borrow APY:</span>
-                <span className={classes.mediumText}>0.18%</span>
+                <span className={classes.mediumText}>0%</span>
               </Box>
               <Box mt={2} display={'flex'} justifyContent={'space-between'} alignItems={'end'}>
                 <span className={classes.smallText}>Borrow Balance:</span>
-                <span className={classes.mediumText}>$45</span>
+                <span className={classes.mediumText}>${borrowBalance}</span>
               </Box>
               <Box mt={3}>
                 <Typography variant='h5'>Borrow Limit</Typography>
               </Box>
               <Box mt={3} display={'flex'} justifyContent={'space-between'} alignItems={'end'}>
                 <span className={classes.smallText}>Your Borrow Limit:</span>
-                <span className={classes.mediumText}>$0 {'->'} $0.00</span>
+                <span className={classes.mediumText}>${userDetails?.borrowLimit}</span>
               </Box>
               <Box mt={3} display={'flex'} justifyContent={'space-between'} alignItems={'end'}>
                 <span className={classes.smallText}>Borrow Limit Used:</span>
-                <span className={classes.mediumText}>{'0% -> 0%'}</span>
+                <span className={classes.mediumText}>{userDetails?.totalBorrow}</span>
               </Box>
             </Box>
             <Box textAlign={'center'} mt={5}>

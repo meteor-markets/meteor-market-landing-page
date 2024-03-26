@@ -26,8 +26,8 @@ import { Pagination } from "@material-ui/lab";
 import { FetchUserPortfolio } from "../APIconfig/ApiEndPoint";
 import { useDispatch, useSelector } from "react-redux";
 import blastdexABI from '../ABI/blastdexABI.json'
-import { convertValuesFromWeiToEther, fetchTotalSupplied, mainContractAddress } from "../constants";
-import { findUserDetails } from "../Store/walletSlice";
+import { blastCToken, convertValuesFromWeiToEther, fetchPortFoliyoDetails, fetchTotalSupplied, mainContractAddress, usdbCToken, wethCToken } from "../constants";
+import { addUserPortFolio, findUserDetails } from "../Store/walletSlice";
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -89,8 +89,10 @@ const PortFolio = () => {
   const web3 = useSelector(state => state.walletDeatils.web3);
   const walletData = useSelector(state => state.walletDeatils.walletData);
   const userDetails = useSelector(state => state.walletDeatils.userDetails);
-  console.log("userDetails", userDetails);
+  const userPortFolio = useSelector(state => state.walletDeatils.userPortFolio);
 
+  console.log("userDetails", userPortFolio);
+  
   const [getUserposrtFolio, setGetportfolio] = useState();
   let userAdress = sessionStorage.getItem("userAddress");
   const getUserProfile = async () => {
@@ -105,25 +107,35 @@ const PortFolio = () => {
 
   useEffect(() => {
     console.log("userAdress", userAdress);
-    if (userAdress) {
+    if (userAdress &&web3) {
       fetchTotalSupplied(blastdexABI,walletData ,web3,dispatch)
-
+      fetchport()
       getUserProfile();
     }
-  }, [userAdress]);
+  }, [userAdress,web3]);
+const fetchport = async()=>{
+  let blastImage = "https://res.cloudinary.com/dfd7lapgy/image/upload/v1707322669/nopqvxpprwypanyemk7w.jpg"
+     let blastPortFolio =  await fetchPortFoliyoDetails(web3,blastCToken,"Blast",blastImage)
+     let coinImage = "images/wethTokenImage.svg"
+     let coinUSDBImage = "images/usdb.svg"
+     let wethPortFolio =  await fetchPortFoliyoDetails(web3,wethCToken,"Weth",coinImage)
+     let usdbPortFolio =  await fetchPortFoliyoDetails(web3,usdbCToken,"Usdb",coinUSDBImage)
+dispatch(addUserPortFolio([blastPortFolio,wethPortFolio,usdbPortFolio]))
 
+     console.log("blastPortFolio",blastPortFolio,wethPortFolio,usdbPortFolio);
+}
 
   let PageSize = 5;
   const [currentPage, setCurrentPage] = useState(1);
   const checkLastPage = useMemo(() => {
     let frstPgae = (currentPage - 1) * PageSize;
     let lastPage = frstPgae + PageSize;
-    return getUserposrtFolio?.assets?.slice(frstPgae, lastPage)?.map((row, index) => ({
+    return userPortFolio?.slice(frstPgae, lastPage)?.map((row, index) => ({
       ...row,
       // Adjusting index on the first page and adding count from the second page onward
       srID: index + 1 + (currentPage > 1 ? frstPgae : 0),
     }));
-  }, [currentPage, getUserposrtFolio, PageSize]);
+  }, [currentPage, userPortFolio, PageSize]);
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
   };
@@ -214,12 +226,12 @@ const PortFolio = () => {
                           <span>{data.coinName}</span>
                         </Box>
                       </TableCell>
-                      <TableCell>{data.supplyAmount}M</TableCell>
-                      <TableCell>{data.supplyAPY}%</TableCell>
-                      <TableCell>{data.supplyBalance}M</TableCell>
-                      <TableCell>{data.borrowAmount}M</TableCell>
-                      <TableCell>{data.borrowAPY}%</TableCell>
-                      <TableCell>{data.bRewardAPR}</TableCell>
+                      <TableCell>{Number(data.suppliedBalnace).toFixed(4)}</TableCell>
+                      <TableCell>{Number(data.suppliedAPY).toFixed(2)}%</TableCell>
+                      <TableCell>{Number(data.suppliedBalnace)}</TableCell>
+                      <TableCell>{Number(data.borrowAmount)}</TableCell>
+                      <TableCell>{Number(data.borrowAPY).toFixed(2)}%</TableCell>
+                      <TableCell>{Number(data.borrowBalance)}</TableCell>
                     </StyledTableRow>
                   );
                 })}

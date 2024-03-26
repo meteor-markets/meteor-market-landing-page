@@ -10,6 +10,7 @@ import {
   InputAdornment,
   OutlinedInput,
   FormControl,
+  CircularProgress,
 
 } from "@material-ui/core";
 import { FaArrowLeftLong } from "react-icons/fa6";
@@ -62,32 +63,19 @@ function WithdrawDialogBox({ open, handleClose,supplyData,FetchCoin }) {
   const [amount, setAmount] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const userDetails = useSelector(state => state.walletDeatils.userDetails);
-
+console.log("userDetails",userDetails);
   const balance = useSelector(state => state.walletDeatils.currentbalance);
   const walletData = useSelector(state => state.walletDeatils.walletData);
   const web3 = useSelector(state => state.walletDeatils.web3);
   
 
   const handleSypplyCoin = async  (address,transactionHash) => {
-    let data = {
-      coinId: supplyData?._id,
-      walletAddress: address,
-      amount: amount,
-      "transactionHash": transactionHash,
-      "transactionStatus": "SUCCESS",
-    }
-      const response = await withdrawCoins(data)
-      console.log("response", response);
-      if (response?.responseCode == 200) {
-        toast.success(response?.responseMessage)
+        toast.success('Successfully Withdraw')
         handleClose()
         FetchCoin()
         setAmount("")
+      setIsLoading(false)
       fetchTotalSupplied(blastdexABI,walletData ,web3,dispatch)
-
-      } else {
-        toast.error(response)
-      }
     } 
     const getSupplyToken = async (tokenName) => {
       if (web3) {
@@ -104,17 +92,10 @@ function WithdrawDialogBox({ open, handleClose,supplyData,FetchCoin }) {
                 const contract = await new web3.eth.Contract(blastdexABI, mainContractAddress)
                 const contract1 = await new web3.eth.Contract(tokenABI, supplyData?.cToken)
                 console.log("contract",contract,contract1);
-  
                 const amountInWei = web3.utils.toWei(amount, "ether");
                 let result = await contract.methods.withdraw(supplyData?.cToken,amountInWei).send({ from: walletData?.address })
                 balance = await web3.eth.getBalance(result?.from);
                  balanceInEther = web3.utils.fromWei(balance, 'ether');
-                // console.log("contract",contract,contract1);
-                // // let tokenApprove = await contract1.methods.approve(mainContractAddress,amountInWei).send({ from: walletData?.address })
-                // // console.log("tokenApprove",tokenApprove);
-                // let result = await contract.methods.repay(blastCToken,amountInWeiRepay).send({ from: walletData?.address })
-                // balance = await web3.eth.getBalance(result?.from);
-                //  balanceInEther = web3.utils.fromWei(balance, 'ether');
                 dispatch(addBalllance(balanceInEther))
                 if (result) {
                   handleSypplyCoin(result?.from,result?.transactionHash)
@@ -244,8 +225,17 @@ function WithdrawDialogBox({ open, handleClose,supplyData,FetchCoin }) {
                 alignItems={"end"}
               >
                 <span className={classes.smallText}>Supply Balance:</span>
-                <span className={classes.mediumText}>${supplyData?.sRewardAPR}</span>
+                <span className={classes.mediumText}>${supplyData?.WalletBalnce}</span>
               </Box>
+              <Box
+              mt={2}
+              display={"flex"}
+              justifyContent={"space-between"}
+              alignItems={"end"}
+            >
+              <span className={classes.smallText}>Reward APR:</span>
+              <span className={classes.mediumText}>{supplyData?.supplyAPR}</span>
+            </Box>
               <Box mt={3}>
                 <Typography variant="h5">Borrow Limit</Typography>
               </Box>
@@ -256,7 +246,7 @@ function WithdrawDialogBox({ open, handleClose,supplyData,FetchCoin }) {
                 alignItems={"end"}
               >
                 <span className={classes.smallText}>Your Borrow Limit:</span>
-                <span className={classes.mediumText}>$0 {"->"} $0.00</span>
+                <span className={classes.mediumText}>${userDetails?.borrowLimit}</span>
               </Box>
               <Box
                 mt={3}
@@ -265,11 +255,11 @@ function WithdrawDialogBox({ open, handleClose,supplyData,FetchCoin }) {
                 alignItems={"end"}
               >
                 <span className={classes.smallText}>Borrow Limit Used:</span>
-                <span className={classes.mediumText}>{"0% -> 0%"}</span>
+                <span className={classes.mediumText}>${userDetails?.totalBorrow}</span>
               </Box>
             </Box>
             <Box textAlign={"center"} mt={5}>
-              <Button variant="contained" style={{minWidth:"170px"}} onClick={() => getSupplyToken()}>Withdraw</Button>
+              <Button variant="contained" style={{minWidth:"170px"}} onClick={() => getSupplyToken()}>Withdraw &nbsp; {isLoading && <CircularProgress style={{width:"20px",height:"20px"}} color="primary"  />}</Button>
             </Box>
           </form>
         </DialogContent>

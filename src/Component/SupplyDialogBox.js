@@ -265,7 +265,7 @@ function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
                 alignItems={"end"}
               >
                 <span className={classes.smallText}>Borrow Limit Used:</span>
-                <span className={classes.mediumText}>0%</span>
+                <span className={classes.mediumText}>{userDetails?.totalBorrow}</span>
               </Box>
             </Box>
             <Box textAlign={"center"} mt={5}>
