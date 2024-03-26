@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import blastdexABI from '../ABI/blastdexABI.json'
 import Web3 from "web3";
 import { useConnectWallet } from "@web3-onboard/react";
-import { cToken, fetchTotalSupplied, mainContractAddress } from "../constants";
+import { blastCToken, fetchTotalSupplied, mainContractAddress } from "../constants";
 import { addBalllance } from "../Store/walletSlice";
 
 import tokenABI from '../ABI/tokenABI.json'
@@ -108,12 +108,12 @@ function RepayDialogBox({ open, handleClose,supplyData ,FetchCoin }) {
          balanceInEther = web3.utils.fromWei(balance, 'ether');
          if (balanceInEther>amount) {
            try {
-            let intrestBalnace = amount*5/100
-            let intresApproveBalance = Number(amount)+Number(intrestBalnace)
+            let intrestBalnace = Number(amount)*5/100
+            let intresApproveBalance = Number(amount)+intrestBalnace
             setIntrestAmount(intrestBalnace)
             setIsLoading(true)
             const contract = await new web3.eth.Contract(blastdexABI, mainContractAddress)
-            const contract1 = await new web3.eth.Contract(tokenABI, cToken)
+            const contract1 = await new web3.eth.Contract(tokenABI, supplyData?.cToken)
             console.log("contract",contract,intresApproveBalance,intrestBalnace,amount,Number(amount)+Number(intrestBalnace));
 
             const amountInWei = web3.utils.toWei(amount, "ether");
@@ -121,7 +121,7 @@ function RepayDialogBox({ open, handleClose,supplyData ,FetchCoin }) {
 
              let tokenApprove = await contract1.methods.approve(mainContractAddress,amountInWeiApprove).send({ from: walletData?.address })
                 // console.log("tokenApprove",tokenApprove);
-                let result = await contract.methods.repay(cToken,amountInWei).send({ from: walletData?.address })
+                let result = await contract.methods.repay(supplyData?.cToken,amountInWei).send({ from: walletData?.address })
                 balance = await web3.eth.getBalance(result?.from);
                  balanceInEther = web3.utils.fromWei(balance, 'ether');
             dispatch(addBalllance(balanceInEther))

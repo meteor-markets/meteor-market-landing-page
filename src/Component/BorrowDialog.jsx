@@ -19,7 +19,7 @@ import { FaArrowLeftLong } from 'react-icons/fa6'
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
 import { withdrawCoins } from '../APIconfig/ApiEndPoint'
-import { cToken, fetchTotalSupplied, handleConvertToUnix, mainContractAddress } from '../constants'
+import { blastCToken, fetchTotalSupplied, handleConvertToUnix, mainContractAddress } from '../constants'
 import { addBalllance } from '../Store/walletSlice'
 import blastdexABI from '../ABI/blastdexABI.json'
 import { toast } from 'react-toastify'
@@ -105,7 +105,7 @@ function BorrowDialogBox({ open, handleClose,supplyData,FetchCoin }) {
               console.log("contract",contract);
               const amountInWei = web3.utils.toWei(amount, "ether");
               // amount ctoken and time  
-              let result = await contract.methods.borrow(amountInWei,cToken,borrowDuration).send({ from: walletData?.address })
+              let result = await contract.methods.borrow(amountInWei,supplyData?.cToken,borrowDuration).send({ from: walletData?.address })
               balance = await web3.eth.getBalance(result?.from);
                balanceInEther = web3.utils.fromWei(balance, 'ether');
   

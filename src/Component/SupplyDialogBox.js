@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import blastdexABI from '../ABI/blastdexABI.json'
 import Web3 from "web3";
 import { useConnectWallet } from "@web3-onboard/react";
-import { cToken, fetchTotalSupplied, mainContractAddress } from "../constants";
+import { blastCToken, fetchOverViewForBlast, fetchTotalSupplied, fetchtokenSupplyValueForBlast, mainContractAddress } from "../constants";
 import { addBalllance } from "../Store/walletSlice";
 
 const useStyles = makeStyles((theme) => ({
@@ -64,6 +64,8 @@ function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
   const balance = useSelector(state => state.walletDeatils.currentbalance);
   const web3 = useSelector(state => state.walletDeatils.web3);
   const walletData = useSelector(state => state.walletDeatils.walletData);
+  const userDetails = useSelector(state => state.walletDeatils.userDetails);
+  const allBalance = useSelector(state => state.walletDeatils.allBalance);
 
   const [amount, setAmount] = useState("")
   const [isLoading, setIsLoading] = useState(false)
@@ -71,30 +73,14 @@ function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
 
   console.log("supplyData", amount);
   const handleSypplyCoin = async (address,transactionHash) => {
-    let data = {
-      coinId: supplyData?._id,
-      walletAddress: address,
-      amount: amount,
-      "transactionHash": transactionHash,
-      "transactionStatus": "SUCCESS",
-
-
-    }
-    const response = await supplyCoins(data)
-    console.log("response", response);
-    if (response?.responseCode == 200) {
-      toast.success(response?.responseMessage)
+      toast.success("Successfully Supplied")
       handleClose()
       FetchCoin()
       setAmount("")
       setIsLoading(false)
       fetchTotalSupplied(blastdexABI,walletData ,web3,dispatch)
 
-    } else {
-      toast.error(response)
-      setIsLoading(false)
-
-    }
+    
   }
  
   const getSupplyToken = async (tokenName) => {
@@ -110,16 +96,17 @@ function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
             setIsLoading(true)
             const contract = await new web3.eth.Contract(blastdexABI, mainContractAddress)
             const amountInWei = web3.utils.toWei(amount, "ether");
-            console.log("contract",contract);
-            let result = await contract.methods.supply(amountInWei,cToken).send({ from: walletData?.address })
+            console.log("contract",contract,supplyData?.cToken);
+            let result = await contract.methods.supply(amountInWei,supplyData?.cToken).send({ from: walletData?.address })
             balance = await web3.eth.getBalance(result?.from);
              balanceInEther = web3.utils.fromWei(balance, 'ether');
 
             dispatch(addBalllance(balanceInEther))
             if (result) {
               handleSypplyCoin(result?.from,result?.transactionHash)
+              fetchtokenSupplyValueForBlast(web3,dispatch)
             }
-            console.log("contract", result,balanceInEther);
+            console.log("contract", result,balanceInEther,result?.transactionHash);
           
           } catch (error) {
             setIsLoading(false)
@@ -239,7 +226,7 @@ function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
                 alignItems={"end"}
               >
                 <span className={classes.smallText}>Supply APY:</span>
-                <span className={classes.mediumText}>{supplyData?.supplyAPY}%</span>
+                <span className={classes.mediumText}>{supplyData?.SupplYAPY}%</span>
               </Box>
               <Box
                 mt={2}
@@ -248,7 +235,7 @@ function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
                 alignItems={"end"}
               >
                 <span className={classes.smallText}>Supply Balance:</span>
-                <span className={classes.mediumText}>${supplyData?.sRewardAPR}</span>
+                <span className={classes.mediumText}>${supplyData?.WalletBalnce}</span>
               </Box>
               <Box
                 mt={2}
@@ -257,7 +244,7 @@ function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
                 alignItems={"end"}
               >
                 <span className={classes.smallText}>Reward APR:</span>
-                <span className={classes.mediumText}>{supplyData?.sRewardAPR}%</span>
+                <span className={classes.mediumText}>{supplyData?.supplyAPR}</span>
               </Box>
               <Box mt={3}>
                 <Typography variant="h5">Borrow Limit</Typography>
@@ -269,7 +256,7 @@ function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
                 alignItems={"end"}
               >
                 <span className={classes.smallText}>Your Borrow Limit:</span>
-                <span className={classes.mediumText}>$0 {"->"} $0.00</span>
+                <span className={classes.mediumText}>${userDetails?.borrowLimit}</span>
               </Box>
               <Box
                 mt={3}
@@ -278,7 +265,7 @@ function SupplyDialogBox({ open, handleClose, supplyData, FetchCoin }) {
                 alignItems={"end"}
               >
                 <span className={classes.smallText}>Borrow Limit Used:</span>
-                <span className={classes.mediumText}>{"0% -> 0%"}</span>
+                <span className={classes.mediumText}>0%</span>
               </Box>
             </Box>
             <Box textAlign={"center"} mt={5}>

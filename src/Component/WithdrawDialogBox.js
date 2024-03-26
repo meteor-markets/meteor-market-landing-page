@@ -21,7 +21,7 @@ import { addBalllance } from "../Store/walletSlice";
 import blastdexABI from '../ABI/blastdexABI.json'
 import tokenABI from '../ABI/tokenABI.json'
 
-import { cToken, fetchTotalSupplied, mainContractAddress } from "../constants";
+import { blastCToken, fetchTotalSupplied, mainContractAddress } from "../constants";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -102,17 +102,17 @@ function WithdrawDialogBox({ open, handleClose,supplyData,FetchCoin }) {
                try {
                 setIsLoading(true)
                 const contract = await new web3.eth.Contract(blastdexABI, mainContractAddress)
-                const contract1 = await new web3.eth.Contract(tokenABI, cToken)
+                const contract1 = await new web3.eth.Contract(tokenABI, supplyData?.cToken)
                 console.log("contract",contract,contract1);
   
                 const amountInWei = web3.utils.toWei(amount, "ether");
-                let result = await contract.methods.withdraw(cToken,amountInWei).send({ from: walletData?.address })
+                let result = await contract.methods.withdraw(supplyData?.cToken,amountInWei).send({ from: walletData?.address })
                 balance = await web3.eth.getBalance(result?.from);
                  balanceInEther = web3.utils.fromWei(balance, 'ether');
                 // console.log("contract",contract,contract1);
                 // // let tokenApprove = await contract1.methods.approve(mainContractAddress,amountInWei).send({ from: walletData?.address })
                 // // console.log("tokenApprove",tokenApprove);
-                // let result = await contract.methods.repay(cToken,amountInWeiRepay).send({ from: walletData?.address })
+                // let result = await contract.methods.repay(blastCToken,amountInWeiRepay).send({ from: walletData?.address })
                 // balance = await web3.eth.getBalance(result?.from);
                 //  balanceInEther = web3.utils.fromWei(balance, 'ether');
                 dispatch(addBalllance(balanceInEther))

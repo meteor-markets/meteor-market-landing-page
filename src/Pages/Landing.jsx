@@ -148,7 +148,9 @@ function a11yProps(index) {
   const [supplyData, setSupplyData] = useState({});
   const [CoinName, setCoinName] = useState();
   const userDetails = useSelector(state => state.walletDeatils.userDetails);
-  console.log("userDetails", userDetails);
+  const getLendingPageCoinDetails = useSelector(state => state.walletDeatils.getLendingPageCoinDetails);
+
+  console.log("userDetails", supplyData);
   const FetchCoin = async () => {
     const response = await FetchCoinList()
     if (response?.length > 0) {
@@ -194,12 +196,12 @@ const [currentPage, setCurrentPage] = useState(1);
   const checkLastPage = useMemo(() => {
     let frstPgae = (currentPage - 1) * PageSize;
     let lastPage = frstPgae + PageSize;
-    return CoinName?.slice(frstPgae, lastPage)?.map((row, index) => ({
+    return getLendingPageCoinDetails?.slice(frstPgae, lastPage)?.map((row, index) => ({
         ...row,
         // Adjusting index on the first page and adding count from the second page onward
         srID: index + 1 + (currentPage > 1 ? frstPgae : 0),
     }));
-}, [currentPage, CoinName,PageSize]);
+}, [currentPage, getLendingPageCoinDetails,PageSize]);
   const handlePageChange = (event, page) => {
     setCurrentPage(page);
 };
@@ -274,10 +276,10 @@ const [currentPage, setCurrentPage] = useState(1);
                               <span>{data.coinName}</span>
                             </Box>
                           </TableCell>
-                          <TableCell>{data.supplyAPY}%</TableCell>
+                          <TableCell>{data.SupplYAPY}%</TableCell>
                           <TableCell>
                             <Box display={"flex"} alignItems={"center"}>
-                              <span>{data.sRewardAPR}%</span>{" "}
+                              <span>{data.supplyAPR?.toFixed(4)}%</span>{" "}
                               <HiOutlineExclamationCircle
                                 color="#00FFA3"
                                 fontSize={"18px"}
@@ -285,7 +287,7 @@ const [currentPage, setCurrentPage] = useState(1);
                               />
                             </Box>
                           </TableCell>
-                          <TableCell>{data?.wallet}{data?.coinName}</TableCell>
+                          <TableCell>{data?.WalletBalnce} {data?.coinName}</TableCell>
                           <TableCell align="center">
                             <Box
                               display="flex"
@@ -365,10 +367,10 @@ const [currentPage, setCurrentPage] = useState(1);
                               <span>{data.coinName}</span>
                             </Box>
                           </TableCell>
-                          <TableCell>{data.borrowAPY}</TableCell>
+                          <TableCell>{data.borrowAPY}%</TableCell>
                           <TableCell>
                             <Box display={"flex"} alignItems={"center"}>
-                              <span>{data.bRewardAPR}</span>{" "}
+                              <span>{data?.borrow_apr?.toFixed(4)}</span>{" "}
                               <HiOutlineExclamationCircle
                                 color="#00FFA3"
                                 fontSize={"18px"}
@@ -376,7 +378,7 @@ const [currentPage, setCurrentPage] = useState(1);
                               />
                             </Box>
                           </TableCell>
-                          <TableCell>{data.chianIdHEX}</TableCell>
+                          <TableCell>{data.liquidity} {data.coinName}</TableCell>
                           <TableCell align="center">
                             <Box
                               display="flex"

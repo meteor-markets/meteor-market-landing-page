@@ -10,11 +10,12 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { useDispatch, useSelector } from "react-redux";
-import { addBalllance, addOverviewDetails, addWalletDetails, addWeb3, findUserDetails } from "./Store/walletSlice";
+import { addAllBalance, addBalllance, addLendingPageCoinDetails, addOverviewDetails, addWalletDetails, addWeb3, findUserDetails } from "./Store/walletSlice";
 import { IoCloseSharp } from "react-icons/io5";
 import Web3 from "web3";
 import { toast } from "react-toastify";
-import { defaultChainID, mainnetChainID } from "./constants";
+import { defaultChainID,  fetchPortFoliyoDetails, fetchTotalSupplied, fetchtokenSupplyValueForBlast, mainnetChainID } from "./constants";
+import blastdexABI from './ABI/blastdexABI.json'
 
 const useStyles = makeStyles((theme) => ({
   headBox: {
@@ -103,9 +104,10 @@ const ConnectWallet = () => {
   const walletData = useSelector(state => state.walletDeatils.walletData);
   const balance = useSelector(state => state.walletDeatils.currentbalance);
   const web3 = useSelector(state => state.walletDeatils.web3);
+  const allBalance = useSelector(state => state.walletDeatils.allBalance);
 
 
-
+console.log("allBalance",allBalance);
   let showExploral = walletData?.chainId == mainnetChainID ? "https://blastscan.io/address/" : "https://sepolia.blastscan.io/address/"
   const handleClick = (event) => {
     setOpenChangeWallet(event.currentTarget);
@@ -132,14 +134,16 @@ const ConnectWallet = () => {
         chainId: chainId,
         library:library
       }
-      if (chainId != defaultChainID || chainId != mainnetChainID) {
-        switchNetwork(defaultChainID)
-      }
       FetchCoin(chainId)
       walletConect(wallet.accounts[0].address)
       sessionStorage.setItem("userAddress", wallet.accounts[0].address)
       dispatch(addWalletDetails(data))
       setAccount(data);
+      console.log("web3Instance",web3Instance);
+        fetchPortFoliyoDetails(web3Instance)
+        fetchtokenSupplyValueForBlast(web3Instance,dispatch)
+        fetchTotalSupplied(blastdexABI,wallet.accounts[0].address ,web3Instance,dispatch)
+
     const fetchBalance = async () => {
       if (web3Instance) {
         try {
@@ -154,6 +158,7 @@ const ConnectWallet = () => {
       }
     };
     fetchBalance();
+  
   }
 
   }, [wallet]);
@@ -199,6 +204,8 @@ const ConnectWallet = () => {
     dispatch(addBalllance(null))
     dispatch(findUserDetails())
     setCoinName({})
+    dispatch(addLendingPageCoinDetails([]));
+    dispatch(addAllBalance({}));
 
   }
 

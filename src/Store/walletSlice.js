@@ -7,7 +7,10 @@ const initialState = {
     web3:null,
 
     getUserOverView:{},
-    userDetails:{}
+    userDetails:{},
+    getLendingPageCoinDetails:[],
+    allBalance:{},
+
 
 
 }
@@ -30,12 +33,18 @@ export const todoSlice = createSlice({
         },
         findUserDetails: (state, action) => {
             state.userDetails = action.payload
+        },
+        addLendingPageCoinDetails: (state, action) => {
+            state.getLendingPageCoinDetails = action.payload
+        },
+        addAllBalance: (state, action) => {
+            state.allBalance = action.payload
         }
     }
 });
 
 // actions per il dispatch
-export const { addWalletDetails,addOverviewDetails,addBalllance ,addWeb3,findUserDetails} = todoSlice.actions;
+export const { addWalletDetails,addOverviewDetails,addBalllance ,addAllBalance,addWeb3,findUserDetails,addLendingPageCoinDetails} = todoSlice.actions;
 
 // reducer
 export default todoSlice.reducer;
